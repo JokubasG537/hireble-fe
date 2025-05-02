@@ -1,23 +1,22 @@
-// src/pages/Register.tsx
 import React, { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { useApiMutation } from "../hooks/useApiQuery";
 import { UserContext } from "../contexts/UserContext";
+import Loader from "../components/Loader";
+import RegisterStep1UserForm from "../components/RegisterStep1UserForm";
+import RegisterStep2CompanyForm from "../components/RegisterStep2CompanyForm";
 
-const roles = [
-  { label: "User", value: "user" },
-  { label: "Recruiter", value: "recruiter" },
-  { label: "Admin", value: "admin" },
-];
-
-interface RegisterForm {
+export interface RegisterForm {
   username: string;
   email: string;
   password: string;
-  role: "user" | "recruiter" | "admin";
+  role: "user" | "recruiter";
 }
 
 export default function Register() {
   const { dispatch } = useContext(UserContext);
+  const navigate = useNavigate();
+  const [currentStep, setCurrentStep] = useState(1);
   const [form, setForm] = useState<RegisterForm>({
     username: "",
     email: "",
@@ -31,16 +30,16 @@ export default function Register() {
     "POST"
   );
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleUserSubmit = async () => {
     setError(null);
     registerMutation.mutate(form, {
-      onSuccess: (data: any) => {
+      onSuccess: (data) => {
         dispatch({ type: "LOGIN", payload: { user: data.user, token: data.token } });
+        if (form.role === "user") {
+          navigate("/login");
+        } else {
+          setCurrentStep(2);
+        }
       },
       onError: (err: any) => {
         setError(err.message || "Registration failed");
@@ -48,59 +47,23 @@ export default function Register() {
     });
   };
 
+  if (registerMutation.isLoading) return <Loader />;
+
   return (
-    <div style={{ maxWidth: 400, margin: "2rem auto" }}>
-      <h2>Register</h2>
-      <form onSubmit={handleSubmit} autoComplete="off">
-        <div>
-          <label>Username</label>
-          <input
-            name="username"
-            value={form.username}
-            onChange={handleChange}
-            required
-            autoFocus
-          />
-        </div>
-        <div>
-          <label>Email</label>
-          <input
-            name="email"
-            type="email"
-            value={form.email}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label>Password</label>
-          <input
-            name="password"
-            type="password"
-            value={form.password}
-            onChange={handleChange}
-            required
-            minLength={6}
-          />
-        </div>
-        <div>
-          <label>Role</label>
-          <select name="role" value={form.role} onChange={handleChange}>
-            {roles.map((role) => (
-              <option key={role.value} value={role.value}>
-                {role.label}
-              </option>
-            ))}
-          </select>
-        </div>
-        <button type="submit" disabled={registerMutation.isLoading}>
-          {registerMutation.isLoading ? "Registering..." : "Register"}
-        </button>
-        {error && <div style={{ color: "red" }}>{error}</div>}
-        {registerMutation.isSuccess && (
-          <div style={{ color: "green" }}>Registration successful!</div>
-        )}
-      </form>
+    <div>
+      <h2>Register {currentStep > 1 ? `- Step ${currentStep}` : ""}</h2>
+
+      {currentStep === 1 && (
+        <RegisterStep1UserForm
+          form={form}
+          setForm={setForm}
+          onSubmit={handleUserSubmit}
+          isLoading={registerMutation.isLoading}
+          error={error}
+        />
+      )}
+
+      {currentStep === 2 && <RegisterStep2CompanyForm />}
     </div>
   );
 }
