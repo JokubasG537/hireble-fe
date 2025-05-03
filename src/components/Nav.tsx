@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import LogoutButton from './LogoutButton';
+
 const Nav = () => {
   return (
     <nav>
@@ -14,6 +15,12 @@ const Nav = () => {
       </div>
       <div>
         <LogoutButton />
+      </div>
+      <div>
+        <Link to="/">Home</Link>
+      </div>
+      <div>
+        <Link to="/dashboard">Company Dashboard</Link>
       </div>
     </nav>
   );
