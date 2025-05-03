@@ -1,56 +1,147 @@
-import React, { useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import { UserContext } from "../contexts/UserContext";
 import { useApiQuery } from "../hooks/useApiQuery";
+import { apiFetcher } from "../api/fetcher";
+import ManageJoinRequests from "../components/ManageJoinRequests";
+
+// Interface for User data
+interface User {
+  _id: string;
+  username: string;
+  email: string;
+  role: "user" | "recruiter" | "admin";
+}
+
+// Interface for Company based on the MongoDB schema
+interface Company {
+  _id: string;
+  name: string;
+  description: string;
+  location: string;
+  website: string;
+  industry: string;
+  logoUrl?: string;
+  jobPosts?: string[];
+  recruiters?: string[];
+  createdAt: string;
+  updatedAt: string;
+}
 
 const CompanyDashboard: React.FC = () => {
   const { user, token } = useContext(UserContext);
   const navigate = useNavigate();
+  const [recruiters, setRecruiters] = useState<User[]>([]);
+  const [isLoadingRecruiters, setIsLoadingRecruiters] = useState(false);
 
-  const canFetch = Boolean(token) && (user?.role === "recruiter" || user?.role === "admin");
+  console.log("User context:", { user, token });
 
-  const { data: company, isLoading, error } = useApiQuery(
+  useEffect(() => {
+    if (!token) {
+      navigate("/login");
+    }
+  }, [token, navigate]);
+
+  const { data: company, isLoading, error } = useApiQuery<Company>(
     ["user-company"],
     "/companies/current/company",
-    canFetch
+    !!token
   );
 
-  if (!token) {
-    navigate("/login");
-    return null;
-  }
+  // Fetch recruiters data when company is loaded
+  useEffect(() => {
+    const fetchRecruiters = async () => {
+      if (company?.recruiters && company.recruiters.length > 0 && token) {
+        setIsLoadingRecruiters(true);
+        try {
+          const response = await apiFetcher(
+            `/users?ids=${company.recruiters.join(',')}`,
+            token
+          );
+          setRecruiters(response);
+        } catch (err) {
+          console.error("Error fetching recruiters:", err);
+        } finally {
+          setIsLoadingRecruiters(false);
+        }
+      }
+    };
 
-  if (isLoading) {
-    return <div>Loading company information…</div>;
-  }
+    fetchRecruiters();
+  }, [company, token]);
 
-  if (error) {
-    return <div>Error loading company: {(error as Error).message}</div>;
-  }
+  if (isLoading) return <div>Loading company dashboard...</div>;
+  if (error) return <div>Error loading company data: {(error as Error).message}</div>;
 
-  if (!company) {
-    return <div>You haven’t been assigned to a company yet.</div>;
-  }
+  console.log("Company data:", { company, error, isLoading });
 
   return (
-    <div>
-      <h1>{company.name}</h1>
-      <p>
-        <strong>Industry:</strong> {company.industry}
-      </p>
-      <p>
-        <strong>Location:</strong> {company.location}
-      </p>
-      <p>
-        <strong>Website:</strong>{" "}
-        <a href={company.website} target="_blank" rel="noopener noreferrer">
-          {company.website}
-        </a>
-      </p>
-      <div>
-        <h2>Description</h2>
-        <p>{company.description}</p>
-      </div>
+    <div className="dashboard-container">
+      <h1>Company Dashboard</h1>
+
+      {company ? (
+        <div className="company-details">
+          {company.logoUrl && (
+            <div className="company-logo">
+              <img src={company.logoUrl} alt={`${company.name} logo`} />
+            </div>
+          )}
+          <h2>{company.name}</h2>
+          <div className="company-info">
+            <p><strong>Industry:</strong> {company.industry}</p>
+            <p><strong>Location:</strong> {company.location}</p>
+            <p><strong>Website:</strong> <a href={company.website} target="_blank" rel="noopener noreferrer">{company.website}</a></p>
+            {company.jobPosts && company.jobPosts.length > 0 && (
+              <p><strong>Active Job Posts:</strong> {company.jobPosts.length}</p>
+            )}
+
+
+{company && (
+  <div style={{ marginTop: '24px', borderTop: '1px solid #eee', paddingTop: '24px' }}>
+    <h3 style={{ fontSize: '1.2rem', marginBottom: '16px' }}>Manage Join Requests</h3>
+    <ManageJoinRequests companyId={company._id} />
+  </div>
+)}
+
+
+
+            {company.recruiters && company.recruiters.length > 0 && (
+              <div className="company-recruiters">
+                <p><strong>Recruiters:</strong></p>
+                {isLoadingRecruiters ? (
+                  <p>Loading recruiter information...</p>
+                ) : recruiters.length > 0 ? (
+                  <ul className="recruiters-list">
+                    {recruiters.map((recruiter) => (
+                      <li key={recruiter._id}>
+                        <Link to={`/users/${recruiter._id}`}>
+                          {recruiter.username}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p>No recruiter information available.</p>
+                )}
+              </div>
+            )}
+          </div>
+          <div className="company-description">
+            <h3>Description</h3>
+            <p>{company.description}</p>
+          </div>
+          <div className="company-timestamp">
+            <p><small>Registered since: {new Date(company.createdAt).toLocaleDateString()}</small></p>
+          </div>
+        </div>
+      ) : (
+        <div className="no-company">
+          <p>You haven't been assigned to a company yet.</p>
+          <button onClick={() => navigate("/register-company")}>
+            Create a Company
+          </button>
+        </div>
+      )}
     </div>
   );
 };
