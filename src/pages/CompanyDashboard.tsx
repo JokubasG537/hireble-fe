@@ -1,7 +1,16 @@
-import React, { useContext, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import { UserContext } from "../contexts/UserContext";
 import { useApiQuery } from "../hooks/useApiQuery";
+import { apiFetcher } from "../api/fetcher";
+
+// Interface for User data
+interface User {
+  _id: string;
+  username: string;
+  email: string;
+  role: "user" | "recruiter" | "admin";
+}
 
 // Interface for Company based on the MongoDB schema
 interface Company {
@@ -12,8 +21,8 @@ interface Company {
   website: string;
   industry: string;
   logoUrl?: string;
-  jobPosts?: string[]; // Array of Job IDs
-  recruiters?: string[]; // Array of User IDs
+  jobPosts?: string[];
+  recruiters?: string[];
   createdAt: string;
   updatedAt: string;
 }
@@ -21,10 +30,11 @@ interface Company {
 const CompanyDashboard: React.FC = () => {
   const { user, token } = useContext(UserContext);
   const navigate = useNavigate();
+  const [recruiters, setRecruiters] = useState<User[]>([]);
+  const [isLoadingRecruiters, setIsLoadingRecruiters] = useState(false);
 
   console.log("User context:", { user, token });
 
- 
   useEffect(() => {
     if (!token) {
       navigate("/login");
@@ -36,6 +46,28 @@ const CompanyDashboard: React.FC = () => {
     "/companies/current/company",
     !!token
   );
+
+  // Fetch recruiters data when company is loaded
+  useEffect(() => {
+    const fetchRecruiters = async () => {
+      if (company?.recruiters && company.recruiters.length > 0 && token) {
+        setIsLoadingRecruiters(true);
+        try {
+          const response = await apiFetcher(
+            `/users?ids=${company.recruiters.join(',')}`,
+            token
+          );
+          setRecruiters(response);
+        } catch (err) {
+          console.error("Error fetching recruiters:", err);
+        } finally {
+          setIsLoadingRecruiters(false);
+        }
+      }
+    };
+
+    fetchRecruiters();
+  }, [company, token]);
 
   if (isLoading) return <div>Loading company dashboard...</div>;
   if (error) return <div>Error loading company data: {(error as Error).message}</div>;
@@ -62,7 +94,24 @@ const CompanyDashboard: React.FC = () => {
               <p><strong>Active Job Posts:</strong> {company.jobPosts.length}</p>
             )}
             {company.recruiters && company.recruiters.length > 0 && (
-              <p><strong>Recruiters:</strong> {company.recruiters.length}</p>
+              <div className="company-recruiters">
+                <p><strong>Recruiters:</strong></p>
+                {isLoadingRecruiters ? (
+                  <p>Loading recruiter information...</p>
+                ) : recruiters.length > 0 ? (
+                  <ul className="recruiters-list">
+                    {recruiters.map((recruiter) => (
+                      <li key={recruiter._id}>
+                        <Link to={`/users/${recruiter._id}`}>
+                          {recruiter.username}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p>No recruiter information available.</p>
+                )}
+              </div>
             )}
           </div>
           <div className="company-description">
