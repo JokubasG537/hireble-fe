@@ -3,6 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { UserContext } from "../contexts/UserContext";
 import { useApiQuery } from "../hooks/useApiQuery";
 import { apiFetcher } from "../api/fetcher";
+import ManageJoinRequests from "../components/ManageJoinRequests";
 
 // Interface for User data
 interface User {
@@ -93,6 +94,17 @@ const CompanyDashboard: React.FC = () => {
             {company.jobPosts && company.jobPosts.length > 0 && (
               <p><strong>Active Job Posts:</strong> {company.jobPosts.length}</p>
             )}
+
+
+{company && (
+  <div style={{ marginTop: '24px', borderTop: '1px solid #eee', paddingTop: '24px' }}>
+    <h3 style={{ fontSize: '1.2rem', marginBottom: '16px' }}>Manage Join Requests</h3>
+    <ManageJoinRequests companyId={company._id} />
+  </div>
+)}
+
+
+
             {company.recruiters && company.recruiters.length > 0 && (
               <div className="company-recruiters">
                 <p><strong>Recruiters:</strong></p>

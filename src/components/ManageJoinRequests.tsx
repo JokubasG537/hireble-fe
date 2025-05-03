@@ -1,4 +1,3 @@
-// src/components/ManageJoinRequests.tsx
 import React, { useState, useContext, useEffect } from "react";
 import { useApiQuery, useApiMutation } from "../hooks/useApiQuery";
 import { UserContext } from "../contexts/UserContext";
@@ -49,13 +48,15 @@ export default function ManageJoinRequests({ companyId }: { companyId: string })
   );
 
   const handleApprove = (requestId: string) => {
-    const url = `/companyJoinRequests/${requestId}/approve`;
     approveMutation.mutate(
-      {}, // Empty body
+      {
+        __params: { id: requestId },
+        // You can add other body data here if needed
+      },
       {
         onSuccess: () => {
           setMessage({ text: "Request approved successfully!", type: "success" });
-          refetch(); // Refresh the list
+          refetch();
         },
         onError: (error: any) => {
           setMessage({ text: `Failed to approve: ${error.message}`, type: "error" });
@@ -64,14 +65,16 @@ export default function ManageJoinRequests({ companyId }: { companyId: string })
     );
   };
 
+
   const handleReject = (requestId: string) => {
-    const url = `/companyJoinRequests/${requestId}/reject`;
     rejectMutation.mutate(
-      {}, // Empty body
+      {
+        __params: { id: requestId } // Change to match the :id in URL
+      },
       {
         onSuccess: () => {
           setMessage({ text: "Request rejected successfully!", type: "success" });
-          refetch(); // Refresh the list
+          refetch();
         },
         onError: (error: any) => {
           setMessage({ text: `Failed to reject: ${error.message}`, type: "error" });
@@ -80,7 +83,6 @@ export default function ManageJoinRequests({ companyId }: { companyId: string })
     );
   };
 
- 
   useEffect(() => {
     if (message) {
       const timer = setTimeout(() => setMessage(null), 5000);
@@ -88,44 +90,72 @@ export default function ManageJoinRequests({ companyId }: { companyId: string })
     }
   }, [message]);
 
-  if (isLoading) return <div>Loading join requests...</div>;
-  if (error) return <div>Error loading requests: {error.message}</div>;
+  if (isLoading) return <div style={{ padding: '16px', textAlign: 'center' }}>Loading join requests...</div>;
+  if (error) return <div style={{ padding: '16px', color: 'red' }}>Error loading requests: {(error as Error).message}</div>;
 
   return (
-    <div className="join-requests-container">
-      <h2>Pending Join Requests</h2>
+    <div style={{ padding: '16px', maxWidth: '600px', margin: '0 auto' }}>
+      <h2 style={{ fontSize: '1.5rem', marginBottom: '16px' }}>Pending Join Requests</h2>
 
       {message && (
-        <div className={`message ${message.type}`}>
+        <div style={{
+          padding: '8px 16px',
+          marginBottom: '16px',
+          backgroundColor: message.type === 'success' ? '#e6f7e6' : '#f8d7da',
+          color: message.type === 'success' ? '#2e7d32' : '#721c24',
+          borderRadius: '4px'
+        }}>
           {message.text}
         </div>
       )}
 
       {!data?.requests?.length ? (
-        <p>No pending requests found.</p>
+        <div style={{ padding: '16px', textAlign: 'center', color: '#666' }}>
+          No pending requests found.
+        </div>
       ) : (
-        <div className="requests-list">
+        <div>
           {data.requests.map((request) => (
-            <div key={request._id} className="request-card">
-              <div className="recruiter-info">
-                <h3>{request.recruiter.username}</h3>
-                <p>{request.recruiter.email}</p>
-                <p className="date">Requested on: {new Date(request.createdAt).toLocaleDateString()}</p>
-              </div>
-
-              <div className="action-buttons">
+            <div key={request._id} style={{
+              padding: '16px',
+              marginBottom: '16px',
+              border: '1px solid #ddd',
+              borderRadius: '4px',
+              backgroundColor: '#f9f9f9'
+            }}>
+              <h3 style={{ marginTop: 0, marginBottom: '8px' }}>{request.recruiter.username}</h3>
+              <p style={{ marginBottom: '8px', color: '#555' }}>{request.recruiter.email}</p>
+              <p style={{ marginBottom: '16px', fontSize: '0.9rem', color: '#777' }}>
+                Requested on: {new Date(request.createdAt).toLocaleDateString()}
+              </p>
+              <div style={{ display: 'flex', gap: '8px' }}>
                 <button
                   onClick={() => handleApprove(request._id)}
                   disabled={approveMutation.isLoading}
-                  className="approve-button"
+                  style={{
+                    padding: '8px 16px',
+                    backgroundColor: '#4caf50',
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '4px',
+                    cursor: 'pointer',
+                    opacity: approveMutation.isLoading ? 0.7 : 1
+                  }}
                 >
                   {approveMutation.isLoading ? "Processing..." : "Approve"}
                 </button>
-
                 <button
                   onClick={() => handleReject(request._id)}
                   disabled={rejectMutation.isLoading}
-                  className="reject-button"
+                  style={{
+                    padding: '8px 16px',
+                    backgroundColor: '#f44336',
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '4px',
+                    cursor: 'pointer',
+                    opacity: rejectMutation.isLoading ? 0.7 : 1
+                  }}
                 >
                   {rejectMutation.isLoading ? "Processing..." : "Reject"}
                 </button>
@@ -134,7 +164,6 @@ export default function ManageJoinRequests({ companyId }: { companyId: string })
           ))}
         </div>
       )}
-
-     </div>
+    </div>
   );
 }
