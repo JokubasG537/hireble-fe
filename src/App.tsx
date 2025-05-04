@@ -5,6 +5,9 @@ import Register from './pages/Register';
 import Login from './pages/Login';
 import Home from './pages/Home';
 import CompanyDashboard from './pages/CompanyDashboard';
+import UserDashboard from './pages/UserDashboard';
+import CreateJobPost from './pages/CreateJobPost';
+
 
 function App() {
   return (
@@ -15,7 +18,9 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/dashboard/" element={<CompanyDashboard />} />
+        <Route path="/user-dashboard" element={<UserDashboard />} />
         <Route path="/jobs" element={<div>Jobs Page</div>} />
+        <Route path="/create-job" element={<CreateJobPost />} />
         <Route path="*" element={<div>404 Not Found</div>} />
       </Routes>
     </>

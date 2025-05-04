@@ -1,6 +1,18 @@
 import React, { createContext, useReducer, useEffect, Dispatch, ReactNode } from "react";
 
-// User type including role
+
+const decodeJWT = (token: string) => {
+  try {
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    return JSON.parse(window.atob(base64));
+  } catch (error) {
+    console.error("Error decoding JWT:", error);
+    return null;
+  }
+};
+
+
 export interface User {
   id: string;
   username: string;
@@ -23,13 +35,39 @@ const initialState: UserState = {
   token: typeof window !== "undefined" ? localStorage.getItem("token") : null,
 };
 
+// Ensure user has role from token
+const ensureUserRole = (user: User | null, token: string | null): User | null => {
+  if (!user || !token) return user;
+
+  // If user already has role, return as is
+  if (user.role) return user;
+
+  // Try to extract role from token
+  const decodedToken = decodeJWT(token);
+  if (decodedToken && decodedToken.role) {
+    return {
+      ...user,
+      role: decodedToken.role
+    };
+  }
+
+  return user;
+};
+
 function userReducer(state: UserState, action: UserAction): UserState {
   switch (action.type) {
     case "LOGIN":
-      localStorage.setItem("user", JSON.stringify(action.payload.user));
+      const tokenPayload = decodeJWT(action.payload.token);
+      const userWithRole = {
+        ...action.payload.user,
+        role: action.payload.user.role || tokenPayload?.role
+      };
+
+      localStorage.setItem("user", JSON.stringify(userWithRole));
       localStorage.setItem("token", action.payload.token);
+
       return {
-        user: action.payload.user,
+        user: userWithRole,
         token: action.payload.token,
       };
     case "LOGOUT":
@@ -56,12 +94,18 @@ export const UserContext = createContext<UserContextProps>({
 export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [state, dispatch] = useReducer(userReducer, initialState);
 
-
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user") || "null");
     const token = localStorage.getItem("token");
+    let user = JSON.parse(localStorage.getItem("user") || "null");
+
     if (user && token) {
-      dispatch({ type: "LOGIN", payload: { user, token } });
+      // Ensure user has role from token if missing
+      user = ensureUserRole(user, token);
+
+      if (user) {
+        localStorage.setItem("user", JSON.stringify(user));
+        dispatch({ type: "LOGIN", payload: { user, token } });
+      }
     }
   }, []);
 

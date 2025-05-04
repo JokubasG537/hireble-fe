@@ -4,6 +4,7 @@ import { UserContext } from "../contexts/UserContext";
 import { useApiQuery } from "../hooks/useApiQuery";
 import { apiFetcher } from "../api/fetcher";
 import ManageJoinRequests from "../components/ManageJoinRequests";
+import CompanyCRUD from "../components/CompanyCRUD";
 
 // Interface for User data
 interface User {
@@ -142,6 +143,11 @@ const CompanyDashboard: React.FC = () => {
           </button>
         </div>
       )}
+
+      <div className="company-actions">
+        <h2>Actions</h2>
+        <CompanyCRUD/>
+        </div>
     </div>
   );
 };

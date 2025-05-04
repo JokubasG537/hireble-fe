@@ -1,8 +1,9 @@
-import ManageJoinRequests from "../components/ManageJoinRequests";
+
 function Home() {
   return (
     <div >
-      <ManageJoinRequests companyId={""}/>
+      <h1>Welcome to the Job Portal</h1>
+      <p>Your one-stop solution for job postings and applications.</p>
     </div>
   );
 }
