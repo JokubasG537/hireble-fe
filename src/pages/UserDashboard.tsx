@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { UserContext } from "../contexts/UserContext";
 import { useApiQuery } from "../hooks/useApiQuery";
-
+import ResumeList from "../components/resume/ResumeList";
 const UserDashboard: React.FC = () => {
   const { user: contextUser, token } = useContext(UserContext);
   const navigate = useNavigate();
@@ -60,6 +60,8 @@ const UserDashboard: React.FC = () => {
           <strong>Member since:</strong> {new Date(user.createdAt).toLocaleDateString()}
         </div>
       </div>
+
+      <ResumeList />
     </div>
   );
 };

@@ -1,4 +1,3 @@
-// CreateJobPost.tsx
 import React, { useState, useContext, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import JoditEditor from 'jodit-react';
@@ -10,14 +9,12 @@ const CreateJobPost = () => {
   const { user, token } = useContext(UserContext);
   const editor = useRef(null);
 
-  // Fetch company data for the logged-in recruiter
   const { data: companyData, isLoading: companyLoading } = useApiQuery(
     ['company', 'current'],
     `/companies/current/company`,
     !!token
   );
 
-  // Form state
   const [formData, setFormData] = useState({
     title: '',
     company: '',
@@ -30,20 +27,15 @@ const CreateJobPost = () => {
     salaryPeriod: 'yearly'
   });
 
-  // Rich text editor state
   const [description, setDescription] = useState('');
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
-  // Form validation
-  const [errors, setErrors] = useState<{[key: string]: string}>({});
-
-  // API mutation hook
   const { mutate: createJobPost, isLoading, isError, error } = useApiMutation(
     '/jobPosts',
     'POST',
     ['job-posts']
   );
 
-  // Auto-fill company when data is loaded
   useEffect(() => {
     if (companyData) {
       setFormData(prev => ({
@@ -54,7 +46,6 @@ const CreateJobPost = () => {
     }
   }, [companyData]);
 
-  // Check if user is recruiter or admin
   useEffect(() => {
     if (!token) {
       navigate('/login');
@@ -66,7 +57,6 @@ const CreateJobPost = () => {
     }
   }, [user, token, navigate]);
 
-  // Editor config
   const config = {
     readonly: false,
     height: 400,
@@ -83,15 +73,13 @@ const CreateJobPost = () => {
     placeholder: 'Describe the job role, responsibilities, requirements, benefits, etc.'
   };
 
-  // Handle input changes
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  // Validate form
   const validateForm = () => {
-    const newErrors: {[key: string]: string} = {};
+    const newErrors: { [key: string]: string } = {};
     if (!formData.title.trim()) newErrors.title = 'Title is required';
     if (!formData.location.trim()) newErrors.location = 'Location is required';
     if (!description.trim()) newErrors.description = 'Job description is required';
@@ -100,12 +88,10 @@ const CreateJobPost = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  // Handle form submission
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!validateForm()) return;
 
-    // Submit the job post
     createJobPost({
       ...formData,
       salary: formData.salary ? Number(formData.salary) : undefined,
@@ -166,7 +152,6 @@ const CreateJobPost = () => {
           {errors.location && <div>{errors.location}</div>}
         </div>
 
-        {/* New salary fields */}
         <div>
           <label htmlFor="salary">Salary</label>
           <input
@@ -176,19 +161,12 @@ const CreateJobPost = () => {
             value={formData.salary}
             onChange={handleInputChange}
           />
-
-          <label htmlFor="salaryCurrency">Currency</label>
-          <select
+          <input
+            type="hidden"
             id="salaryCurrency"
             name="salaryCurrency"
-            value={formData.salaryCurrency}
-            onChange={handleInputChange}
-          >
-            <option value="USD">USD</option>
-            <option value="EUR">EUR</option>
-            <option value="GBP">GBP</option>
-          </select>
-
+            value="USD"
+          />
           <label htmlFor="salaryPeriod">Period</label>
           <select
             id="salaryPeriod"

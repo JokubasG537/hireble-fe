@@ -14,7 +14,8 @@ export function useApiMutation(
   return useMutation({
     mutationFn: (data: any) => {
       let finalUrl = url;
-      if (data.__params) {
+
+      if (data?.__params) {
         Object.entries(data.__params).forEach(([key, value]) => {
           finalUrl = finalUrl.replace(`:${key}`, value as string);
         });
@@ -22,9 +23,12 @@ export function useApiMutation(
         data = bodyData;
       }
 
+      const isFormData = data instanceof FormData;
+
       return apiFetcher(finalUrl, token, {
         method,
-        body: JSON.stringify(data),
+        body: isFormData ? data : JSON.stringify(data),
+        headers: isFormData ? undefined : { 'Content-Type': 'application/json' },
       });
     },
     onSuccess: () => {
@@ -32,6 +36,7 @@ export function useApiMutation(
     },
   });
 }
+
 
 
 export function useApiQuery<T>(key: any[], url: string, enabled: boolean = true) {
