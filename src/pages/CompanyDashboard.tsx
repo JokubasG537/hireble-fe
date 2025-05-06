@@ -5,9 +5,8 @@ import { useApiQuery } from "../hooks/useApiQuery";
 import { apiFetcher } from "../api/fetcher";
 import ManageJoinRequests from "../components/ManageJoinRequests";
 import CompanyCRUD from "../components/CompanyCRUD";
-// import CompanyApplications from "../components/CompanyApplications";
 import CompanyApplications from "../components/CompanyApplicationManager";
-
+import CompanyJobPostsManager from "../components/CompanyJobPostsManager";
 
 interface User {
   _id: string;
@@ -51,7 +50,7 @@ const CompanyDashboard: React.FC = () => {
     !!token
   );
 
-  // Fetch recruiters data when company is loaded
+
   useEffect(() => {
     const fetchRecruiters = async () => {
       if (company?.recruiters && company.recruiters.length > 0 && token) {
@@ -146,7 +145,7 @@ const CompanyDashboard: React.FC = () => {
         </div>
       )}
 
-      {/* <CompanyApplications></CompanyApplications> */}
+      <CompanyJobPostsManager></CompanyJobPostsManager>
       <CompanyApplications></CompanyApplications>
 
       <div className="company-actions">

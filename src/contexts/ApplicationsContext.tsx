@@ -1,3 +1,4 @@
+// src/contexts/ApplicationsContext.tsx
 import React, {
   createContext,
   useReducer,
@@ -6,8 +7,6 @@ import React, {
   Dispatch,
 } from 'react';
 import { useApiMutation } from '../hooks/useApiQuery';
-
-// --- Types ---
 
 interface Application {
   _id: string;
@@ -27,15 +26,14 @@ type ApplicationsAction =
   | { type: 'SET_APPLICATIONS'; payload: Application[] }
   | { type: 'SET_LOADING'; payload: boolean }
   | { type: 'SET_ERROR'; payload: string | null }
-  | { type: 'UPDATE_APPLICATION_STATUS'; payload: { id: string; status: string } };
+  | { type: 'UPDATE_APPLICATION_STATUS'; payload: { id: string; status: string } }
+  | { type: 'DELETE_APPLICATION'; payload: string };
 
-interface ApplicationsContextType {
+type ApplicationsContextType = {
   state: ApplicationsState;
   dispatch: Dispatch<ApplicationsAction>;
   rejectApplication: (applicationId: string) => Promise<void>;
-}
-
-// --- Reducer & Initial State ---
+};
 
 const initialState: ApplicationsState = {
   applications: [],
@@ -57,70 +55,64 @@ function applicationsReducer(
     case 'UPDATE_APPLICATION_STATUS':
       return {
         ...state,
-        applications: state.applications.map((app) =>
+        applications: state.applications.map(app =>
           app._id === action.payload.id
             ? { ...app, status: action.payload.status }
             : app
         ),
+      };
+    case 'DELETE_APPLICATION':
+      return {
+        ...state,
+        applications: state.applications.filter(app => app._id !== action.payload),
       };
     default:
       return state;
   }
 }
 
-// --- Context Creation ---
-
 const ApplicationsContext = createContext<ApplicationsContextType | undefined>(
   undefined
 );
 
-// --- Provider ---
-
 export const ApplicationsProvider: React.FC<{
   children: ReactNode;
-  companyId?: string;
+  companyId: string;
 }> = ({ children, companyId }) => {
-  const [state, dispatch] = useReducer(
-    applicationsReducer,
-    initialState
+  const [state, dispatch] = useReducer(applicationsReducer, initialState);
+
+  const rejectMutation = useApiMutation(
+    '/jobApplications/company/:companyId/:applicationId',
+    'PUT',
+    ['companyApplications', companyId]
   );
 
-  // Only set up mutation if companyId is provided
-  const rejectApplicationMutation = companyId
-    ? useApiMutation(
-        '/jobApplications/company/:companyId/:applicationId',
-        'PUT',
-        ['companyApplications', companyId]
-      )
-    : null;
+  const deleteMutation = useApiMutation(
+    '/jobApplications/:applicationId',
+    'DELETE',
+    ['companyApplications', companyId]
+  );
 
   const rejectApplication = async (applicationId: string) => {
-    if (!companyId || !rejectApplicationMutation) {
-      dispatch({
-        type: 'SET_ERROR',
-        payload: 'Cannot reject application: no company ID available',
-      });
-      return;
-    }
-
+    dispatch({ type: 'SET_LOADING', payload: true });
     try {
-      dispatch({ type: 'SET_LOADING', payload: true });
-
-      await rejectApplicationMutation.mutateAsync({
+      await rejectMutation.mutateAsync({
         __params: { companyId, applicationId },
         status: 'rejected',
       });
 
-      dispatch({
-        type: 'UPDATE_APPLICATION_STATUS',
-        payload: { id: applicationId, status: 'rejected' },
+      await deleteMutation.mutateAsync({
+        __params: { applicationId },
       });
-      dispatch({ type: 'SET_LOADING', payload: false });
+
+      dispatch({ type: 'DELETE_APPLICATION', payload: applicationId });
     } catch (err: any) {
       dispatch({
         type: 'SET_ERROR',
-        payload: err?.message || 'Failed to reject application',
+        payload: err?.message ?? 'Failed to reject and delete',
       });
+    } finally {
+      dispatch({ type: 'SET_LOADING', payload: false });
     }
   };
 
@@ -133,14 +125,12 @@ export const ApplicationsProvider: React.FC<{
   );
 };
 
-// --- Hook to consume context ---
-
 export const useApplications = () => {
-  const context = useContext(ApplicationsContext);
-  if (!context) {
+  const ctx = useContext(ApplicationsContext);
+  if (!ctx) {
     throw new Error(
       'useApplications must be used within an ApplicationsProvider'
     );
   }
-  return context;
+  return ctx;
 };
