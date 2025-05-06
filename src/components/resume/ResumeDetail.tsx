@@ -7,7 +7,7 @@ const ResumeDetail = () => {
   const navigate = useNavigate();
 
   const { data: resume, isLoading, error } = useApiQuery(
-    ['resume', id],
+    ['resumes', id],
     `/resumes/${id}`,
     !!id
   );

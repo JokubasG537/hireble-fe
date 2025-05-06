@@ -12,6 +12,7 @@ import JobDetailPage from './pages/JobDetailPage';
 import ResumeUpload from './components/resume/ResumeUpload';
 import ResumeDetail from './components/resume/ResumeDetail';
 import ResumeEdit from './components/resume/ResumeEdit';
+import ApplicationForm from './pages/ApplicationForm';
 
 
 
@@ -33,6 +34,8 @@ function App() {
         <Route path="/resumes/upload" element={<ResumeUpload />} />
         <Route path="/resumes/:id" element={<ResumeDetail />} />
         <Route path="/resumes/edit/:id" element={<ResumeEdit />} />
+        <Route path="/apply/:id" element={<ApplicationForm />} />
+
         <Route path="*" element={<div>404 Not Found</div>} />
       </Routes>
     </>

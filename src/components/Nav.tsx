@@ -5,7 +5,7 @@ const Nav = () => {
   return (
     <nav>
       <div>
-        <Link to="/jobs">Jobs</Link>
+        <Link to="/job-posts">Jobs</Link>
       </div>
       <div>
         <Link to="/register">Register</Link>

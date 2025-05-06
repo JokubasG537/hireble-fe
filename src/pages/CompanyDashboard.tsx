@@ -5,8 +5,10 @@ import { useApiQuery } from "../hooks/useApiQuery";
 import { apiFetcher } from "../api/fetcher";
 import ManageJoinRequests from "../components/ManageJoinRequests";
 import CompanyCRUD from "../components/CompanyCRUD";
+// import CompanyApplications from "../components/CompanyApplications";
+import CompanyApplications from "../components/CompanyApplicationManager";
 
-// Interface for User data
+
 interface User {
   _id: string;
   username: string;
@@ -14,7 +16,7 @@ interface User {
   role: "user" | "recruiter" | "admin";
 }
 
-// Interface for Company based on the MongoDB schema
+
 interface Company {
   _id: string;
   name: string;
@@ -143,6 +145,9 @@ const CompanyDashboard: React.FC = () => {
           </button>
         </div>
       )}
+
+      {/* <CompanyApplications></CompanyApplications> */}
+      <CompanyApplications></CompanyApplications>
 
       <div className="company-actions">
         <h2>Actions</h2>

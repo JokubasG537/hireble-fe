@@ -82,7 +82,7 @@ const JobDetailPage = () => {
       <h3>Description</h3>
       <div dangerouslySetInnerHTML={{ __html: job.description }} />
 
-      <button>Apply Now</button>
+      <button onClick={() => navigate(`/apply/${job._id}`)}>Apply Now</button>
     </div>
   );
 };
