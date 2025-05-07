@@ -1,4 +1,4 @@
-import './App.css';
+import './App.scss';
 import { Routes, Route } from 'react-router-dom';
 import Nav from './components/Nav';
 import Register from './pages/Register';
@@ -20,15 +20,15 @@ function App() {
   return (
     <>
       <Nav />
+      <main>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/dashboard/" element={<CompanyDashboard  />} />
+        <Route path="/dashboard" element={<CompanyDashboard  />} />
         <Route path="/companies/:id" element={<CompanyPublicPage />} />
         <Route path="/user-dashboard" element={<UserDashboard />} />
         <Route path="/users/:id" element={<PublicUserProfile />} />
-        <Route path="/jobs" element={<div>Jobs Page</div>} />
         <Route path="/create-job" element={<CreateJobPost />} />
         <Route path="/job-posts" element={<JobListingPage />} />
         <Route path="/job-posts/:id" element={<JobDetailPage />} />
@@ -38,6 +38,7 @@ function App() {
         <Route path="/apply/:id" element={<ApplicationForm />} />
         <Route path="*" element={<div>404 Not Found</div>} />
       </Routes>
+      </main>
     </>
   );
 }
