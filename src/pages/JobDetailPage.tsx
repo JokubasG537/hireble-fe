@@ -26,7 +26,7 @@ const JobDetailPage = () => {
 
   const companyInfo = getCompanyInfo();
 
-  // Format date to be more readable
+
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', {
@@ -38,7 +38,7 @@ const JobDetailPage = () => {
 
   const viewCompanyDetails = () => {
     if (companyInfo.id) {
-      navigate(`/company/${companyInfo.id}`);
+      navigate(`/companies/${companyInfo.id}`);
     }
   };
 
@@ -71,10 +71,10 @@ const JobDetailPage = () => {
 
       <p><strong>Experience Level:</strong> {job.experienceLevel || 'Not specified'}</p>
 
-      {/* Add posting information */}
+
       <p><strong>Posted:</strong> {formatDate(job.createdAt)}</p>
 
-      {/* Add recruiter information */}
+
       {job.postedBy && (
         <p><strong>Contact:</strong> {job.postedBy.email}</p>
       )}

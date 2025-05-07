@@ -2,9 +2,9 @@ import React, { useEffect } from 'react';
 import { useApiQuery } from '../hooks/useApiQuery';
 import { ApplicationsProvider, useApplications } from '../contexts/ApplicationsContext';
 
-// Main component that uses the context
+
 const CompanyApplications: React.FC = () => {
-  // Fetch current company
+
   const { data: companyData, isLoading: isLoadingCompany } = useApiQuery(
     ['currentCompany'],
     `/companies/current/company`
@@ -22,19 +22,19 @@ const CompanyApplications: React.FC = () => {
   );
 };
 
-// Component that displays applications and uses rejection functionality
+
 const ApplicationsList: React.FC<{ companyId: string }> = ({ companyId }) => {
   const { state, dispatch, rejectApplication } = useApplications();
   const { applications, loading, error } = state;
 
-  // Fetch applications
+
   const { data: applicationsData, isLoading } = useApiQuery(
     ['companyApplications', companyId],
     `/jobApplications/company/${companyId}`,
     !!companyId
   );
 
-  // Update state when data changes
+
   useEffect(() => {
     if (applicationsData?.applications) {
       dispatch({ type: 'SET_APPLICATIONS', payload: applicationsData.applications });

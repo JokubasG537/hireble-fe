@@ -3,6 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { UserContext } from "../contexts/UserContext";
 import { useApiQuery } from "../hooks/useApiQuery";
 import ResumeList from "../components/resume/ResumeList";
+import "../style/UserDashboard.scss";
 const UserDashboard: React.FC = () => {
   const { user: contextUser, token } = useContext(UserContext);
   const navigate = useNavigate();
@@ -28,38 +29,44 @@ const UserDashboard: React.FC = () => {
 
   return (
     <div className="user-dashboard">
-      <h2>User Profile</h2>
+      <header className="user-dashboard-header">
+        <h2>User Profile</h2>
+        <span className="user-role">{user.role}</span>
+      </header>
 
-      <div className="user-info-card">
-        <div className="user-detail">
-          <strong>Email:</strong> {user.email}
-        </div>
-
-        <div className="user-detail">
-          <strong>Role:</strong> {user.role}
-        </div>
-
-        {user.company && (
-          <div className="user-detail">
-            <strong>Company:</strong>{" "}
-            <Link to={`/companies/${companyId}`} className="company-link">
-              {companyName || "View Company Details"}
-            </Link>
+      <section className="user-info-section">
+        <div className="user-info-list">
+          <div className="user-info-item">
+            <span className="label">Email:</span>
+            <span className="value">{user.email}</span>
           </div>
-        )}
 
-        {user.savedJobs && (
-          <div className="user-detail">
-            <strong>Saved Jobs:</strong> {user.savedJobs.length}
+          {user.company && (
+            <div className="user-info-item">
+              <span className="label">Company:</span>
+              <Link to={`/companies/${companyId}`} className="company-link">
+                {companyName || "View Company Details"}
+              </Link>
+            </div>
+          )}
+
+          {user.savedJobs && (
+            <div className="user-info-item">
+              <span className="label">Saved Jobs:</span>
+              <span className="value">{user.savedJobs.length}</span>
+            </div>
+          )}
+
+          <div className="user-info-item">
+            <span className="label">Member since:</span>
+            <span className="value">{new Date(user.createdAt).toLocaleDateString()}</span>
           </div>
-        )}
-
-        <div className="user-detail">
-          <strong>Member since:</strong> {new Date(user.createdAt).toLocaleDateString()}
         </div>
-      </div>
+      </section>
 
-      <ResumeList />
+      <section className="user-resume-section">
+        <ResumeList />
+      </section>
     </div>
   );
 };

@@ -36,4 +36,20 @@ nav {
 
   }
 
+  button {
+    background: none;
+    border: none;
+    color: c.$color-text-reverse;
+    font-size: 1rem;
+    font-family: inherit;
+    font-weight: 500;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    transition: color 0.15s;
+    text-decoration: none;
+    outline: none;
+
+  }
+
 }

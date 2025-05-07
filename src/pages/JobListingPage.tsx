@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useApiQuery } from '../hooks/useApiQuery';
 import JobCard from '../components/JobCard';
+import '../style/JobListingPage.scss';
 
 const JobListingPage = () => {
   const [filters, setFilters] = useState({
@@ -60,8 +61,9 @@ const JobListingPage = () => {
 
   return (
     <div className="job-listing-page">
-      <h1>Available Jobs</h1>
+      {/* <h1>Available Jobs</h1> */}
 
+      <div className="filter-container">
       <div className="filter-section">
         <h2>Filter Jobs</h2>
 
@@ -132,6 +134,7 @@ const JobListingPage = () => {
               </span>
             ))}
         </div>
+      </div>
       </div>
 
       {isLoading && <div className="loading">Loading jobs...</div>}

@@ -22,7 +22,7 @@ const ResumeDetail = () => {
     if (window.confirm('Are you sure you want to delete this resume?')) {
       deleteResume({ __params: { id } }, {
         onSuccess: () => {
-          navigate('/resumes');
+          navigate('/user-dashboard');
         }
       });
     }
@@ -45,11 +45,11 @@ const ResumeDetail = () => {
       </div>
 
       <div>
-        <button onClick={() => navigate(`/resumes/${resume._id}/edit`)}>Edit</button>
+        {/* <button onClick={() => navigate(`/resumes/${resume._id}/edit`)}>Edit</button> */}
         <button onClick={handleDelete} disabled={isDeleting}>
           {isDeleting ? 'Deleting...' : 'Delete'}
         </button>
-        <button onClick={() => navigate('/resumes')}>Back to List</button>
+        <button onClick={() => navigate('/user-dashboard')}>Back to List</button>
       </div>
     </div>
   );

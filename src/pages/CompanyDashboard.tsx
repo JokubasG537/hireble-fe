@@ -7,6 +7,7 @@ import CompanyApplications from "../components/CompanyApplicationManager";
 import CompanyJobPostsManager from "../components/CompanyJobPostsManager";
 import CompanyDetails from "../components/CompanyDetails";
 import { useCompanyData } from "../hooks/useCompanyData";
+import RecruitersList from "../components/RecruitersList";
 
 interface Company {
   _id: string;
@@ -50,7 +51,8 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = ({ companyId }) => {
 
       {company ? (
         <>
-          <CompanyDetails company={company} />
+           <CompanyCRUD />
+           <RecruitersList companyId={company._id} />
 
           {canAccessCompanyFeatures && (
             <div>
@@ -71,12 +73,12 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = ({ companyId }) => {
       {canAccessCompanyFeatures && <CompanyJobPostsManager />}
       {canAccessCompanyFeatures && <CompanyApplications />}
 
-      {canAccessCompanyFeatures && (
-        <div>
-          <h2>Actions</h2>
-          <CompanyCRUD />
-        </div>
-      )}
+
+
+
+
+
+
     </div>
   );
 };

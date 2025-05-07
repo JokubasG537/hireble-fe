@@ -1,4 +1,3 @@
-// src/contexts/ApplicationsContext.tsx
 import React, {
   createContext,
   useReducer,

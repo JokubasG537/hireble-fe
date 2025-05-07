@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useParams } from "react-router-dom";
-import { useCompanyData } from "../hooks/useCompanyData";
+import { useApiQuery } from "../hooks/useApiQuery";
+import { UserContext } from "../contexts/UserContext";
 import RecruitersList from "./RecruitersList";
 
 interface Company {
@@ -17,11 +18,17 @@ interface Company {
   updatedAt: string;
 }
 
-const CompanyPublicPage: React.FC = () => {
+const CompanyDetails: React.FC = () => {
   const { companyId } = useParams<{ companyId: string }>();
-  const { data, isLoading, error } = useCompanyData(companyId);
+  const { token } = useContext(UserContext);
 
-  const company = data?.company || null;
+  const { data, isLoading, error } = useApiQuery<{ company: Company }>(
+    ["company", companyId],
+    `/companies/current/company`,
+    true
+  );
+
+  const company = data?.company;
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {(error as Error).message}</div>;
@@ -34,16 +41,9 @@ const CompanyPublicPage: React.FC = () => {
       <p><strong>Location:</strong> {company.location}</p>
       <p><strong>Website:</strong> {company.website}</p>
       <p><strong>Description:</strong> {company.description}</p>
-
-      {company.jobPosts && (
-        <p><strong>Registered since:</strong> {new Date(company.createdAt).toLocaleDateString()}</p>
-      )}
-
-      {company.recruiters && (
-        <p><strong>Job Posts:</strong> {company.jobPosts?.length}</p>
-      )}
-
-      <p><strong>Recruiters:</strong> {company.recruiters?.length}</p>
+      <p><strong>Registered since:</strong> {new Date(company.createdAt).toLocaleDateString()}</p>
+      <p><strong>Job Posts:</strong> {company.jobPosts?.length || 0}</p>
+      <p><strong>Recruiters:</strong> {company.recruiters?.length || 0}</p>
 
       <div>
         {company._id && <RecruitersList companyId={company._id} />}
@@ -52,4 +52,4 @@ const CompanyPublicPage: React.FC = () => {
   );
 };
 
-export default CompanyPublicPage;
+export default CompanyDetails;

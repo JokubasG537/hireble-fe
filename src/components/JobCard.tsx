@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import '../style/JobCard.scss';
 
 interface JobCardProps {
   _id: string;
@@ -49,23 +50,25 @@ const JobCard: React.FC<JobCardProps> = ({
   };
 
   return (
-    <div>
+    <div className="job-card">
       <h3>{title}</h3>
       {companyId ? (
-        <p onClick={viewCompanyDetails} style={{ cursor: 'pointer', color: '#0066cc', textDecoration: 'underline' }}>
+        <span className="company-link" onClick={viewCompanyDetails}>
           {companyName}
-        </p>
+        </span>
       ) : (
-        <p>{companyName}</p>
+        <span className="company-name">{companyName}</span>
       )}
-      <p>{location}</p>
+      <span className="location">{location}</span>
       {salary && (
-        <p>
-          {salary} {salaryCurrency} per {salaryPeriod}
-        </p>
+        <span className="salary">
+          {salary} {salaryCurrency} / {salaryPeriod}
+        </span>
       )}
-      {employmentType && <span>{employmentType}</span>}
-      {experienceLevel && <span>{experienceLevel}</span>}
+      <div className="meta">
+        {employmentType && <span>{employmentType}</span>}
+        {experienceLevel && <span>{experienceLevel}</span>}
+      </div>
       <button onClick={viewJobDetails}>View Details</button>
     </div>
   );

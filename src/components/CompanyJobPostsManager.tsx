@@ -93,7 +93,6 @@ export default function CompanyJobPostsManager() {
               <h3>{post.title}</h3>
               <p><em>{post.location}</em></p>
               <div
-                // sanitize any incoming HTML before injecting
                 dangerouslySetInnerHTML={{
                   __html: DOMPurify.sanitize(post.description),
                 }}

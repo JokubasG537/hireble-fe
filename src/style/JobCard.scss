@@ -1,0 +1,84 @@
+@use './colors' as c;
+
+.job-card {
+  background: c.$color-bg;
+  border: 1.5px solid c.$color-border;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 8px 0 rgba(60, 72, 88, 0.07);
+  padding: 1.5rem 1.5rem 1.2rem 1.5rem;
+  transition: box-shadow 0.18s, border-color 0.18s, transform 0.18s;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  position: relative;
+  width: 100%;
+  cursor: pointer;
+
+  &:hover {
+    box-shadow: 0 8px 24px 0 rgba(60, 72, 88, 0.15);
+    border-color: c.$color-accent;
+    transform: translateY(-2px) scale(1.01);
+    background: c.$color-surface;
+  }
+
+  h3 {
+    color: c.$color-accent;
+    margin-bottom: 0.1em;
+    font-size: 1.15rem;
+    font-weight: 600;
+    line-height: 1.2;
+  }
+
+  .company-link, .company-name {
+    color: c.$color-muted-text;
+    font-weight: 500;
+    margin-bottom: 0.1em;
+    font-size: 1rem;
+    cursor: pointer;
+    text-decoration: none;
+    &:hover {
+      color: c.$color-accent;
+      text-decoration: underline;
+    }
+  }
+
+  .location {
+    color: c.$color-muted-text;
+    font-size: 0.97rem;
+    margin-bottom: 0.1em;
+  }
+
+  .salary {
+    color: c.$color-accent;
+    font-size: 1.02rem;
+    font-weight: 500;
+    margin-bottom: 0.1em;
+  }
+
+  .meta {
+    display: flex;
+    gap: 1.2rem;
+    font-size: 0.93rem;
+    color: c.$color-muted-text;
+    margin-bottom: 0.2em;
+  }
+
+  button {
+    align-self: flex-end;
+    background: c.$color-accent;
+    color: c.$color-text-reverse;
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.5em 1.2em;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    margin-top: 0.7em;
+    transition: background 0.18s, color 0.18s;
+
+    &:hover {
+      background: c.$color-text;
+      color: c.$color-bg;
+    }
+  }
+}

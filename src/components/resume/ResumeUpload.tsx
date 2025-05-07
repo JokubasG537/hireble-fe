@@ -34,7 +34,7 @@ const ResumeUpload = () => {
 
     uploadResume(formData, {
       onSuccess: () => {
-        navigate('/resumes');
+        navigate('/user-dashboard');
       }
     });
   };

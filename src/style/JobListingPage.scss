@@ -1,0 +1,186 @@
+@use './colors' as c;
+@use "./res" as res;
+
+.job-listing-page {
+  background-color: c.$color-bg;
+  color: c.$color-text;
+  font-family: "Poppins", sans-serif;
+  // padding: 20px;
+
+  .filter-container {
+    background-image: url(https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8YnVzaW5lc3MlMjBjaXR5fGVufDB8fDB8fHww);
+    min-height: 85vh;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+
+  h1 {
+    text-align: center;
+    color: c.$color-accent;
+    margin-bottom: 20px;
+  }
+
+  .filter-section {
+    background-color: rgba(0, 0, 0, 0.5);
+    border: 1px solid c.$color-border-reverse;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    position: relative;
+    max-width: 50%;
+    margin: 0 auto;
+    margin-bottom: 10px;
+
+    @include res.tablet {
+      max-width: 100%;
+      width: 100%;
+    }
+
+    h2 {
+      color: c.$color-text-reverse;
+      margin-bottom: 15px;
+    }
+
+    .filter-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      position: relative;
+      bottom: 0;
+
+      input,
+      select {
+        flex: 1 1 calc(33.33% - 10px);
+        padding: 10px;
+        border: 1px solid c.$color-border;
+        border-radius: 4px;
+        background-color: c.$color-bg;
+        color: c.$color-text;
+
+        &:focus {
+          outline: none;
+          border-color: c.$color-accent;
+        }
+      }
+
+      .search-input {
+        flex: 1 1 100%;
+      }
+
+      .clear-btn {
+        background-color: c.$color-accent;
+        color: c.$color-text-reverse;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+
+        &:hover {
+          background-color: c.$color-text;
+          color: c.$color-bg;
+        }
+      }
+    }
+
+    .active-filters {
+      margin-top: 15px;
+
+      .filter-tag {
+        display: inline-block;
+        background-color: c.$color-accent;
+        color: c.$color-text-reverse;
+        padding: 5px 10px;
+        border-radius: 4px;
+        margin-right: 10px;
+
+        .remove-filter {
+          background: none;
+          border: none;
+          color: c.$color-text-reverse;
+          margin-left: 5px;
+          cursor: pointer;
+
+          &:hover {
+            color: c.$color-bg-reverse;
+          }
+        }
+      }
+    }
+
+    // @include res.tablet {
+    //   width: 80%;
+    // }
+  }
+
+  .job-results {
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+
+    .results-info {
+      padding: 15px;
+      font-weight: bold;
+      display: flex;
+      align-self: first baseline;
+    }
+
+    .job-cards {
+      display: grid;
+      width: 100%;
+      gap: 2rem;
+      margin-top: 2rem;
+
+      @media (max-width: 600px) {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .no-results {
+      text-align: center;
+      color: c.$color-muted-text;
+      margin-top: 20px;
+    }
+  }
+
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+
+    .page-btn,
+    .page-number {
+      background-color: c.$color-surface;
+      color: c.$color-text;
+      border: 1px solid c.$color-border;
+      padding: 8px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+
+      &.active {
+        background-color: c.$color-accent;
+        color: c.$color-text-reverse;
+      }
+
+      &:hover {
+        background-color: c.$color-accent;
+        color: c.$color-text-reverse;
+      }
+
+      &:disabled {
+        background-color: c.$color-border;
+        color: c.$color-muted-text;
+        cursor: not-allowed;
+      }
+    }
+  }
+}

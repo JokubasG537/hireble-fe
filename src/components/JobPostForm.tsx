@@ -4,7 +4,6 @@ import JoditEditor from 'jodit-react';
 import { useApiMutation, useApiQuery } from '../hooks/useApiQuery';
 import { UserContext } from '../contexts/UserContext';
 
-
 const CreateJobPost = () => {
   const navigate = useNavigate();
   const { user, token } = useContext(UserContext);
@@ -138,7 +137,6 @@ const CreateJobPost = () => {
             value={companyLoading ? "Loading..." : (companyData?.name || "")}
             disabled
           />
-          <small>Company is automatically filled based on your profile</small>
         </div>
 
         <div>
@@ -197,15 +195,22 @@ const CreateJobPost = () => {
           </select>
         </div>
 
-        <div>
+        {/* Industry Dropdown */}
+        <div className="form-group">
           <label htmlFor="industry">Industry</label>
-          <input
-            type="text"
-            id="industry"
+          <select
             name="industry"
+            id="industry"
             value={formData.industry}
             onChange={handleInputChange}
-          />
+            className="form-select"
+          >
+            <option value="">Select Industry</option>
+            <option value="Technology">Technology</option>
+            <option value="Finance">Finance</option>
+            <option value="Healthcare">Healthcare</option>
+            <option value="Education">Education</option>
+          </select>
         </div>
 
         <div>

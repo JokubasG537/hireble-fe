@@ -177,7 +177,6 @@ const CompanyManager: React.FC = () => {
     );
   };
 
-  // Cancel editing mode
   const handleCancel = () => {
     if (company) {
       setFormData({
@@ -198,25 +197,23 @@ const CompanyManager: React.FC = () => {
   if (isLoading) return <div>Loading company data...</div>;
 
   return (
-    <div>
-      <h1>{company ? "Manage Company" : "Create Company"}</h1>
-
+    <div className="company-management">
       {errorMessage && (
-        <div>{errorMessage}</div>
+        <div className="form-alert form-alert--error">{errorMessage}</div>
       )}
 
       {successMessage && (
-        <div>{successMessage}</div>
+        <div className="form-alert form-alert--success">{successMessage}</div>
       )}
 
       {(!company || isEditing) ? (
-
-        <form onSubmit={handleSubmit}>
-          <div>
-            <label>
+        <form className="company-form" onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label className="form-label">
               Company Name*
             </label>
             <input
+              className="form-input"
               type="text"
               name="name"
               value={formData.name}
@@ -225,11 +222,12 @@ const CompanyManager: React.FC = () => {
             />
           </div>
 
-          <div>
-            <label>
+          <div className="form-group">
+            <label className="form-label">
               Industry*
             </label>
             <select
+              className="form-input"
               name="industry"
               value={formData.industry}
               onChange={handleChange}
@@ -246,11 +244,12 @@ const CompanyManager: React.FC = () => {
             </select>
           </div>
 
-          <div>
-            <label>
+          <div className="form-group">
+            <label className="form-label">
               Location*
             </label>
             <input
+              className="form-input"
               type="text"
               name="location"
               value={formData.location}
@@ -259,11 +258,12 @@ const CompanyManager: React.FC = () => {
             />
           </div>
 
-          <div>
-            <label>
+          <div className="form-group">
+            <label className="form-label">
               Website*
             </label>
             <input
+              className="form-input"
               type="url"
               name="website"
               value={formData.website}
@@ -272,11 +272,12 @@ const CompanyManager: React.FC = () => {
             />
           </div>
 
-          <div>
-            <label>
+          <div className="form-group">
+            <label className="form-label">
               Logo URL
             </label>
             <input
+              className="form-input"
               type="url"
               name="logoUrl"
               value={formData.logoUrl || ""}
@@ -285,11 +286,12 @@ const CompanyManager: React.FC = () => {
             />
           </div>
 
-          <div>
-            <label>
+          <div className="form-group">
+            <label className="form-label">
               Description*
             </label>
             <textarea
+              className="form-textarea"
               name="description"
               value={formData.description}
               onChange={handleChange}
@@ -298,60 +300,65 @@ const CompanyManager: React.FC = () => {
             ></textarea>
           </div>
 
-          <div>
-            <button type="submit">
+          <div className="form-actions">
+            <button className="btn btn--primary" type="submit">
               {company ? "Update Company" : "Create Company"}
             </button>
 
             {isEditing && (
-              <button type="button" onClick={handleCancel}>
+              <button className="btn btn--secondary" type="button" onClick={handleCancel}>
                 Cancel
               </button>
             )}
           </div>
         </form>
       ) : (
-
-        <div>
-          <div>
-            <h2>{company.name}</h2>
+        <div className="company-details">
+          <div className="company-header">
+            <h2 className="company-title">{company.name}</h2>
             {company.logoUrl && (
-              <div>
+              <div className="company-logo">
                 <img src={company.logoUrl} alt={`${company.name} logo`} />
               </div>
             )}
-            <p><strong>Industry:</strong> {company.industry}</p>
-            <p><strong>Location:</strong> {company.location}</p>
-            <p><strong>Website:</strong> <a href={company.website} target="_blank" rel="noopener noreferrer">{company.website}</a></p>
-            <p><strong>Description:</strong> {company.description}</p>
-            <p><strong>Registered since:</strong> {new Date(company.createdAt).toLocaleDateString()}</p>
+          </div>
+
+          <div className="company-info">
+            <p className="detail-item"><strong>Industry:</strong> {company.industry}</p>
+            <p className="detail-item"><strong>Location:</strong> {company.location}</p>
+            <p className="detail-item">
+              <strong>Website:</strong> <a className="company-link" href={company.website} target="_blank" rel="noopener noreferrer">{company.website}</a>
+            </p>
+            <p className="detail-item"><strong>Description:</strong> {company.description}</p>
+            <p className="detail-item"><strong>Registered since:</strong> {new Date(company.createdAt).toLocaleDateString()}</p>
             {company.jobPosts && (
-              <p><strong>Job Posts:</strong> {company.jobPosts.length}</p>
+              <p className="detail-item"><strong>Job Posts:</strong> {company.jobPosts.length}</p>
             )}
             {company.recruiters && (
-              <p><strong>Recruiters:</strong> {company.recruiters.length}</p>
+              <p className="detail-item"><strong>Recruiters:</strong> {company.recruiters.length}</p>
             )}
           </div>
 
-          <div>
-            <button onClick={() => setIsEditing(true)}>
+          <div className="company-actions">
+            <button className="btn btn--edit" onClick={() => setIsEditing(true)}>
               Edit Company
             </button>
-
-            <button onClick={() => setShowDeleteConfirm(true)}>
+            <button className="btn btn--delete" onClick={() => setShowDeleteConfirm(true)}>
               Delete Company
             </button>
           </div>
 
           {showDeleteConfirm && (
-            <div>
-              <p>Are you sure you want to delete this company? This action cannot be undone.</p>
-              <button onClick={handleDelete}>
-                Confirm Delete
-              </button>
-              <button onClick={() => setShowDeleteConfirm(false)}>
-                Cancel
-              </button>
+            <div className="delete-confirm">
+              <p className="delete-warning">Are you sure you want to delete this company? This action cannot be undone.</p>
+              <div className="confirm-actions">
+                <button className="btn btn--danger" onClick={handleDelete}>
+                  Confirm Delete
+                </button>
+                <button className="btn btn--secondary" onClick={() => setShowDeleteConfirm(false)}>
+                  Cancel
+                </button>
+              </div>
             </div>
           )}
         </div>

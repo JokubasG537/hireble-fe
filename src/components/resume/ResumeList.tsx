@@ -1,6 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApiQuery } from '../../hooks/useApiQuery';
+import '../../style/ResumeList.scss';
+
 
 const ResumeList = () => {
   const navigate = useNavigate();
@@ -10,28 +12,53 @@ const ResumeList = () => {
   if (error) return <p>Error loading resumes</p>;
 
   return (
-    <div>
-      <h2>My Resumes</h2>
-      <button onClick={() => navigate('/resumes/upload')}>Upload New Resume</button>
+    <section className="resume-list-section">
+      <div className="resume-list-header">
+        <h2>My Resumes</h2>
+        <button className="resume-upload-btn" onClick={() => navigate('/resumes/upload')}>
+          Upload New Resume
+        </button>
+      </div>
 
       {resumes && resumes.length > 0 ? (
-        <div>
+        <ul className="resume-list">
           {resumes.map(resume => (
-            <div key={resume._id}>
-              <h3>{resume.title}</h3>
-              <p>Uploaded: {new Date(resume.createdAt).toLocaleDateString()}</p>
-              <div>
-                <a href={resume.fileUrl} target="_blank" rel="noopener noreferrer">View</a>
-                <button onClick={() => navigate(`/resumes/${resume._id}/edit`)}>Edit</button>
-                <button onClick={() => navigate(`/resumes/${resume._id}`)}>Details</button>
+            <li key={resume._id} className="resume-list-item">
+              <div className="resume-title-row">
+                <h3 className="resume-title">{resume.title}</h3>
+                <span className="resume-date">
+                  Uploaded: {new Date(resume.createdAt).toLocaleDateString()}
+                </span>
               </div>
-            </div>
+              <div className="resume-actions">
+                <a
+                  href={resume.fileUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="resume-action-link"
+                >
+                  View
+                </a>
+                {/* <button
+                  className="resume-action-btn"
+                  onClick={() => navigate(`/resumes/${resume._id}/edit`)}
+                >
+                  Edit
+                </button> */}
+                <button
+                  className="resume-action-btn"
+                  onClick={() => navigate(`/resumes/${resume._id}`)}
+                >
+                  Details
+                </button>
+              </div>
+            </li>
           ))}
-        </div>
+        </ul>
       ) : (
-        <p>No resumes found. Upload your first resume!</p>
+        <p className="resume-empty">No resumes found. Upload your first resume!</p>
       )}
-    </div>
+    </section>
   );
 };
 

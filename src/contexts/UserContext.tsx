@@ -35,14 +35,14 @@ const initialState: UserState = {
   token: typeof window !== "undefined" ? localStorage.getItem("token") : null,
 };
 
-// Ensure user has role from token
+
 const ensureUserRole = (user: User | null, token: string | null): User | null => {
   if (!user || !token) return user;
 
-  // If user already has role, return as is
+
   if (user.role) return user;
 
-  // Try to extract role from token
+
   const decodedToken = decodeJWT(token);
   if (decodedToken && decodedToken.role) {
     return {
@@ -99,7 +99,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     let user = JSON.parse(localStorage.getItem("user") || "null");
 
     if (user && token) {
-      // Ensure user has role from token if missing
+    
       user = ensureUserRole(user, token);
 
       if (user) {
