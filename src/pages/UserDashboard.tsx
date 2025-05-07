@@ -7,7 +7,6 @@ const UserDashboard: React.FC = () => {
   const { user: contextUser, token } = useContext(UserContext);
   const navigate = useNavigate();
 
-  // Fetch user data with populated company
   const { data: user, isLoading, error } = useApiQuery(
     ["current-user"],
     "/users/current",
@@ -24,7 +23,6 @@ const UserDashboard: React.FC = () => {
   if (error) return <div>Error loading user data: {(error as Error).message}</div>;
   if (!user) return <div>User information not available.</div>;
 
-  // Determine if company is an object or just an ID
   const companyId = typeof user.company === 'object' ? user.company?._id : user.company;
   const companyName = typeof user.company === 'object' ? user.company?.name : null;
 

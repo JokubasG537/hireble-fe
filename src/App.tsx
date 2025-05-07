@@ -13,8 +13,8 @@ import ResumeUpload from './components/resume/ResumeUpload';
 import ResumeDetail from './components/resume/ResumeDetail';
 import ResumeEdit from './components/resume/ResumeEdit';
 import ApplicationForm from './pages/ApplicationForm';
-
-
+import CompanyPublicPage from './pages/CompanyPublicPage';
+import PublicUserProfile from './pages/PublicUserProfile';
 
 function App() {
   return (
@@ -24,9 +24,10 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/dashboard/" element={<CompanyDashboard />} />
-        <Route path="/company/:id" element={<CompanyDashboard />} />
+        <Route path="/dashboard/" element={<CompanyDashboard  />} />
+        <Route path="/companies/:id" element={<CompanyPublicPage />} />
         <Route path="/user-dashboard" element={<UserDashboard />} />
+        <Route path="/users/:id" element={<PublicUserProfile />} />
         <Route path="/jobs" element={<div>Jobs Page</div>} />
         <Route path="/create-job" element={<CreateJobPost />} />
         <Route path="/job-posts" element={<JobListingPage />} />
@@ -35,7 +36,6 @@ function App() {
         <Route path="/resumes/:id" element={<ResumeDetail />} />
         <Route path="/resumes/edit/:id" element={<ResumeEdit />} />
         <Route path="/apply/:id" element={<ApplicationForm />} />
-
         <Route path="*" element={<div>404 Not Found</div>} />
       </Routes>
     </>

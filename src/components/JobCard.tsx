@@ -36,7 +36,7 @@ const JobCard: React.FC<JobCardProps> = ({
 
   const viewCompanyDetails = () => {
     if (companyId) {
-      navigate(`/company/${companyId}`);
+      navigate(`/companies/${companyId}`);
     }
   };
 
