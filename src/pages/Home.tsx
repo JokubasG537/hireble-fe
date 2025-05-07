@@ -1,8 +1,9 @@
-import ManageJoinRequests from "../components/ManageJoinRequests";
+import JobCard from "../components/JobCard";
+import JobListingPage from "./JobListingPage";
 function Home() {
   return (
     <div >
-      <ManageJoinRequests companyId={""}/>
+      <JobListingPage></JobListingPage>
     </div>
   );
 }

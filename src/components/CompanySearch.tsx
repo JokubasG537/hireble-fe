@@ -28,7 +28,7 @@ export default function CompanySearchAutocomplete() {
     debouncedTerm.length > 2
   );
 
- 
+
   const joinRequestMutation = useApiMutation(
     "/companyJoinRequests",
     "POST",
@@ -54,31 +54,30 @@ export default function CompanySearchAutocomplete() {
   };
 
   return (
-    <div className="autocomplete-wrapper">
-      <div className="search-box">
-        <input
-          type="text"
-          placeholder="Search companies..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          autoComplete="off"
-        />
+    <div className="company-search-container">
+      <input
+        type="text"
+        className="company-search-input"
+        placeholder="Search for companies..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        autoComplete="off"
+      />
 
-        {isLoading && <div className="loading-indicator">Searching...</div>}
-        {error && <div className="error-message">Error: {error.message}</div>}
-      </div>
+      {isLoading && <div className="search-loading">Searching...</div>}
+      {error && <div className="search-error">Error: {error.message}</div>}
 
       {data?.companies && data.companies.length > 0 && (
-        <ul className="suggestions-list">
+        <div className="search-results">
           {data.companies.map((company) => (
-            <li key={company._id} className="company-item">
-              <div className="company-info">
-                <span className="company-name">{company.name}</span>
+            <div key={company._id} className="company-item">
+              <div className="company-details">
+                <div className="company-name">{company.name}</div>
                 {company.industry && (
-                  <span className="company-industry">{company.industry}</span>
+                  <div className="company-meta">{company.industry}</div>
                 )}
                 {company.location && (
-                  <span className="company-location">{company.location}</span>
+                  <div className="company-meta">{company.location}</div>
                 )}
               </div>
               <button
@@ -88,9 +87,9 @@ export default function CompanySearchAutocomplete() {
               >
                 {joinRequestMutation.isLoading ? "Sending..." : "Request to Join"}
               </button>
-            </li>
+            </div>
           ))}
-        </ul>
+        </div>
       )}
 
       {joinRequestMutation.isSuccess && (
@@ -100,4 +99,5 @@ export default function CompanySearchAutocomplete() {
       )}
     </div>
   );
+
 }

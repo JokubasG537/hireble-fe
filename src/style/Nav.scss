@@ -1,0 +1,55 @@
+@use './colors' as c;
+
+nav {
+  background-color: c.$color-bg-reverse;
+
+  padding: 0.6rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  a {
+    color: c.$color-text-reverse;
+  }
+
+  .logo {
+    font-family: 'Poppins', 'Roboto', sans-serif;
+    font-weight: 500;
+    color: white;
+    background-color: black;
+    font-size: 2rem;
+    letter-spacing: -0.02em;
+    text-transform: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-decoration: none;
+    user-select: none;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 1.5rem;
+    list-style: none;
+    font-size: 1rem;
+    font-weight: 500;
+    color: c.$color-text-reverse;
+
+  }
+
+  button {
+    background: none;
+    border: none;
+    color: c.$color-text-reverse;
+    font-size: 1rem;
+    font-family: inherit;
+    font-weight: 500;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    transition: color 0.15s;
+    text-decoration: none;
+    outline: none;
+
+  }
+
+}

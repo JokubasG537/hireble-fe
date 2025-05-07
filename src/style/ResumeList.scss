@@ -1,0 +1,110 @@
+@use '../style/colors' as c;
+
+.resume-list-section {
+  margin: 0;
+  padding: 0 0 2rem 0;
+
+  .resume-list-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2rem 0 1.5rem 0;
+    border-bottom: 2px solid c.$color-border-reverse;
+
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: c.$color-text-reverse;
+      margin: 0;
+    }
+
+    .resume-upload-btn {
+      background: c.$color-accent;
+      color: c.$color-text-reverse;
+      border: none;
+      border-radius: 2em;
+      padding: 0.6em 1.5em;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.18s, color 0.18s;
+      &:hover {
+        background: c.$color-text;
+        color: c.$color-bg;
+      }
+    }
+  }
+
+  .resume-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .resume-list-item {
+    border-left: 4px solid c.$color-accent;
+    padding: 0 0 0 1.5rem;
+    background: none;
+    transition: border-color 0.18s, background 0.18s;
+    position: relative;
+
+    &:hover {
+      border-color: c.$color-text-reverse;
+      background: rgba(0,0,0,0.03);
+    }
+
+    .resume-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+
+      .resume-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: c.$color-text-reverse;
+        margin: 0;
+      }
+      .resume-date {
+        color: c.$color-muted-text;
+        font-size: 0.97rem;
+      }
+    }
+
+    .resume-actions {
+      display: flex;
+      gap: 1rem;
+      margin-top: 0.7em;
+
+      .resume-action-link,
+      .resume-action-btn {
+        background: none;
+        border: none;
+        color: c.$color-text-reverse;
+        font-weight: 500;
+        font-size: 1rem;
+        cursor: pointer;
+        text-decoration: underline;
+        padding: 0.2em 0.7em;
+        border-radius: 1em;
+        transition: background 0.15s, color 0.15s;
+
+        &:hover {
+          background: c.$color-accent;
+          color: c.$color-text-reverse;
+          text-decoration: none;
+        }
+      }
+    }
+  }
+
+  .resume-empty {
+    color: c.$color-muted-text;
+    font-size: 1.1rem;
+    margin-top: 2rem;
+    text-align: center;
+  }
+}

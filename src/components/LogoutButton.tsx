@@ -1,13 +1,14 @@
-// src/components/LogoutButton.tsx
 import React, { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { UserContext } from "../contexts/UserContext";
 
 const LogoutButton: React.FC = () => {
   const { dispatch } = useContext(UserContext);
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     dispatch({ type: "LOGOUT" });
-    // Optionally, redirect or show a message here
+    navigate("/");
   };
 
   return (

@@ -1,0 +1,175 @@
+@use './colors' as c;
+@use './res' as res;
+
+.company-profile {
+  background: c.$color-bg-reverse;
+  color: c.$color-text-reverse;
+  font-family: "Poppins", sans-serif;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+
+  .company-header {
+    display: flex;
+    align-items: center;
+    gap: 2.5rem;
+    background: linear-gradient(90deg, c.$color-surface-reverse 60%, c.$color-bg-reverse 100%);
+    padding: 3rem 2rem 2rem 2rem;
+    border-bottom: 2px solid c.$color-border-reverse;
+
+    .company-logo {
+      width: 110px;
+      height: 110px;
+      object-fit: contain;
+      border-radius: 1.5rem;
+      background: c.$color-bg;
+      border: 2px solid c.$color-border-reverse;
+      box-shadow: 0 2px 16px 0 rgba(0,0,0,0.18);
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin: 0 0 0.3em 0;
+      color: c.$color-text-reverse;
+      letter-spacing: 1px;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.13);
+    }
+
+    .company-industry {
+      font-size: 1.1rem;
+      color: c.$color-bg;
+      background: c.$color-accent;
+      padding: 0.4em 1.2em;
+      border-radius: 1em;
+      font-weight: 500;
+      border: 1px solid c.$color-border-reverse;
+      margin-top: 0.7em;
+      display: inline-block;
+      box-shadow: 0 1px 4px 0 rgba(0,0,0,0.10);
+    }
+  }
+
+  .company-main {
+    display: flex;
+    gap: 3.5rem;
+    padding: 3rem 2rem 2rem 2rem;
+    align-items: flex-start;
+
+    .company-info-section {
+      flex: 1.2;
+      min-width: 250px;
+
+      .company-description {
+        margin-bottom: 2.2rem;
+        h2 {
+          font-size: 1.2rem;
+          color: c.$color-text-reverse;
+          margin-bottom: 0.5em;
+          letter-spacing: 1px;
+        }
+        p {
+          color: c.$color-text-reverse;
+          font-size: 1.08rem;
+          line-height: 1.7;
+        }
+      }
+
+      .company-info {
+        margin-bottom: 2rem;
+        .info-item {
+          font-size: 1rem;
+          color: c.$color-muted-text;
+          margin-bottom: 0.5em;
+          strong {
+            color: c.$color-text-reverse;
+          }
+          a {
+            color: c.$color-text-reverse;
+            text-decoration: underline;
+            &:hover {
+              color: c.$color-accent;
+            }
+          }
+        }
+      }
+    }
+
+    .company-jobs-section {
+      flex: 2;
+      min-width: 320px;
+      padding: 0 0 0 2.5rem;
+      border-left: 2px solid c.$color-border-reverse;
+
+      h2 {
+        font-size: 1.3rem;
+        color: c.$color-text-reverse;
+        margin-bottom: 1.2em;
+        letter-spacing: 1px;
+      }
+      .job-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 2.2rem;
+      }
+      .job-item {
+        padding: 0 0 0.7rem 0;
+        border-left: 4px solid c.$color-accent;
+        background: none;
+        transition: border-color 0.18s, color 0.18s, background 0.18s;
+        position: relative;
+
+        &:hover {
+          border-color: c.$color-text-reverse;
+          background: rgba(255,255,255,0.03);
+        }
+
+        h3 {
+          margin: 0 0 0.4em 0;
+          color: c.$color-text-reverse;
+          font-size: 1.13rem;
+          font-weight: 600;
+        }
+        p {
+          color: c.$color-muted-text;
+          font-size: 0.99rem;
+          margin-bottom: 0.7em;
+        }
+        a {
+          color: c.$color-accent;
+          font-weight: 500;
+          text-decoration: underline;
+          &:hover {
+            color: c.$color-text-reverse;
+          }
+        }
+      }
+    }
+  }
+}
+
+
+@include res.laptop {
+  .company-profile {
+    .company-main {
+      flex-direction: column;
+      gap: 2rem;
+      padding: 1.2rem 0.5rem;
+      .company-jobs-section {
+        border-left: none;
+        padding-left: 0;
+        margin-top: 2.5rem;
+      }
+    }
+    .company-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+      .company-logo { width: 70px; height: 70px; }
+      h1 { font-size: 1.5rem; }
+    }
+  }
+}
