@@ -1,7 +1,40 @@
 import React, { useEffect } from 'react';
-import { useApiQuery } from '../hooks/useApiQuery';
+import { useApiQuery, useApiMutation } from '../hooks/useApiQuery';
 import { ApplicationsProvider, useApplications } from '../contexts/ApplicationsContext';
 
+const StatusDropdown: React.FC<{
+  currentStatus: string;
+  applicationId: string;
+  companyId: string;
+}> = ({ currentStatus, applicationId, companyId }) => {
+  const updateStatusMutation = useApiMutation(
+    `/jobApplications/company/:companyId/:applicationId`,
+    'PUT',
+    ['companyApplications', companyId]
+  );
+
+  const handleStatusChange = async (newStatus: string) => {
+    if (newStatus === currentStatus) return;
+
+    await updateStatusMutation.mutateAsync({
+      __params: { companyId, applicationId },
+      status: newStatus
+    });
+  };
+
+  return (
+    <select
+      value={currentStatus}
+      onChange={(e) => handleStatusChange(e.target.value)}
+      disabled={updateStatusMutation.isPending}
+    >
+      <option value="applied">Applied</option>
+      <option value="interview">Interview</option>
+      <option value="offer">Offer</option>
+      <option value="rejected">Rejected</option>
+    </select>
+  );
+};
 
 const CompanyApplications: React.FC = () => {
 
@@ -22,18 +55,15 @@ const CompanyApplications: React.FC = () => {
   );
 };
 
-
 const ApplicationsList: React.FC<{ companyId: string }> = ({ companyId }) => {
   const { state, dispatch, rejectApplication } = useApplications();
   const { applications, loading, error } = state;
-
 
   const { data: applicationsData, isLoading } = useApiQuery(
     ['companyApplications', companyId],
     `/jobApplications/company/${companyId}`,
     !!companyId
   );
-
 
   useEffect(() => {
     if (applicationsData?.applications) {
@@ -55,19 +85,22 @@ const ApplicationsList: React.FC<{ companyId: string }> = ({ companyId }) => {
             <div key={application._id} className="application-card">
               <p><strong>Applicant:</strong> {application.user.username}</p>
               <p><strong>Email:</strong> {application.user.email}</p>
-              <p><strong>Status:</strong> {application.status}</p>
+              <p><strong>Status:</strong> <StatusDropdown
+                currentStatus={application.status}
+                applicationId={application._id}
+                companyId={companyId}
+              /></p>
               <p><strong>Applied:</strong> {new Date(application.createdAt).toLocaleDateString()}</p>
-              {application.status !== 'rejected' && (
+              {/* {application.status !== 'rejected' && (
                 <button onClick={() => rejectApplication(application._id)}>
                   Reject Application
                 </button>
-              )}
+              )} */}
             </div>
           ))
       }
     </div>
   )
-
 };
 
 export default CompanyApplications;

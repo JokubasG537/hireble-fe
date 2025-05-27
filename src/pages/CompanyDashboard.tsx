@@ -71,7 +71,7 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = ({ companyId }) => {
       )}
 
       {canAccessCompanyFeatures && <CompanyJobPostsManager />}
-      {canAccessCompanyFeatures && <CompanyApplications />}
+      <CompanyApplications />
 
 
 
