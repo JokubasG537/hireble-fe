@@ -24,7 +24,6 @@ export function useApiMutation(
       }
 
       const isFormData = data instanceof FormData;
-
       return apiFetcher(finalUrl, token, {
         method,
         body: isFormData ? data : JSON.stringify(data),
@@ -37,11 +36,9 @@ export function useApiMutation(
   });
 }
 
-
-
-export function useApiQuery<T>(key: any[], url: string, enabled: boolean = true) {
+export function useApiQuery(key: any[], url: string, enabled: boolean = true) {
   const { token } = useContext(UserContext);
-  return useQuery<T>({
+  return useQuery({
     queryKey: key,
     queryFn: () => apiFetcher(url, token),
     enabled,

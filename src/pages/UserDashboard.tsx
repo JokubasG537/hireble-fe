@@ -3,6 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { UserContext } from "../contexts/UserContext";
 import { useApiQuery } from "../hooks/useApiQuery";
 import ResumeList from "../components/resume/ResumeList";
+import ImageUpload from "../components/ImageUpload";
 import "../style/UserDashboard.scss";
 const UserDashboard: React.FC = () => {
   const { user: contextUser, token } = useContext(UserContext);
@@ -27,12 +28,19 @@ const UserDashboard: React.FC = () => {
   const companyId = typeof user.company === 'object' ? user.company?._id : user.company;
   const companyName = typeof user.company === 'object' ? user.company?.name : null;
 
+
+
+
   return (
     <div className="user-dashboard">
       <header className="user-dashboard-header">
         <h2>User Profile</h2>
         <span className="user-role">{user.role}</span>
       </header>
+
+      <section className="user-image-section">
+        <ImageUpload />
+      </section>
 
       <section className="user-info-section">
         <div className="user-info-list">

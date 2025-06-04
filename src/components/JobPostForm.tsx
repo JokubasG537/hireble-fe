@@ -195,7 +195,7 @@ const CreateJobPost = () => {
           </select>
         </div>
 
-        {/* Industry Dropdown */}
+ 
         <div className="form-group">
           <label htmlFor="industry">Industry</label>
           <select

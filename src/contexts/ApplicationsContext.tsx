@@ -13,6 +13,7 @@ interface Application {
   status: string;
   createdAt: string;
   jobPost: { title: string };
+  resume: { title: string; fileUrl: string}
 }
 
 interface ApplicationsState {
