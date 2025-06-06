@@ -1,0 +1,21 @@
+.job-board {
+  display: flex;
+  height: 100vh;
+
+  .job-list-panel {
+    width: 40%;
+    overflow-y: auto;
+    border-right: 1px solid #ccc;
+  }
+
+  .job-detail-panel {
+    width: 60%;
+    padding: 20px;
+
+    .empty-state {
+      padding: 20px;
+      text-align: center;
+      color: #999;
+    }
+  }
+}

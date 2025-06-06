@@ -3,7 +3,23 @@ import { useApiQuery } from '../hooks/useApiQuery';
 import JobCard from '../components/JobCard';
 import '../style/JobListingPage.scss';
 
-const JobListingPage = () => {
+interface JobPost {
+  _id: string;
+  title: string;
+  company: string | { name: string; _id: string } | undefined;
+  location: string;
+  salary: number;
+  salaryCurrency?: string;
+  salaryPeriod?: string;
+  employmentType?: string;
+  experienceLevel?: string;
+}
+
+interface JobListingPageProps {
+  onSelectJob?: (jobId: string) => void;
+}
+
+const JobListingPage: React.FC<JobListingPageProps> = ({ onSelectJob }) => {
   const [filters, setFilters] = useState({
     employmentType: '',
     industry: '',
@@ -148,7 +164,25 @@ const JobListingPage = () => {
           )}
         </div>
 
-        <div className="job-cards">
+            <div className="job-cards">
+        {jobs.map(job => (
+          <JobCard
+            key={job._id}
+            _id={job._id}
+            title={job.title}
+            company={job.company}
+            location={job.location}
+            salary={job.salary}
+            salaryCurrency={job.salaryCurrency}
+            salaryPeriod={job.salaryPeriod}
+            employmentType={job.employmentType}
+            experienceLevel={job.experienceLevel}
+            onClick={() => onSelectJob?.(job._id)}
+          />
+        ))}
+      </div>
+
+        {/* <div className="job-cards">
           {jobs.map(job => (
             <JobCard
               key={job._id}
@@ -163,7 +197,7 @@ const JobListingPage = () => {
               experienceLevel={job.experienceLevel}
             />
           ))}
-        </div>
+        </div> */}
 
         {!isLoading && !error && jobs.length === 0 && (
           <div className="no-results">No jobs found matching your criteria</div>

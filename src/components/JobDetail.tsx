@@ -1,14 +1,16 @@
+// import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useApiQuery } from '../hooks/useApiQuery';
 
-const JobDetailPage = () => {
-  const { id } = useParams();
+const JobDetail = () => {
+  const params = useParams();
+  const jobId = params.id || params.jobId;
   const navigate = useNavigate();
 
   const { data: job, isLoading, error } = useApiQuery(
-    ['job-post', id],
-    `/jobPosts/${id}`,
-    !!id
+    ['job-post', jobId],
+    `/jobPosts/${jobId}`,
+    !!jobId
   );
 
   if (isLoading) return <p>Loading...</p>;
@@ -19,14 +21,12 @@ const JobDetailPage = () => {
     if (!job.company) return { name: 'Unknown Company', id: null };
     if (typeof job.company === 'string') return { name: job.company, id: job.company };
     if (job.company.name) return { name: job.company.name, id: job.company._id };
-    if (job.company._id) return { name: `Company ID: ${job.company._id}`, id: job.company._id };
     return { name: 'Unknown Company', id: null };
   };
 
   const companyInfo = getCompanyInfo();
 
-
-  const formatDate = (dateString) => {
+  const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', {
       year: 'numeric',
@@ -43,7 +43,7 @@ const JobDetailPage = () => {
 
   return (
     <div>
-    
+      
 
       <h1>{job.title}</h1>
 
@@ -70,9 +70,7 @@ const JobDetailPage = () => {
 
       <p><strong>Experience Level:</strong> {job.experienceLevel || 'Not specified'}</p>
 
-
       <p><strong>Posted:</strong> {formatDate(job.createdAt)}</p>
-
 
       {job.postedBy && (
         <p><strong>Contact:</strong> {job.postedBy.email}</p>
@@ -86,4 +84,4 @@ const JobDetailPage = () => {
   );
 };
 
-export default JobDetailPage;
+export default JobDetail;

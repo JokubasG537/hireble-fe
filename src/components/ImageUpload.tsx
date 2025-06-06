@@ -1,59 +1,44 @@
-// import {useState, useEffect} from 'react';
-// import { useApiMutation } from '../hooks/useApiQuery';
-// import { UserContext } from '../contexts/UserContext';
-
-// export default function ImageUpload: React.FC = () {
-//   const [uploading, setUploading] = useState(false);
-//   const [profileImage, setProfileImage] = useState<string | null>(null);
-//   const [coverImage, setCoverImage] = useState<string | null>(null);
-//   const { user: contextUser, token } = useContext(UserContext);
-
-
-// const [error, setError] = useState<string | null>(null);
-
-
-
-//   return (
-//     <div>
-//       <h1> User Images </h1>
-//     </div>
-//   );
-// }
-
-
 import React, { useContext, useState, useEffect } from 'react';
 import { useApiMutation } from '../hooks/useApiQuery';
 import { UserContext } from '../contexts/UserContext';
+const baseUrl = import.meta.env.VITE_API_URL
 
 const ImageUpload: React.FC = () => {
-  const { user, token } = useContext(UserContext);
+  const { token } = useContext(UserContext);
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const [coverImage, setCoverImage] = useState<string | null>(null);
 
-  // Fetch user images on component mount
+  console.log(`Token: ${token}`);
+
   useEffect(() => {
     const fetchUserImages = async () => {
       try {
-        // Fetch user data with image IDs
-        const userRes = await fetch('/users/me', {
-          headers: { Authorization: `Bearer ${token}` }
-        });
+
+       const userRes = await fetch(`${baseUrl}/users/current`, {
+  headers: {
+    Authorization: `Bearer ${token}`
+  }
+});
+
+
 
         if (!userRes.ok) throw new Error('Failed to fetch user data');
         const userData = await userRes.json();
+        console.log('User Data:', userData);
 
-        // Fetch profile image URL
+
         if (userData.profileImage) {
-          const profileRes = await fetch(`/images/${userData.profileImage}`, {
+          const profileRes = await fetch(`${baseUrl}/images/${userData.profileImage}`, {
             headers: { Authorization: `Bearer ${token}` }
           });
           const profileData = await profileRes.json();
           setProfileImage(profileData.fileUrl);
+          console.log('Profile Image:', profileData.fileUrl);
         }
 
-        // Fetch cover image URL
+
         if (userData.coverImage) {
-          const coverRes = await fetch(`/images/${userData.coverImage}`, {
+          const coverRes = await fetch(`${baseUrl}/${userData.coverImage}`, {
             headers: { Authorization: `Bearer ${token}` }
           });
           const coverData = await coverRes.json();
@@ -69,7 +54,7 @@ const ImageUpload: React.FC = () => {
     }
   }, [token]);
 
-  // Existing upload mutations
+
   const uploadMutation = useApiMutation('/images', 'POST');
   const setProfileMutation = useApiMutation('/images/:id/profile', 'PUT');
   const setCoverMutation = useApiMutation('/images/:id/cover', 'PUT');
@@ -81,15 +66,15 @@ const ImageUpload: React.FC = () => {
     formData.append('image', file);
 
     try {
-      // Upload image
       const uploadResult = await uploadMutation.mutateAsync(formData);
       const imageId = uploadResult.image._id;
       const imageUrl = uploadResult.image.fileUrl;
 
-      // Update profile/cover image
+
       if (type === 'profile') {
         await setProfileMutation.mutateAsync({ __params: { id: imageId } });
         setProfileImage(imageUrl);
+          console.log('Profile Image:', profileImage);
       } else {
         await setCoverMutation.mutateAsync({ __params: { id: imageId } });
         setCoverImage(imageUrl);
@@ -100,21 +85,18 @@ const ImageUpload: React.FC = () => {
     }
   };
 
-  // console.log()('Profile Image:', profileImage);
-  // console.log()('Cover Image:', coverImage);
+
 
   return (
-    <div className="image-upload-container">
-      {/* Profile Image Upload */}
-      <div className="upload-section">
-        <h3>Profile Image</h3>
-        {profileImage && (
-          <img
-            src={profileImage}
-            alt="Profile"
-            className="preview-image"
-          />
-        )}
+    <div className="image-upload-container"
+      style={{ backgroundImage: `url(${coverImage || 'https://eiti.org/sites/default/files/styles/open_graph_image/public/2024-03/EITI_Standard_background.png?itok=Z0AUKTak'})`}}  >
+
+      <div className="profile-pic"
+      style={{ backgroundImage: `url(${profileImage || 'https://st3.depositphotos.com/9998432/13335/v/450/depositphotos_133352156-stock-illustration-default-placeholder-profile-icon.jpg'})` }}>
+
+
+
+
         <input
           type="file"
           accept="image/*"
@@ -127,16 +109,16 @@ const ImageUpload: React.FC = () => {
         />
       </div>
 
-      {/* Cover Image Upload */}
+
       <div className="upload-section">
         <h3>Cover Image</h3>
-        {coverImage && (
+
           <img
-            src={coverImage}
+            src={coverImage ? coverImage : 'https://eiti.org/sites/default/files/styles/open_graph_image/public/2024-03/EITI_Standard_background.png?itok=Z0AUKTak'}
             alt="Cover"
             className="preview-image"
           />
-        )}
+
         <input
           type="file"
           accept="image/*"
