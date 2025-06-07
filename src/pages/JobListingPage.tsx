@@ -2,13 +2,16 @@ import React, { useState } from 'react';
 import { useApiQuery } from '../hooks/useApiQuery';
 import JobCard from '../components/JobCard';
 import '../style/JobListingPage.scss';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+// import { useParams } from 'react-router-dom';
+import JobDetail from '../components/JobDetail';
 
 interface JobPost {
   _id: string;
   title: string;
   company: string | { name: string; _id: string } | undefined;
   location: string;
-  salary: number;
+  salary: number | undefined;
   salaryCurrency?: string;
   salaryPeriod?: string;
   employmentType?: string;
@@ -31,6 +34,12 @@ const JobListingPage: React.FC<JobListingPageProps> = ({ onSelectJob }) => {
     limit: 10,
     sort: 'newest',
   });
+
+
+
+
+
+
 
   const queryString = Object.entries(filters)
     .filter(([_, value]) => value)
@@ -55,6 +64,16 @@ const JobListingPage: React.FC<JobListingPageProps> = ({ onSelectJob }) => {
     }));
   };
 
+    const [searchParams, setSearchParams] = useSearchParams();
+  const selectedJobId = searchParams.get('jobId');
+  // const navigate = useNavigate();
+
+  const handlePageChange = (newPage) => {
+    if (newPage >= 1 && newPage <= totalPages) {
+      setFilters(prev => ({ ...prev, page: newPage }));
+    }
+  };
+
   const clearFilters = () => {
     setFilters({
       employmentType: '',
@@ -69,11 +88,15 @@ const JobListingPage: React.FC<JobListingPageProps> = ({ onSelectJob }) => {
     });
   };
 
-  const handlePageChange = (newPage) => {
-    if (newPage >= 1 && newPage <= totalPages) {
-      setFilters(prev => ({ ...prev, page: newPage }));
-    }
-  };
+
+
+  const handleSelectJob = (jobId : string) => {
+    const newParams = new URLSearchParams(searchParams);
+    newParams.set('jobId', jobId);
+    setSearchParams(newParams);
+  }
+
+
 
   return (
     <div className="job-listing-page">
@@ -158,13 +181,15 @@ const JobListingPage: React.FC<JobListingPageProps> = ({ onSelectJob }) => {
       {error && <div className="error">Error loading jobs: {error.message}</div>}
 
       <div className="job-results">
+        <div className="split-screen-container">
+        <div className="job-cards">
         <div className="results-info">
           {!isLoading && !error && (
             <span>Found {data?.total || 0} jobs</span>
           )}
         </div>
 
-            <div className="job-cards">
+
         {jobs.map(job => (
           <JobCard
             key={job._id}
@@ -177,31 +202,22 @@ const JobListingPage: React.FC<JobListingPageProps> = ({ onSelectJob }) => {
             salaryPeriod={job.salaryPeriod}
             employmentType={job.employmentType}
             experienceLevel={job.experienceLevel}
-            onClick={() => onSelectJob?.(job._id)}
+            onClick={() => handleSelectJob(job._id)}
+
           />
         ))}
       </div>
 
-        {/* <div className="job-cards">
-          {jobs.map(job => (
-            <JobCard
-              key={job._id}
-              _id={job._id}
-              title={job.title}
-              company={job.company}
-              location={job.location}
-              salary={job.salary}
-              salaryCurrency={job.salaryCurrency}
-              salaryPeriod={job.salaryPeriod}
-              employmentType={job.employmentType}
-              experienceLevel={job.experienceLevel}
-            />
-          ))}
-        </div> */}
+      <div>
+        {selectedJobId ? <JobDetail jobId={selectedJobId} /> : "Please select a job to view details."}
+      </div>
+
+
 
         {!isLoading && !error && jobs.length === 0 && (
           <div className="no-results">No jobs found matching your criteria</div>
         )}
+        </div>
       </div>
 
       {totalPages > 1 && (

@@ -1,11 +1,16 @@
-// import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useApiQuery } from '../hooks/useApiQuery';
+import Loader from './Loader';
+import '../style/JobDetail.scss';
+interface JobDetailProps {
+  jobId: string;
+}
 
-const JobDetail = () => {
-  const params = useParams();
-  const jobId = params.id || params.jobId;
+
+const JobDetail = ( { jobId }: JobDetailProps) => {
   const navigate = useNavigate();
+
+
 
   const { data: job, isLoading, error } = useApiQuery(
     ['job-post', jobId],
@@ -13,8 +18,8 @@ const JobDetail = () => {
     !!jobId
   );
 
-  if (isLoading) return <p>Loading...</p>;
-  if (error) return <p>Error loading job</p>;
+  if (isLoading) return <Loader />;
+  if (error) return <p>{(error as Error).message}</p>;
   if (!job) return <p>Job not found</p>;
 
   const getCompanyInfo = () => {
@@ -42,8 +47,8 @@ const JobDetail = () => {
   };
 
   return (
-    <div>
-      
+    <div className="job-detail-panel">
+
 
       <h1>{job.title}</h1>
 

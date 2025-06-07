@@ -1,0 +1,14 @@
+@use './colors' as c;
+
+footer {
+  background-color: c.$color-bg-reverse;
+  padding: 20px;
+  text-align: center;
+  font-size: 14px;
+  color: #888;
+  height: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 40px;
+}

@@ -7,15 +7,20 @@ interface JobCardProps {
   title: string;
   company: string | { name: string; _id: string } | undefined;
   location: string;
+  salary: number;
+  onClick: () => void;
+  selected?: boolean;
 }
 
-const JobCard: React.FC<JobCardProps> = ({ _id, title, company, location }) => {
+
+
+const JobCard: React.FC<JobCardProps> = ({ _id, title, company, location, salary, onClick, selected }) => {
   const navigate = useNavigate();
 
-  const handleClick = () => {
-    console.log('JobCard clicked, navigating to:', `/jobs/${_id}`);
-    navigate(`/jobs/${_id}`); // Navigate to job detail URL
-  };
+  // const handleClick = () => {
+  //   console.log('JobCard clicked, navigating to:', `/jobs/${_id}`);
+  //   navigate(`/jobs/${_id}`);
+  // };
 
   const companyName = !company
     ? 'Unknown Company'
@@ -25,20 +30,21 @@ const JobCard: React.FC<JobCardProps> = ({ _id, title, company, location }) => {
 
   return (
     <div
-      className="job-card"
-      onClick={handleClick}
+      className={`job-card ${selected ? `selected` : ``}`}
+      onClick={onClick}
       role="button"
       tabIndex={0}
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           console.log('JobCard keydown, navigating to:', `/jobs/${_id}`);
-          navigate(`/jobs/${_id}`);
+         onClick();
         }
       }}
     >
       <h3>{title}</h3>
       <span className="company-name">{companyName}</span>
       <span className="location">{location}</span>
+      <span className="salary">${salary}</span>
     </div>
   );
 };
