@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../style/JobCard.scss';
+import SaveJobButton from './SaveJobButton';
 
 interface JobCardProps {
   _id: string;
@@ -45,6 +46,7 @@ const JobCard: React.FC<JobCardProps> = ({ _id, title, company, location, salary
       <span className="company-name">{companyName}</span>
       <span className="location">{location}</span>
       <span className="salary">${salary}</span>
+      <SaveJobButton />
     </div>
   );
 };

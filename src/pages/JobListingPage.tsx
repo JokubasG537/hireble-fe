@@ -182,6 +182,8 @@ const JobListingPage: React.FC<JobListingPageProps> = ({ onSelectJob }) => {
       {error && <div className="error">Error loading jobs: {error.message}</div>}
 
       <div className="job-results">
+
+
         <div className="split-screen-container">
         <div className="job-cards">
         <div className="results-info">
@@ -214,7 +216,7 @@ const JobListingPage: React.FC<JobListingPageProps> = ({ onSelectJob }) => {
         {selectedJobId ? <JobDetail jobId={selectedJobId} /> : "Please select a job to view details."}
       </div> */}
 
-<div className='job-detail-wrapper'>
+
       <AnimatePresence mode="wait">
   {selectedJobId && (
     <motion.div
@@ -228,7 +230,7 @@ const JobListingPage: React.FC<JobListingPageProps> = ({ onSelectJob }) => {
     </motion.div>
   )}
 </AnimatePresence>
-</div>
+
 
 
         {!isLoading && !error && jobs.length === 0 && (

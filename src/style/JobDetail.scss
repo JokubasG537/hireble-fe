@@ -1,25 +1,24 @@
 @use './colors' as c;
 
 .job-detail-panel {
-  height: fit-content;
   background: c.$color-bg;
   border: 1.5px solid c.$color-border;
   border-radius: 0.75rem;
   box-shadow: 0 2px 8px 0 rgba(60, 72, 88, 0.07);
   padding: 1.5rem 1.5rem 1.2rem 1.5rem;
+  align-self: start;
+  background: #fff;
+  padding: 1.5rem;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  height: 90vh;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  position: relative;
-  width: 100%;
-  min-width: 0;
   position: sticky;
-  top: 0;
+  top: 1.5rem;
 
 
-  align-self: start; // Only necessary if something overrides it
-  height: fit-content;
-  height: 100vh;
-  overflow-y: auto;
-  background-color: lightblue;
+
 }

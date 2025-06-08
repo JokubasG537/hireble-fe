@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import LogoutButton from './LogoutButton';
 import { useContext } from 'react';
 import { UserContext } from '../contexts/UserContext';
-import img from "../assets/220042797.png"
+// import img from "../assets/220042797.png"
 import "../style/Nav.scss"
 
 

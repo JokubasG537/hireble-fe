@@ -111,8 +111,6 @@
         }
       }
     }
-
-
   }
 
   .job-results {
@@ -129,14 +127,8 @@
    display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 2rem;
-
-  // Critical
-  align-items: start;
-  width: 100%;
-  max-width: 100%;
-  min-width: 0;
-  flex-grow: 1;
-  background-color: red;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 
@@ -152,7 +144,7 @@
       display: flex;
       flex-direction: column;
       gap: 1.6rem;
-      background-color: pink;
+      margin-top: 2rem;
     }
 
     .no-results {

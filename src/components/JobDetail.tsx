@@ -1,7 +1,10 @@
 import {  useNavigate } from 'react-router-dom';
+import { useContext, useState } from 'react';
 import { useApiQuery } from '../hooks/useApiQuery';
 import Loader from './Loader';
 import '../style/JobDetail.scss';
+import Popup from './Popup';
+import { UserContext } from '../contexts/UserContext';
 interface JobDetailProps {
   jobId: string;
 }
@@ -9,8 +12,13 @@ interface JobDetailProps {
 
 const JobDetail = ( { jobId }: JobDetailProps) => {
   const navigate = useNavigate();
+  const { user: contextUser, token } = useContext(UserContext);
+  const [showPopup, setShowPopup] = useState(false);
 
 
+  const handlePopupShow = ( ) => { setShowPopup(true); };
+  const handlePopupClose = () => { setShowPopup(false); };
+  console.log(token)
 
   const { data: job, isLoading, error } = useApiQuery(
     ['job-post', jobId],
@@ -84,7 +92,24 @@ const JobDetail = ( { jobId }: JobDetailProps) => {
       <h3>Description</h3>
       <div dangerouslySetInnerHTML={{ __html: job.description }} />
 
-      <button onClick={() => navigate(`/apply/${job._id}`)}>Apply Now</button>
+      {token ? (
+        <button onClick={() => navigate(`/apply/${job._id}`)}>Apply Now</button>
+      ) : (
+        <button onClick={handlePopupShow}>Apply Now</button>
+      )}
+
+      {showPopup && (
+        <Popup
+          isOpen={showPopup}
+          onClose={handlePopupClose}
+          title="Notice"
+          message="You need to be logged in to apply for this job."
+          confirmText="OK"
+          onConfirm={handlePopupClose}
+        />
+      )}
+
+
     </div>
   );
 };
