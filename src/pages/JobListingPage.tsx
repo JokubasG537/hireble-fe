@@ -5,6 +5,7 @@ import '../style/JobListingPage.scss';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 // import { useParams } from 'react-router-dom';
 import JobDetail from '../components/JobDetail';
+import { motion, AnimatePresence } from "framer-motion";
 
 interface JobPost {
   _id: string;
@@ -203,15 +204,31 @@ const JobListingPage: React.FC<JobListingPageProps> = ({ onSelectJob }) => {
             employmentType={job.employmentType}
             experienceLevel={job.experienceLevel}
             onClick={() => handleSelectJob(job._id)}
+            selected={selectedJobId === job._id}
 
           />
         ))}
       </div>
 
-      <div>
+      {/* <div>
         {selectedJobId ? <JobDetail jobId={selectedJobId} /> : "Please select a job to view details."}
-      </div>
+      </div> */}
 
+<div className='job-detail-wrapper'>
+      <AnimatePresence mode="wait">
+  {selectedJobId && (
+    <motion.div
+      key={selectedJobId}
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 10 }}
+      transition={{ duration: 0.2 }}
+    >
+    {selectedJobId ? <JobDetail jobId={selectedJobId} /> : "Please select a job to view details."}
+    </motion.div>
+  )}
+</AnimatePresence>
+</div>
 
 
         {!isLoading && !error && jobs.length === 0 && (

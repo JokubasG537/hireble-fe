@@ -9,7 +9,7 @@
 
   .filter-container {
     background-image: url(https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8YnVzaW5lc3MlMjBjaXR5fGVufDB8fDB8fHww);
-    min-height: 85vh;
+    min-height: 55vh;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -112,12 +112,10 @@
       }
     }
 
-    // @include res.tablet {
-    //   width: 80%;
-    // }
+
   }
 
-  .job-results { // this is a parent element that holds cards and details
+  .job-results {
     max-width: 1400px;
     padding: 20px 30px;
     margin: 0 auto;
@@ -125,15 +123,22 @@
     justify-content: center;
     flex-direction: row;
     gap: 2rem;
-    position: relative;
-    background-color: green;
 
-    .split-screen-container {
-      display: grid;
-      grid-template-columns: 1fr 1fr !important;
-      grid-gap: 2rem;
-      background-color: cyan;
-    }
+
+   .split-screen-container {
+   display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+
+  // Critical
+  align-items: start;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  flex-grow: 1;
+  background-color: red;
+}
+
 
 
     .results-info {
@@ -147,7 +152,7 @@
       display: flex;
       flex-direction: column;
       gap: 1.6rem;
-      margin-top: 2rem;
+      background-color: pink;
     }
 
     .no-results {

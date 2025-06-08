@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from 'react-router-dom';
+import {  useNavigate } from 'react-router-dom';
 import { useApiQuery } from '../hooks/useApiQuery';
 import Loader from './Loader';
 import '../style/JobDetail.scss';
