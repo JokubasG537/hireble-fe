@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
-import { useApiQuery } from '../hooks/useApiQuery';
+import React, { useState, useEffect } from 'react';
+import { useApiQuery} from '../hooks/useApiQuery';
 import JobCard from '../components/JobCard';
 import '../style/JobListingPage.scss';
-import { useNavigate, useSearchParams } from 'react-router-dom';
-// import { useParams } from 'react-router-dom';
+import {  useSearchParams } from 'react-router-dom';
+import { UserContext } from '../contexts/UserContext';
+import { useContext } from 'react';
 import JobDetail from '../components/JobDetail';
 import { motion, AnimatePresence } from "framer-motion";
+import {useSavedJobMutations} from "../hooks/handleToggleSave";
 
 interface JobPost {
   _id: string;
@@ -17,10 +19,13 @@ interface JobPost {
   salaryPeriod?: string;
   employmentType?: string;
   experienceLevel?: string;
+  iSaved?: boolean;
+
 }
 
 interface JobListingPageProps {
   onSelectJob?: (jobId: string) => void;
+
 }
 
 const JobListingPage: React.FC<JobListingPageProps> = ({ onSelectJob }) => {
@@ -38,10 +43,6 @@ const JobListingPage: React.FC<JobListingPageProps> = ({ onSelectJob }) => {
 
 
 
-
-
-
-
   const queryString = Object.entries(filters)
     .filter(([_, value]) => value)
     .map(([key, value]) => `${key}=${encodeURIComponent(String(value))}`)
@@ -52,6 +53,40 @@ const JobListingPage: React.FC<JobListingPageProps> = ({ onSelectJob }) => {
     `/jobPosts?${queryString}`,
     true
   );
+
+
+
+  const { user: contextUser, token } = useContext(UserContext);
+
+  const { data: savedJobs } = useApiQuery(
+    ['savedJobs'],
+    `/savedJobs`,
+    !!token
+  );
+
+  // const savedJobIds = new Set(savedJobs?.map((job) => job.jobPost))
+  const {saveJob, unsaveJob} = useSavedJobMutations();
+  const [savedJobIds, setSavedJobIds] = useState(new Set<string>());
+
+  useEffect(() => {
+    if(savedJobs?.length) {
+      const ids = new Set(savedJobs.map((job) => job.jobPost));
+      setSavedJobIds(ids);
+    }
+  }, [savedJobs]);
+
+  const handleToggleSave = (jobId: string) => {
+    if (savedJobIds.has(jobId)) {
+      unsaveJob(jobId)
+      setSavedJobIds(prev => {
+        newSet.delete(jobId)
+        return newSet
+      })
+    } else {
+      saveJob(jobId)
+      setSavedJobIds(prev => new Set(prev).add(jobId))
+    }
+  }
 
   const jobs = data?.jobPosts || [];
   const totalPages = data?.totalPages || 1;
@@ -95,13 +130,14 @@ const JobListingPage: React.FC<JobListingPageProps> = ({ onSelectJob }) => {
     const newParams = new URLSearchParams(searchParams);
     newParams.set('jobId', jobId);
     setSearchParams(newParams);
+    console.log(jobId)
   }
 
 
 
   return (
     <div className="job-listing-page">
-      {/* <h1>Available Jobs</h1> */}
+
 
       <div className="filter-container">
       <div className="filter-section">
@@ -205,6 +241,8 @@ const JobListingPage: React.FC<JobListingPageProps> = ({ onSelectJob }) => {
             salaryPeriod={job.salaryPeriod}
             employmentType={job.employmentType}
             experienceLevel={job.experienceLevel}
+            isSaved={savedJobIds.has(job._id)}
+            onToggleSave={handleToggleSave}
             onClick={() => handleSelectJob(job._id)}
             selected={selectedJobId === job._id}
 
@@ -212,9 +250,7 @@ const JobListingPage: React.FC<JobListingPageProps> = ({ onSelectJob }) => {
         ))}
       </div>
 
-      {/* <div>
-        {selectedJobId ? <JobDetail jobId={selectedJobId} /> : "Please select a job to view details."}
-      </div> */}
+
 
 
       <AnimatePresence mode="wait">

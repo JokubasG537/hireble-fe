@@ -11,11 +11,13 @@ interface JobCardProps {
   salary: number;
   onClick: () => void;
   selected?: boolean;
+  isSaved?: boolean;
+  onToggleSave?: () => void;
 }
 
 
 
-const JobCard: React.FC<JobCardProps> = ({ _id, title, company, location, salary, onClick, selected }) => {
+const JobCard: React.FC<JobCardProps> = ({ _id, title, company, location, salary, onClick, selected, isSaved, onToggleSave }) => {
   const navigate = useNavigate();
 
   // const handleClick = () => {
@@ -46,7 +48,12 @@ const JobCard: React.FC<JobCardProps> = ({ _id, title, company, location, salary
       <span className="company-name">{companyName}</span>
       <span className="location">{location}</span>
       <span className="salary">${salary}</span>
-      <SaveJobButton />
+      <SaveJobButton
+       jobId={_id}
+       isSaved={isSaved}
+       onToggleSave={onToggleSave}
+       />
+
     </div>
   );
 };

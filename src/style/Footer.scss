@@ -1,4 +1,5 @@
 @use './colors' as c;
+@use "./res" as res;
 
 footer {
   background-color: c.$color-bg-reverse;
@@ -6,9 +7,106 @@ footer {
   text-align: center;
   font-size: 14px;
   color: #888;
-  height: 600px;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
   margin-top: 40px;
+
+  .footer-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3.6rem;
+    padding: 2rem 1.5rem;
+  }
+
+  a {
+    color: c.$color-text-reverse;
+  }
+
+  img {
+     filter: invert(1);
+     width: 30px;
+  }
+
+  .footer-top-wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    align-items: flex-start;
+
+    .footer-left-c {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      text-align: start;
+
+      .footer-logo {
+        font-family: "Poppins", "Roboto", sans-serif;
+        font-weight: 500;
+        color: white;
+        background-color: black;
+        font-size: 2rem;
+        letter-spacing: -0.02em;
+        text-transform: none;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-decoration: none;
+        user-select: none;
+      }
+
+      .footer-description {
+        margin: 0;
+        width: 50%;
+      }
+
+      .footer-icons {
+        display: flex;
+        gap: 10px;
+      }
+
+      @include res.small-tablet {
+        padding-bottom: 2rem;
+          border-bottom: 1px solid c.$color-border-reverse;
+          display: flex;
+          align-items: center;
+          text-align: center;
+        }
+    }
+
+    .footer-links {
+      display: flex;
+      flex-direction: row;
+      gap: 3rem;
+
+      .footer-column {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        text-wrap: nowrap;
+        text-align: start;
+
+        h4 {
+          padding-bottom: 1rem;
+        }
+      }
+
+      @include res.small-tablet {
+        border-bottom: 1px solid c.$color-border-reverse;
+        padding-bottom: 2rem;
+        align-self: center;
+        gap: 2rem;
+      }
+    }
+
+     @include res.small-tablet {
+          flex-direction: column;
+          gap: 2rem;
+        }
+  }
+
+
+
 }
