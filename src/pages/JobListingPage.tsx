@@ -8,6 +8,7 @@ import { useContext } from 'react';
 import JobDetail from '../components/JobDetail';
 import { motion, AnimatePresence } from "framer-motion";
 import {useSavedJobMutations} from "../hooks/handleToggleSave";
+import Loader from '../components/Loader'
 
 interface JobPost {
   _id: string;
@@ -64,28 +65,77 @@ const JobListingPage: React.FC<JobListingPageProps> = ({ onSelectJob }) => {
     !!token
   );
 
-  // const savedJobIds = new Set(savedJobs?.map((job) => job.jobPost))
+
   const {saveJob, unsaveJob} = useSavedJobMutations();
   const [savedJobIds, setSavedJobIds] = useState(new Set<string>());
 
+
+
   useEffect(() => {
     if(savedJobs?.length) {
-      const ids = new Set(savedJobs.map((job) => job.jobPost));
+      const ids = new Set(savedJobs.map((job) => job.jobPost._id));
       setSavedJobIds(ids);
+    } else {
+      setSavedJobIds(new Set())
     }
   }, [savedJobs]);
 
+  // const handleToggleSave = (jobId: string) => {
+  //     console.log('Toggling job', jobId, 'saved:', savedJobIds.has(jobId));
+  //   if (savedJobIds.has(jobId)) {
+  //     unsaveJob(jobId)
+
+  //     setSavedJobIds(prev => {
+  //       const newSet = new Set(prev)
+  //       newSet.delete(jobId)
+  //       return newSet
+  //     })
+  //   } else {
+  //     saveJob(jobId)
+  //     setSavedJobIds(prev => new Set(prev).add(jobId))
+  //   }
+  // }
+
+  // const handleToggleSave = (jobId: string) => {
+  //   const isSaved = savedJobIds.has(jobId)
+
+  //   if (isSaved) {
+  //     unsaveJob(jobId, {
+  //       onSuccess: () => {
+  //         setSavedJobIds((prev) => {
+  //           const newSet = new Set(prev)
+  //           newSet.delete(jobId)
+  //           return newSet
+  //         })
+  //       }
+  //     })
+  //   } else {
+  //     saveJob(jobId, {
+  //       onSuccess: () => {
+  //         setSavedJobIds((prev) => new Set(prev).add(jobId))
+  //       }
+  //     })
+  //   }
+  // }
+
+  // const isSaved = savedJobIds.has(jobId)
+
   const handleToggleSave = (jobId: string) => {
-    if (savedJobIds.has(jobId)) {
-      unsaveJob(jobId)
-      setSavedJobIds(prev => {
-        newSet.delete(jobId)
-        return newSet
-      })
-    } else {
-      saveJob(jobId)
-      setSavedJobIds(prev => new Set(prev).add(jobId))
-    }
+    const isSaved = savedJobIds.has(jobId)
+
+    // if (isSaved) {
+    //   unsaveJob(jobId)
+    //   console.log('unsaveJob', jobId)
+    // } else {
+    //   saveJob(jobId)
+    //   console.log('saveJob', jobId)
+    // }
+    setSavedJobIds(prev => {
+    const newSet = new Set(prev);
+    isSaved ? newSet.delete(jobId) : newSet.add(jobId);
+    return newSet;
+    })
+    
   }
 
   const jobs = data?.jobPosts || [];
@@ -130,7 +180,6 @@ const JobListingPage: React.FC<JobListingPageProps> = ({ onSelectJob }) => {
     const newParams = new URLSearchParams(searchParams);
     newParams.set('jobId', jobId);
     setSearchParams(newParams);
-    console.log(jobId)
   }
 
 
@@ -213,7 +262,7 @@ const JobListingPage: React.FC<JobListingPageProps> = ({ onSelectJob }) => {
       </div>
       </div>
 
-      {isLoading && <div className="loading">Loading jobs...</div>}
+      {isLoading && <div className="loading"><Loader/></div>}
 
       {error && <div className="error">Error loading jobs: {error.message}</div>}
 

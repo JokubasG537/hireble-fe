@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import '../style/JobCard.scss';
 import SaveJobButton from './SaveJobButton';
 
+
 interface JobCardProps {
   _id: string;
   title: string;
@@ -19,6 +20,7 @@ interface JobCardProps {
 
 const JobCard: React.FC<JobCardProps> = ({ _id, title, company, location, salary, onClick, selected, isSaved, onToggleSave }) => {
   const navigate = useNavigate();
+  
 
   // const handleClick = () => {
   //   console.log('JobCard clicked, navigating to:', `/jobs/${_id}`);

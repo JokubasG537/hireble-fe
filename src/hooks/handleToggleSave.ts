@@ -1,32 +1,34 @@
-import {useApiMutation} from './useApiQuery';
+import { useApiMutation } from './useApiQuery';
+import { useQueryClient } from '@tanstack/react-query';
 
+export const useSavedJobMutations = () => {
+  const queryClient = useQueryClient();
 
-// const saveJob = (jobId: string) => useApiMutation(`/savedJobs`, 'POST');
+  const saveMutation = useApiMutation('/savedJobs', 'POST', {
+    onSuccess: () => queryClient.invalidateQueries(['savedJobs']),
+  });
 
-//  const handleSaveJob = (formData) => {
-//   saveJob.mutate(formData);
-// }
+  const unsaveMutation = useApiMutation(
+    (jobId) => `/savedJobs/${jobId}`,
+    'DELETE',
+    {
+      onSuccess: () => queryClient.invalidateQueries(['savedJobs']),
+    }
+  );
 
+  const saveJob = (
+    jobId: string,
+    options?: Parameters<typeof saveMutation.mutate>[1]
+  ) => {
+    return saveMutation.mutate({ jobPostId: jobId });
+  };
 
-// const unsaveJob = (jobId: string) => useApiMutation(`/savedJobs/${jobId}`, 'DELETE');
-
-// export const handleUnsaveJob = (jobId: string) => {
-//   unsaveJob.mutate({
-//     _params: { jobId },
-//   });
-// }
-
-export const useSavedJobMutations = (jobId: string) => {
-  const saveMutation = useApiMutation(`/savedJobs`, 'POST');
-  const unsaveMutation = useApiMutation(`/savedJobs/${jobId}`, 'DELETE');
-
-  const saveJob = (jobId: string) => {
-    return saveMutation.mutate({jobPost: jobId});
-  }
-
-  const unsaveJob = (jobId: string) => {
-    return unsaveMutation.mutate({_params: {jobId}})
-  }
+const unsaveJob = (jobId: string, options?: Parameters[1]) => {
+  return unsaveMutation.mutate(
+    { __params: { jobId } }, // Add URL params wrapper
+    options
+  );
+};
 
   return {
     saveJob,
@@ -34,5 +36,4 @@ export const useSavedJobMutations = (jobId: string) => {
     isSaving: saveMutation.isLoading,
     isUnsaving: unsaveMutation.isLoading,
   };
-
-}
+};

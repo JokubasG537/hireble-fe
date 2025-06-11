@@ -18,7 +18,7 @@ const JobDetail = ( { jobId }: JobDetailProps) => {
 
   const handlePopupShow = ( ) => { setShowPopup(true); };
   const handlePopupClose = () => { setShowPopup(false); };
-  console.log(token)
+
 
   const { data: job, isLoading, error } = useApiQuery(
     ['job-post', jobId],

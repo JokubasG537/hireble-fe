@@ -10,38 +10,49 @@ interface SaveJobButtonProps {
   isSaved: boolean
   onToggleSave: (jobId: string) => void
 }
-const SaveJobButton : React.FC<SaveJobButtonProps> = ({jobId, isSaved, onToggleSave}) => {
+// const SaveJobButton : React.FC<SaveJobButtonProps> = ({jobId, isSaved, onToggleSave}) => {
 
-const [savedJob, setSavedJob] = useState(false);
-
-
-  const handleSave = () => {
-    setSavedJob(prev => !prev);
-  }
+// // const [savedJob, setSavedJob] = useState(false);
 
 
- const { user: contextUser, token } = useContext(UserContext);
+//   const handleSave = () => {
+//     setSavedJob(prev => !prev);
+//     console.log(jobId)
+//   }
 
 
+//  const { user: contextUser, token } = useContext(UserContext);
 
 
+//   return (
+//    <button
+//    onClick={(e) => {
+//     e.stopPropagation();
+//     onToggleSave(jobId);
+//     console.log(isSaved);
+//    }}>
+//     <Bookmark onClick={handleSave}>
+//       {isSaved ? <BookmarkCheck /> : <Bookmark />}
+//     </Bookmark>
+// </button>
+//   )
+// }
 
- console.log(token)
-
-
-
+const SaveJobButton: React.FC<SaveJobButtonProps> = ({
+  jobId,
+  isSaved,
+  onToggleSave
+}) => {
   return (
-   <button
-   onClick={(e) => {
-    e.stopPropagation();
-    onToggleSave(jobId);
-    console.log(isSaved);
-   }}>
-    <Bookmark onClick={handleSave}>
+    <button
+      onClick={(e) => {
+        e.stopPropagation();
+        onToggleSave(jobId);
+      }}
+    >
       {isSaved ? <BookmarkCheck /> : <Bookmark />}
-    </Bookmark>
-</button>
-  )
-}
+    </button>
+  );
+};
 
 export default SaveJobButton
