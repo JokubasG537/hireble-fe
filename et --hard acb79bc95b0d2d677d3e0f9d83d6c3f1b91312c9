@@ -1,0 +1,167 @@
+[33mcommit 31e8c7d3e3d1af4487245b66c2b184e89a981cde[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32msave-job-posts[m[33m, [m[1;31morigin/save-job-posts[m[33m)[m
+Author: JokubasG537 <jokub537@gmail.com>
+Date:   Wed Jun 11 17:39:47 2025 +0300
+
+    still bug
+
+[33mcommit acb79bc95b0d2d677d3e0f9d83d6c3f1b91312c9[m
+Author: JokubasG537 <jokub537@gmail.com>
+Date:   Mon Jun 9 16:40:06 2025 +0300
+
+    save job posts progress
+
+[33mcommit fdb7831c6513568f9a3c678d75a532f9dc9e3049[m[33m ([m[1;31morigin/split-job-posts[m[33m, [m[1;32msplit-job-posts[m[33m)[m
+Author: JokubasG537 <jokub537@gmail.com>
+Date:   Sun Jun 8 18:01:10 2025 +0300
+
+    further styling, save job progress and basic popup
+
+[33mcommit 93f84ad24559e3319fa8a638a4bcb4e669fb61af[m
+Author: JokubasG537 <jokub537@gmail.com>
+Date:   Sun Jun 8 12:53:09 2025 +0300
+
+    checkpoint
+
+[33mcommit 0cc68e8e136d35bd2cca3076e9cabf23c4fbf598[m
+Author: JokubasG537 <jokub537@gmail.com>
+Date:   Sat Jun 7 16:52:33 2025 +0300
+
+    styling job section
+
+[33mcommit 62f8586e96134b4a864fa191776bc5e7c159f13c[m
+Author: JokubasG537 <jokub537@gmail.com>
+Date:   Fri Jun 6 12:33:41 2025 +0300
+
+    first checkpoint
+
+[33mcommit c98df92580bd23e29d67503e1070480bdee7ac27[m[33m ([m[1;31morigin/jobs-improve[m[33m, [m[1;32mjobs-improve[m[33m)[m
+Author: JokubasG537 <jokub537@gmail.com>
+Date:   Wed Jun 4 19:02:11 2025 +0300
+
+    images upload development
+
+[33mcommit 49995ca1a6acd017b3cd70ba82f78447abef0985[m
+Author: JokubasG537 <jokub537@gmail.com>
+Date:   Tue May 27 17:47:30 2025 +0300
+
+    jb
+
+[33mcommit 1b9124a89f589a182fcf6ef57c18ac6ede1ebac4[m
+Author: JokubasG537 <jokub537@gmail.com>
+Date:   Tue May 27 17:40:36 2025 +0300
+
+    changes in nav
+
+[33mcommit 3f2a1b6243f79114e461c456212d42a289dd5a62[m
+Author: JokubasG537 <jokub537@gmail.com>
+Date:   Tue May 27 17:25:31 2025 +0300
+
+    changes
+
+[33mcommit f80faecf7ee1c52d339307f0bb60edbcff2a2e85[m
+Author: JokubasG537 <jokub537@gmail.com>
+Date:   Mon May 26 10:35:10 2025 +0300
+
+    starting commit
+
+[33mcommit b5f33d85a46dc10a0e8efc802ec3159bbafdea17[m[33m ([m[1;31morigin/styling-branch[m[33m, [m[1;32mstyling-branch[m[33m)[m
+Author: JokubasG537 <jokub537@gmail.com>
+Date:   Wed May 7 22:15:45 2025 +0300
+
+    some style
+
+[33mcommit 05ee187f08ec727c0ffccc006b18b08d65a0636c[m[33m ([m[1;31morigin/not-working-company-details-component[m[33m, [m[1;32mnot-working-company-details-component[m[33m)[m
+Author: JokubasG537 <jokub537@gmail.com>
+Date:   Wed May 7 16:29:56 2025 +0300
+
+    checkpoint
+
+[33mcommit 934ec939003eaa71c67d6f72bc39d315538ad1da[m[33m ([m[1;31morigin/jobs[m[33m, [m[1;32mjobs[m[33m)[m
+Author: JokubasG537 <jokub537@gmail.com>
+Date:   Wed May 7 10:13:13 2025 +0300
+
+    working filtering
+
+[33mcommit db002cb7915ccce1af1635561ddea7a51970778e[m
+Author: JokubasG537 <jokub537@gmail.com>
+Date:   Wed May 7 08:40:30 2025 +0300
+
+    added some functionality
+
+[33mcommit cdd6c698d9406fac33f654544813276d834bb41d[m
+Author: JokubasG537 <jokub537@gmail.com>
+Date:   Tue May 6 13:15:41 2025 +0300
+
+    checkpoint
+
+[33mcommit 5553ac2b98401b969f6d59733f11c509b856d89a[m
+Author: JokubasG537 <jokub537@gmail.com>
+Date:   Tue May 6 10:00:56 2025 +0300
+
+    its possible to reject the job applications
+
+[33mcommit 5091819a23c50e4532fc9b2544258be2a4184e1b[m
+Author: JokubasG537 <jokub537@gmail.com>
+Date:   Sun May 4 16:12:01 2025 +0300
+
+    its now possible to upload resumes
+
+[33mcommit d29e2602ff7633db8d6eb8522ba7cd5c9c81d837[m
+Author: JokubasG537 <jokub537@gmail.com>
+Date:   Sun May 4 12:32:35 2025 +0300
+
+    working new job post functionality
+
+[33mcommit 4fea659004b297b86e40399b9a28a3360322178a[m[33m ([m[1;32mmain[m[33m)[m
+Merge: cc7dc22 2f07b6d
+Author: JokubasG537 <jokub537@gmail.com>
+Date:   Sat May 3 11:51:36 2025 +0300
+
+    Merge pull request #2 from JokubasG537/not-fully-working
+    
+    fully working reject, accept functionality for recruiters
+
+[33mcommit 2f07b6dacff2c3341932290b3bd8bc31b543342a[m[33m ([m[1;31morigin/not-fully-working[m[33m, [m[1;32mnot-fully-working[m[33m)[m
+Author: JokubasG537 <jokub537@gmail.com>
+Date:   Sat May 3 11:50:20 2025 +0300
+
+    working request, reject functionality for company recruiters
+
+[33mcommit 4260dc5ae631b2187e8dff9a1cf5d71f62ad371e[m
+Author: JokubasG537 <jokub537@gmail.com>
+Date:   Sat May 3 10:46:03 2025 +0300
+
+    recruiter link works
+
+[33mcommit 992ec88316221169c1582d018fa0e9bb597e7327[m
+Author: JokubasG537 <jokub537@gmail.com>
+Date:   Sat May 3 09:09:34 2025 +0300
+
+    fixed some bugs
+
+[33mcommit cc7dc220850f2fab663df01e83692d0de87caa57[m
+Merge: 6615cca 672a007
+Author: JokubasG537 <jokub537@gmail.com>
+Date:   Sat May 3 08:50:13 2025 +0300
+
+    Merge pull request #1 from JokubasG537/not-fully-working
+    
+    now user dashboard is working
+
+[33mcommit 672a00721518339ebe04670310344415a0ac8cf8[m
+Author: JokubasG537 <jokub537@gmail.com>
+Date:   Sat May 3 08:49:20 2025 +0300
+
+    now recruiter company dashboard is working
+
+[33mcommit 27f320a8d8390e11958a0769ab043174fdc44098[m
+Author: JokubasG537 <jokub537@gmail.com>
+Date:   Fri May 2 16:21:26 2025 +0300
+
+    not a fully working code, problem with a company dashboard
+
+[33mcommit 6615ccaf8c16cbe99547d8c9eb045f7f9e6a8641[m
+Author: JokubasG537 <jokub537@gmail.com>
+Date:   Thu May 1 16:34:46 2025 +0300
+
+    working login, register(very basic ver)

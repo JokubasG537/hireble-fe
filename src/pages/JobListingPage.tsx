@@ -130,12 +130,24 @@ const JobListingPage: React.FC<JobListingPageProps> = ({ onSelectJob }) => {
     //   saveJob(jobId)
     //   console.log('saveJob', jobId)
     // }
-    setSavedJobIds(prev => {
-    const newSet = new Set(prev);
-    isSaved ? newSet.delete(jobId) : newSet.add(jobId);
-    return newSet;
-    })
-    
+    // setSavedJobIds(prev => {
+    // const newSet = new Set(prev);
+    // isSaved ? newSet.delete(jobId) : newSet.add(jobId);
+    // return newSet;
+    // })
+
+    if (isSaved) {
+      unsaveJob(jobId)
+      setSavedJobIds(prev => {
+        const newSet = new Set(prev)
+        newSet.delete(jobId)
+        return newSet
+      })
+    } else {
+      saveJob(jobId)
+      setSavedJobIds(prev => new Set(prev).add(jobId))
+    }
+
   }
 
   const jobs = data?.jobPosts || [];
@@ -184,6 +196,8 @@ const JobListingPage: React.FC<JobListingPageProps> = ({ onSelectJob }) => {
 
 
 
+
+
   return (
     <div className="job-listing-page">
 
@@ -191,6 +205,7 @@ const JobListingPage: React.FC<JobListingPageProps> = ({ onSelectJob }) => {
       <div className="filter-container">
       <div className="filter-section">
         <h2>Filter Jobs</h2>
+
 
         <div className="filter-controls">
           <input
@@ -311,7 +326,7 @@ const JobListingPage: React.FC<JobListingPageProps> = ({ onSelectJob }) => {
       exit={{ opacity: 0, y: 10 }}
       transition={{ duration: 0.2 }}
     >
-    {selectedJobId ? <JobDetail jobId={selectedJobId} /> : "Please select a job to view details."}
+    {selectedJobId ? <JobDetail jobId={selectedJobId} /> : ""}
     </motion.div>
   )}
 </AnimatePresence>

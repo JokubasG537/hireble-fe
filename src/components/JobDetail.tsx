@@ -1,23 +1,48 @@
-import {  useNavigate } from 'react-router-dom';
+import {  useNavigate, useSearchParams } from 'react-router-dom';
 import { useContext, useState } from 'react';
 import { useApiQuery } from '../hooks/useApiQuery';
 import Loader from './Loader';
 import '../style/JobDetail.scss';
 import Popup from './Popup';
 import { UserContext } from '../contexts/UserContext';
+import closeImg from '../assets/icons8-close.svg';
+import shareImg from '../assets/icons8-share.svg';
+import copyImg from '../assets/icons8-copy-24.png';
+import useShare from '../hooks/useShare';
+import portfolioImg from '../assets/icons8-bag-24.png';
+import dateImg from '../assets/icons8-date-50.png';
+
 interface JobDetailProps {
   jobId: string;
 }
 
 
 const JobDetail = ( { jobId }: JobDetailProps) => {
+  const { share, copy } = useShare();
   const navigate = useNavigate();
   const { user: contextUser, token } = useContext(UserContext);
   const [showPopup, setShowPopup] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
 
 
   const handlePopupShow = ( ) => { setShowPopup(true); };
   const handlePopupClose = () => { setShowPopup(false); };
+
+  const handleShare = () => {
+    share(
+      window.location.href
+    );
+  }
+
+  const handleCopy = () => {
+    copy(window.location.href);
+  }
+
+    const handleUnselectJob = () => {
+    const newParams = new URLSearchParams(searchParams)
+    newParams.delete('jobId', jobId);
+    setSearchParams(newParams)
+  }
 
 
   const { data: job, isLoading, error } = useApiQuery(
@@ -56,47 +81,102 @@ const JobDetail = ( { jobId }: JobDetailProps) => {
 
   return (
     <div className="job-detail-panel">
+      <div className="detail-header">
+        <button className="close-button">
 
+          <img src={closeImg} alt="Close" onClick={handleUnselectJob} />
+        </button>
+        <div className="detail-header-wrapper">
+      <h2>{job.title}</h2>
 
-      <h1>{job.title}</h1>
-
-      {companyInfo.id ? (
-        <h2
+      <div className="job-detail-line-1">
+                {companyInfo.id ? (
+        <span className='detail-company-name'
           onClick={viewCompanyDetails}
-          style={{ cursor: 'pointer', color: '#0066cc', textDecoration: 'underline' }}
+
         >
           {companyInfo.name}
-        </h2>
+        </span>
       ) : (
-        <h2>{companyInfo.name}</h2>
+        <span>{companyInfo.name}</span>
       )}
 
-      <p><strong>Location:</strong> {job.location}</p>
-      <p><strong>Type:</strong> {job.employmentType}</p>
+       <span className='bullet'> {job.location}</span>
 
-      {job.salary && (
-        <p>
-          <strong>Salary:</strong> {job.salary} {job.salaryCurrency || 'USD'}
-          per {job.salaryPeriod || 'year'}
-        </p>
+           <span className='bullet'> {job.employmentType}</span>
+
+
+
+      <div className='salary'>
+            {job.salary && (
+       <span>
+      {job.salary} {job.salaryCurrency || 'USD'}{' '}
+      per {job.salaryPeriod || 'year'}
+      </span>
       )}
+      </div>
 
-      <p><strong>Experience Level:</strong> {job.experienceLevel || 'Not specified'}</p>
+      </div>
 
-      <p><strong>Posted:</strong> {formatDate(job.createdAt)}</p>
 
-      {job.postedBy && (
-        <p><strong>Contact:</strong> {job.postedBy.email}</p>
-      )}
 
-      <h3>Description</h3>
-      <div dangerouslySetInnerHTML={{ __html: job.description }} />
 
-      {token ? (
-        <button onClick={() => navigate(`/apply/${job._id}`)}>Apply Now</button>
+
+      <div className="job-detail-line-2">
+         {token ? (
+        <button className="apply-button" onClick={() => navigate(`/apply/${job._id}`)}>Apply Now</button>
       ) : (
-        <button onClick={handlePopupShow}>Apply Now</button>
+        <button className="apply-button" onClick={handlePopupShow}>Apply Now</button>
       )}
+
+      <button onClick={handleShare}>
+        <img src={shareImg} alt="Share" />
+      </button>
+
+      <button onClick={handleCopy}>
+        <img src={copyImg} alt="Copy" />
+      </button>
+      </div>
+      </div>
+      </div>
+
+
+
+
+
+
+<div className="job-detail-wrapper">
+  <div className="job-post-info">
+    <h2>Job Information</h2>
+
+    <div className="job-post-info-item">
+      <div className="job-post-info-item-icon">
+        <img src={portfolioImg} alt="" />
+        <span>Experience Level:</span>
+      </div>
+      <span className="job-post-info-item-value">
+      {job.experienceLevel || 'Not specified'}
+      </span>
+    </div>
+
+    <div className="job-post-info-item">
+      <div className="job-post-info-item-icon">
+        <img src={dateImg} alt="date img" />
+        <span>Posted:</span>
+      </div>
+      <span className="job-post-info-item-value">
+      {formatDate(job.createdAt)}
+      </span>
+    </div>
+  </div>
+
+<div className="job-description-wrapper">
+  <h2>Description</h2>
+  <div className="job-description" dangerouslySetInnerHTML={{ __html: job.description }} />
+  </div>
+</div>
+
+
 
       {showPopup && (
         <Popup
@@ -111,6 +191,7 @@ const JobDetail = ( { jobId }: JobDetailProps) => {
 
 
     </div>
+
   );
 };
 

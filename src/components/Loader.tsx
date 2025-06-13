@@ -1,6 +1,17 @@
+import { ClipLoader } from 'react-spinners';
+
 function Loader() {
   return (
-    <div className="spinner"></div>
+  <ClipLoader
+  color="#ffffff"
+  cssOverride={{
+    borderWidth: "3px",
+    animationDuration: "1s",
+    margin: "0 auto",
+    display: "flex",
+    alignSelf: "center"
+  }}
+/>
   );
 }
 

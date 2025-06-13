@@ -16,12 +16,12 @@
 
   &.selected {
     box-shadow: 0 8px 24px 0 rgba(60, 72, 88, 0.15);
-    border: 3px solid c.$color-accent;
+    border: 3px solid c.$color-brand-hover;
   }
 
   &:hover {
     box-shadow: 0 8px 24px 0 rgba(60, 72, 88, 0.15);
-    border-color: c.$color-accent;
+    border-color: c.$color-brand-primary;
   }
 
   h3 {

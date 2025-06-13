@@ -1,58 +1,60 @@
+import { Button } from '@mantine/core';
 import { Bookmark, BookmarkCheck } from "lucide-react";
-import { useState } from "react";
-import { useApiQuery } from "../hooks/useApiQuery";
+import Popup from "./Popup";
 import { UserContext } from "../contexts/UserContext";
-import { useContext } from "react";
-// import { useSavedJobMutations } from "../hooks/handleToggleSave";
+import { useContext, useState } from "react";
+import classes from '../style/SaveJobButton.module.scss'; // Import CSS module
 
 interface SaveJobButtonProps {
-  jobId: string
-  isSaved: boolean
-  onToggleSave: (jobId: string) => void
+  jobId: string;
+  isSaved: boolean;
+  onToggleSave: (jobId: string) => void;
 }
-// const SaveJobButton : React.FC<SaveJobButtonProps> = ({jobId, isSaved, onToggleSave}) => {
-
-// // const [savedJob, setSavedJob] = useState(false);
-
-
-//   const handleSave = () => {
-//     setSavedJob(prev => !prev);
-//     console.log(jobId)
-//   }
-
-
-//  const { user: contextUser, token } = useContext(UserContext);
-
-
-//   return (
-//    <button
-//    onClick={(e) => {
-//     e.stopPropagation();
-//     onToggleSave(jobId);
-//     console.log(isSaved);
-//    }}>
-//     <Bookmark onClick={handleSave}>
-//       {isSaved ? <BookmarkCheck /> : <Bookmark />}
-//     </Bookmark>
-// </button>
-//   )
-// }
 
 const SaveJobButton: React.FC<SaveJobButtonProps> = ({
   jobId,
   isSaved,
   onToggleSave
 }) => {
+  const { user: contextUser, token } = useContext(UserContext);
+  const [showPopup, setShowPopup] = useState(false);
+
+  const handlePopupShow = () => { setShowPopup(true); };
+  const handlePopupClose = () => { setShowPopup(false); };
+
   return (
-    <button
-      onClick={(e) => {
-        e.stopPropagation();
-        onToggleSave(jobId);
-      }}
-    >
-      {isSaved ? <BookmarkCheck /> : <Bookmark />}
-    </button>
+    <>
+      {token ? (
+        <Button
+          variant={isSaved ? "filled" : "outline"}
+          size="sm"
+          leftSection={isSaved ? <BookmarkCheck size={24} /> : <Bookmark size={16} />}
+          className={classes.saveButton }
+          onClick={(e) => {
+            e.stopPropagation();
+            onToggleSave(jobId);
+            console.log(isSaved);
+          }}
+        >
+          {isSaved ? 'Saved' : 'Save'}
+        </Button>
+      ) : (
+        <Button
+          variant="outline"
+          size="sm"
+          leftSection={<Bookmark size={16} />}
+          className={classes.saveButtonOutline}
+          onClick={handlePopupShow}
+        >
+          Save
+        </Button>
+      )}
+
+      {showPopup && (
+        <Popup onClose={handlePopupClose} />
+      )}
+    </>
   );
 };
 
-export default SaveJobButton
+export default SaveJobButton;

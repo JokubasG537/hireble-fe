@@ -16,6 +16,7 @@ import ApplicationForm from './pages/ApplicationForm';
 import CompanyPublicPage from './pages/CompanyPublicPage';
 import PublicUserProfile from './pages/PublicUserProfile';
 import Footer from './components/Footer';
+import { Toaster } from 'sonner';
 // import JobBoard from './components/JobBoard';
 // import JobDetail from './components/JobDetail';
 
@@ -24,6 +25,7 @@ function App() {
     <>
       <Nav />
       <main>
+        <Toaster position="top-right" />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
