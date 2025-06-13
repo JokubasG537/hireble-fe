@@ -9,7 +9,7 @@
 
   .filter-container {
     background-image: url(https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8YnVzaW5lc3MlMjBjaXR5fGVufDB8fDB8fHww);
-    min-height: 85vh;
+    min-height: 55vh;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -111,18 +111,26 @@
         }
       }
     }
-
-    // @include res.tablet {
-    //   width: 80%;
-    // }
   }
 
   .job-results {
-    max-width: 800px;
+    max-width: 1400px;
+    padding: 20px 30px;
     margin: 0 auto;
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    gap: 2rem;
+
+
+   .split-screen-container {
+   display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
 
 
     .results-info {
@@ -133,14 +141,10 @@
     }
 
     .job-cards {
-      display: grid;
-      width: 100%;
-      gap: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.6rem;
       margin-top: 2rem;
-
-      @media (max-width: 600px) {
-        grid-template-columns: 1fr;
-      }
     }
 
     .no-results {
@@ -183,4 +187,13 @@
       }
     }
   }
+}
+
+.bookmark-button {
+   background-color: #2557a7;
+  padding: 8px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }

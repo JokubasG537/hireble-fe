@@ -1,9 +1,35 @@
-import React, { useState } from 'react';
-import { useApiQuery } from '../hooks/useApiQuery';
+import React, { useState, useEffect } from 'react';
+import { useApiQuery} from '../hooks/useApiQuery';
 import JobCard from '../components/JobCard';
 import '../style/JobListingPage.scss';
+import {  useSearchParams } from 'react-router-dom';
+import { UserContext } from '../contexts/UserContext';
+import { useContext } from 'react';
+import JobDetail from '../components/JobDetail';
+import { motion, AnimatePresence } from "framer-motion";
+import {useSavedJobMutations} from "../hooks/handleToggleSave";
+import Loader from '../components/Loader'
 
-const JobListingPage = () => {
+interface JobPost {
+  _id: string;
+  title: string;
+  company: string | { name: string; _id: string } | undefined;
+  location: string;
+  salary: number | undefined;
+  salaryCurrency?: string;
+  salaryPeriod?: string;
+  employmentType?: string;
+  experienceLevel?: string;
+  iSaved?: boolean;
+
+}
+
+interface JobListingPageProps {
+  onSelectJob?: (jobId: string) => void;
+
+}
+
+const JobListingPage: React.FC<JobListingPageProps> = ({ onSelectJob }) => {
   const [filters, setFilters] = useState({
     employmentType: '',
     industry: '',
@@ -16,6 +42,8 @@ const JobListingPage = () => {
     sort: 'newest',
   });
 
+
+
   const queryString = Object.entries(filters)
     .filter(([_, value]) => value)
     .map(([key, value]) => `${key}=${encodeURIComponent(String(value))}`)
@@ -27,6 +55,101 @@ const JobListingPage = () => {
     true
   );
 
+
+
+  const { user: contextUser, token } = useContext(UserContext);
+
+  const { data: savedJobs } = useApiQuery(
+    ['savedJobs'],
+    `/savedJobs`,
+    !!token
+  );
+
+
+  const {saveJob, unsaveJob} = useSavedJobMutations();
+  const [savedJobIds, setSavedJobIds] = useState(new Set<string>());
+
+
+
+  useEffect(() => {
+    if(savedJobs?.length) {
+      const ids = new Set(savedJobs.map((job) => job.jobPost._id));
+      setSavedJobIds(ids);
+    } else {
+      setSavedJobIds(new Set())
+    }
+  }, [savedJobs]);
+
+  // const handleToggleSave = (jobId: string) => {
+  //     console.log('Toggling job', jobId, 'saved:', savedJobIds.has(jobId));
+  //   if (savedJobIds.has(jobId)) {
+  //     unsaveJob(jobId)
+
+  //     setSavedJobIds(prev => {
+  //       const newSet = new Set(prev)
+  //       newSet.delete(jobId)
+  //       return newSet
+  //     })
+  //   } else {
+  //     saveJob(jobId)
+  //     setSavedJobIds(prev => new Set(prev).add(jobId))
+  //   }
+  // }
+
+  // const handleToggleSave = (jobId: string) => {
+  //   const isSaved = savedJobIds.has(jobId)
+
+  //   if (isSaved) {
+  //     unsaveJob(jobId, {
+  //       onSuccess: () => {
+  //         setSavedJobIds((prev) => {
+  //           const newSet = new Set(prev)
+  //           newSet.delete(jobId)
+  //           return newSet
+  //         })
+  //       }
+  //     })
+  //   } else {
+  //     saveJob(jobId, {
+  //       onSuccess: () => {
+  //         setSavedJobIds((prev) => new Set(prev).add(jobId))
+  //       }
+  //     })
+  //   }
+  // }
+
+  // const isSaved = savedJobIds.has(jobId)
+
+  const handleToggleSave = (jobId: string) => {
+    const isSaved = savedJobIds.has(jobId)
+
+    // if (isSaved) {
+    //   unsaveJob(jobId)
+    //   console.log('unsaveJob', jobId)
+    // } else {
+    //   saveJob(jobId)
+    //   console.log('saveJob', jobId)
+    // }
+    // setSavedJobIds(prev => {
+    // const newSet = new Set(prev);
+    // isSaved ? newSet.delete(jobId) : newSet.add(jobId);
+    // return newSet;
+    // })
+
+    if (isSaved) {
+      unsaveJob(jobId)
+      setSavedJobIds(prev => {
+        const newSet = new Set(prev)
+        newSet.delete(jobId)
+        return newSet
+      })
+    } else {
+      saveJob(jobId)
+      setSavedJobIds(prev => new Set(prev).add(jobId))
+    }
+
+  }
+
   const jobs = data?.jobPosts || [];
   const totalPages = data?.totalPages || 1;
 
@@ -37,6 +160,16 @@ const JobListingPage = () => {
       [name]: value,
       ...(name !== 'page' && { page: 1 }),
     }));
+  };
+
+    const [searchParams, setSearchParams] = useSearchParams();
+  const selectedJobId = searchParams.get('jobId');
+  // const navigate = useNavigate();
+
+  const handlePageChange = (newPage) => {
+    if (newPage >= 1 && newPage <= totalPages) {
+      setFilters(prev => ({ ...prev, page: newPage }));
+    }
   };
 
   const clearFilters = () => {
@@ -53,19 +186,26 @@ const JobListingPage = () => {
     });
   };
 
-  const handlePageChange = (newPage) => {
-    if (newPage >= 1 && newPage <= totalPages) {
-      setFilters(prev => ({ ...prev, page: newPage }));
-    }
-  };
+
+
+  const handleSelectJob = (jobId : string) => {
+    const newParams = new URLSearchParams(searchParams);
+    newParams.set('jobId', jobId);
+    setSearchParams(newParams);
+  }
+
+
+
+
 
   return (
     <div className="job-listing-page">
-      {/* <h1>Available Jobs</h1> */}
+
 
       <div className="filter-container">
       <div className="filter-section">
         <h2>Filter Jobs</h2>
+
 
         <div className="filter-controls">
           <input
@@ -137,37 +277,66 @@ const JobListingPage = () => {
       </div>
       </div>
 
-      {isLoading && <div className="loading">Loading jobs...</div>}
+      {isLoading && <div className="loading"><Loader/></div>}
 
       {error && <div className="error">Error loading jobs: {error.message}</div>}
 
       <div className="job-results">
+
+
+        <div className="split-screen-container">
+        <div className="job-cards">
         <div className="results-info">
           {!isLoading && !error && (
             <span>Found {data?.total || 0} jobs</span>
           )}
         </div>
 
-        <div className="job-cards">
-          {jobs.map(job => (
-            <JobCard
-              key={job._id}
-              _id={job._id}
-              title={job.title}
-              company={job.company}
-              location={job.location}
-              salary={job.salary}
-              salaryCurrency={job.salaryCurrency}
-              salaryPeriod={job.salaryPeriod}
-              employmentType={job.employmentType}
-              experienceLevel={job.experienceLevel}
-            />
-          ))}
-        </div>
+
+        {jobs.map(job => (
+          <JobCard
+            key={job._id}
+            _id={job._id}
+            title={job.title}
+            company={job.company}
+            location={job.location}
+            salary={job.salary}
+            salaryCurrency={job.salaryCurrency}
+            salaryPeriod={job.salaryPeriod}
+            employmentType={job.employmentType}
+            experienceLevel={job.experienceLevel}
+            isSaved={savedJobIds.has(job._id)}
+            onToggleSave={handleToggleSave}
+            onClick={() => handleSelectJob(job._id)}
+            selected={selectedJobId === job._id}
+
+          />
+        ))}
+      </div>
+
+
+
+
+      <AnimatePresence mode="wait">
+  {selectedJobId && (
+    <motion.div
+      key={selectedJobId}
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 10 }}
+      transition={{ duration: 0.2 }}
+    >
+    {selectedJobId ? <JobDetail jobId={selectedJobId} /> : ""}
+    </motion.div>
+  )}
+</AnimatePresence>
+
+
 
         {!isLoading && !error && jobs.length === 0 && (
           <div className="no-results">No jobs found matching your criteria</div>
         )}
+        </div>
       </div>
 
       {totalPages > 1 && (

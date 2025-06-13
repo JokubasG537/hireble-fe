@@ -1,4 +1,3 @@
-import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useApiQuery } from '../hooks/useApiQuery';
 
@@ -44,7 +43,7 @@ const JobDetailPage = () => {
 
   return (
     <div>
-      <button onClick={() => navigate('/job-posts')}>Back to Jobs</button>
+    
 
       <h1>{job.title}</h1>
 

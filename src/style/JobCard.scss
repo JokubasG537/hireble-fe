@@ -11,14 +11,17 @@
   flex-direction: column;
   gap: 0.5rem;
   position: relative;
-  width: 100%;
+  min-width: 100% !important;
   cursor: pointer;
+
+  &.selected {
+    box-shadow: 0 8px 24px 0 rgba(60, 72, 88, 0.15);
+    border: 3px solid c.$color-brand-hover;
+  }
 
   &:hover {
     box-shadow: 0 8px 24px 0 rgba(60, 72, 88, 0.15);
-    border-color: c.$color-accent;
-    transform: translateY(-2px) scale(1.01);
-    background: c.$color-surface;
+    border-color: c.$color-brand-primary;
   }
 
   h3 {
@@ -27,6 +30,7 @@
     font-size: 1.15rem;
     font-weight: 600;
     line-height: 1.2;
+    text-decoration: underline;
   }
 
   .company-link, .company-name {
