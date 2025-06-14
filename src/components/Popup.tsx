@@ -52,9 +52,9 @@ const Popup = ({
         style={styles.modal}
         onClick={(e) => e.stopPropagation()}
       >
-        <h2 id="popup-title" style={styles.title}>
+        {/* <h2 id="popup-title" style={styles.title}>
           {title}
-        </h2>
+        </h2> */}
 
         {message && <p style={styles.message}>{message}</p>}
 

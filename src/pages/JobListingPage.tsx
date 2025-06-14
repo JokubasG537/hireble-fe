@@ -204,10 +204,11 @@ const JobListingPage: React.FC<JobListingPageProps> = ({ onSelectJob }) => {
 
       <div className="filter-container">
       <div className="filter-section">
-        <h2>Filter Jobs</h2>
+        {/* <h2>Filter Jobs</h2> */}
 
 
         <div className="filter-controls">
+          <div className="search-bar">
           <input
             type="text"
             name="keyword"
@@ -216,7 +217,9 @@ const JobListingPage: React.FC<JobListingPageProps> = ({ onSelectJob }) => {
             onChange={handleFilterChange}
             className="search-input"
           />
+          </div>
 
+        <div className="filters">
           <select name="employmentType" value={filters.employmentType} onChange={handleFilterChange}>
             <option value="">All Types</option>
             <option value="full-time">Full-time</option>
@@ -257,6 +260,7 @@ const JobListingPage: React.FC<JobListingPageProps> = ({ onSelectJob }) => {
           </select>
 
           <button onClick={clearFilters} className="clear-btn">Clear Filters</button>
+        </div>
         </div>
 
         <div className="active-filters">
