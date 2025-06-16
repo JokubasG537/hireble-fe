@@ -1,51 +1,88 @@
 @use './colors' as c;
 @use "./res" as res;
 
-nav {
-  background-color: c.$color-bg-reverse;
+.mui-appbar {
+  background-color: c.$color-bg-reverse !important;
+  box-shadow: none !important;
+}
 
-  padding: 0.6rem 1.5rem;
+.mui-toolbar {
+  padding: 0.6rem 1.5rem !important;
+  min-height: auto !important;
+}
+
+
+.logo {
+  font-family: 'Poppins', 'Roboto', sans-serif !important;
+  font-weight: 500 !important;
+  color: white !important;
+  background-color: transparent !important;
+  font-size: 2rem !important;
+  letter-spacing: -0.02em !important;
+  text-transform: none !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-decoration: none !important;
+  user-select: none;
+
+  &:hover {
+    text-decoration: none !important;
+  }
+}
+
+
+.nav-links {
   display: flex;
-  justify-content: space-between;
+  gap: 1.5rem;
   align-items: center;
 
-
-
-  a {
-    color: c.$color-text-reverse;
-  }
-
-  .logo {
-    font-family: 'Poppins', 'Roboto', sans-serif;
-    font-weight: 500;
-    color: white;
-    background-color: transparent;
-    font-size: 2rem;
-    letter-spacing: -0.02em;
-    text-transform: none;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-decoration: none;
-    user-select: none;
-  }
-
-  .nav-links {
-    display: flex;
-    gap: 1.5rem;
-    list-style: none;
-    font-size: 1rem;
-    font-weight: 500;
-    color: c.$color-text-reverse;
-
-
   @include res.tablet {
-    font-size: 0.9rem;
     gap: 1rem;
   }
+}
+
+
+.nav-button {
+  color: c.$color-text-reverse !important;
+  font-size: 1rem !important;
+  font-weight: 500 !important;
+  text-transform: none !important;
+  padding: 0.5rem 1rem !important;
+  transition: color 0.15s !important;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.1) !important;
   }
 
-  button {
-    background: none;
+  @include res.tablet {
+    font-size: 0.9rem !important;
+    padding: 0.4rem 0.8rem !important;
+  }
+}
+
+
+.menu-button {
+  color: c.$color-text-reverse !important;
+}
+
+
+.MuiDrawer-paper {
+  background-color: c.$color-bg !important;
+  color: c.$color-text !important;
+}
+
+.MuiListItemText-primary {
+  color: c.$color-text !important;
+  font-weight: 500 !important;
+  border-bottom: 1px solid c.$color-border !important;
+}
+
+.MuiListItem-button:hover {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.logout-button {
+      background: none;
     border: none;
     color: c.$color-text-reverse;
     font-size: 1rem;
@@ -58,7 +95,44 @@ nav {
     text-decoration: none;
     outline: none;
 
-  }
+}
 
+.dark{
+  background-color: c.$color-bg !important;
+  color: c.$color-text !important;
+}
 
+.modal-3 {
+  background: c.$color-popup-bg;
+  padding: 1.5rem 2rem;
+  border-radius: 10px;
+  max-width: 750px !important;
+
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+  outline: none;
+  position: relative;
+}
+
+.logout-button-danger {
+  background-color: c.$color-danger ;
+  color: c.$color-text-reverse ;
+    border: none;
+    padding: 0.4rem 0.6rem;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.18s, color 0.18s;
+    display: flex;
+    align-items: center;
+}
+
+.cancel-button {
+   background-color: c.$color-light-btn ;
+  color: c.$color-text ;
+    border: none;
+    padding: 0.4rem 0.6rem;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.18s, color 0.18s;
+    display: flex;
+    align-items: center;
 }

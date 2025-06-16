@@ -156,6 +156,10 @@
   gap: 2rem;
   max-width: 1200px;
   margin: 0 auto;
+
+  @media (max-width: 660px) {
+    grid-template-columns: 1fr;
+}
 }
 
 

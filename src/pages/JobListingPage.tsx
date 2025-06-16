@@ -9,6 +9,8 @@ import JobDetail from '../components/JobDetail';
 import { motion, AnimatePresence } from "framer-motion";
 import {useSavedJobMutations} from "../hooks/handleToggleSave";
 import Loader from '../components/Loader'
+import JobDetailPopup from '../components/JobDetailPopup';
+import useScreenSize from '../hooks/useScreenSize';
 
 interface JobPost {
   _id: string;
@@ -42,7 +44,7 @@ const JobListingPage: React.FC<JobListingPageProps> = ({ onSelectJob }) => {
     sort: 'newest',
   });
 
-
+const isMobile  = useScreenSize();
 
   const queryString = Object.entries(filters)
     .filter(([_, value]) => value)
@@ -80,61 +82,11 @@ const JobListingPage: React.FC<JobListingPageProps> = ({ onSelectJob }) => {
     }
   }, [savedJobs]);
 
-  // const handleToggleSave = (jobId: string) => {
-  //     console.log('Toggling job', jobId, 'saved:', savedJobIds.has(jobId));
-  //   if (savedJobIds.has(jobId)) {
-  //     unsaveJob(jobId)
-
-  //     setSavedJobIds(prev => {
-  //       const newSet = new Set(prev)
-  //       newSet.delete(jobId)
-  //       return newSet
-  //     })
-  //   } else {
-  //     saveJob(jobId)
-  //     setSavedJobIds(prev => new Set(prev).add(jobId))
-  //   }
-  // }
-
-  // const handleToggleSave = (jobId: string) => {
-  //   const isSaved = savedJobIds.has(jobId)
-
-  //   if (isSaved) {
-  //     unsaveJob(jobId, {
-  //       onSuccess: () => {
-  //         setSavedJobIds((prev) => {
-  //           const newSet = new Set(prev)
-  //           newSet.delete(jobId)
-  //           return newSet
-  //         })
-  //       }
-  //     })
-  //   } else {
-  //     saveJob(jobId, {
-  //       onSuccess: () => {
-  //         setSavedJobIds((prev) => new Set(prev).add(jobId))
-  //       }
-  //     })
-  //   }
-  // }
-
-  // const isSaved = savedJobIds.has(jobId)
 
   const handleToggleSave = (jobId: string) => {
     const isSaved = savedJobIds.has(jobId)
 
-    // if (isSaved) {
-    //   unsaveJob(jobId)
-    //   console.log('unsaveJob', jobId)
-    // } else {
-    //   saveJob(jobId)
-    //   console.log('saveJob', jobId)
-    // }
-    // setSavedJobIds(prev => {
-    // const newSet = new Set(prev);
-    // isSaved ? newSet.delete(jobId) : newSet.add(jobId);
-    // return newSet;
-    // })
+
 
     if (isSaved) {
       unsaveJob(jobId)
@@ -164,7 +116,6 @@ const JobListingPage: React.FC<JobListingPageProps> = ({ onSelectJob }) => {
 
     const [searchParams, setSearchParams] = useSearchParams();
   const selectedJobId = searchParams.get('jobId');
-  // const navigate = useNavigate();
 
   const handlePageChange = (newPage) => {
     if (newPage >= 1 && newPage <= totalPages) {
@@ -194,18 +145,18 @@ const JobListingPage: React.FC<JobListingPageProps> = ({ onSelectJob }) => {
     setSearchParams(newParams);
   }
 
-
-
+  const handleUnselectJob = () => {
+  const newParams = new URLSearchParams(searchParams);
+  newParams.delete('jobId');
+  setSearchParams(newParams);
+};
 
 
   return (
     <div className="job-listing-page">
 
-
       <div className="filter-container">
       <div className="filter-section">
-        {/* <h2>Filter Jobs</h2> */}
-
 
         <div className="filter-controls">
           <div className="search-bar">
@@ -318,22 +269,38 @@ const JobListingPage: React.FC<JobListingPageProps> = ({ onSelectJob }) => {
         ))}
       </div>
 
-
-
-
-      <AnimatePresence mode="wait">
+<AnimatePresence mode="wait">
   {selectedJobId && (
-    <motion.div
-      key={selectedJobId}
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: 10 }}
-      transition={{ duration: 0.2 }}
-    >
-    {selectedJobId ? <JobDetail jobId={selectedJobId} /> : ""}
-    </motion.div>
+    isMobile ? (
+      <motion.div
+        key={selectedJobId}
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: 10 }}
+        transition={{ duration: 0.2 }}
+      >
+        <JobDetailPopup isOpen={!!selectedJobId} onClose={handleUnselectJob} jobId={selectedJobId} />
+      </motion.div>
+    ) : (
+      <motion.div
+        key={selectedJobId}
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: 10 }}
+        transition={{ duration: 0.2 }}
+      >
+        <JobDetail jobId={selectedJobId} />
+      </motion.div>
+    )
   )}
 </AnimatePresence>
+
+
+
+
+
+
+
 
 
 

@@ -177,7 +177,7 @@ const JobDetail = ( { jobId }: JobDetailProps) => {
 </div>
 
 
-
+{/* 
       {showPopup && (
         <Popup
           isOpen={showPopup}
@@ -187,7 +187,7 @@ const JobDetail = ( { jobId }: JobDetailProps) => {
           confirmText="OK"
           onConfirm={handlePopupClose}
         />
-      )}
+      )} */}
 
 
     </div>

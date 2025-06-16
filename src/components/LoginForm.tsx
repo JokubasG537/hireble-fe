@@ -8,7 +8,7 @@ interface LoginForm {
   password: string;
 }
 
-export default function Login() {
+export default function LoginForm() {
   const { dispatch } = useContext(UserContext);
   const [form, setForm] = useState<LoginForm>({ email: "", password: "" });
   const [error, setError] = useState<string | null>(null);
