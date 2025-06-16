@@ -2,18 +2,16 @@ import { useEffect, useRef } from 'react';
 import ReactDOM from 'react-dom';
 import closeImg from '../assets/icons8-close.svg';
 import { Link } from 'react-router-dom';
-import '../style/Login-Popup.scss'; 
+import '../style/Login-Popup.scss';
+import LogoutButton from './LogoutButton';
 
-const portalRoot = document.getElementById('portal-root') || document.body;
+const portalRoot = document.getElementById('logout-root') || document.body;
 
-const Popup = ({
+const LogoutPopup = ({
   isOpen,
   onClose,
-  message = '',
-  confirmText = 'OK',
-  cancelText = 'Cancel',
   onConfirm,
-  showCancel = true,
+  // showCancel = true,
   children,
 }) => {
   const modalRef = useRef(null);
@@ -56,31 +54,25 @@ const Popup = ({
 
   return ReactDOM.createPortal(
     <div className="overlay" onClick={onClose}>
-      <div className="modal" onClick={(e) => e.stopPropagation()} ref={modalRef}>
-        <button onClick={onConfirm} className="closeButton">
+      <div className="modal-3" onClick={(e) => e.stopPropagation()} ref={modalRef}>
+        <button onClick={onClose} className="closeButton">
           <img src={closeImg} alt="close button icon" />
         </button>
 
         <div className="container">
-          <div className="imageContainer">
 
-          </div>
 
           <div className="textWrapper">
             <h2 className="title">
-              Log in to unlock full features
+              Log out of your account?
             </h2>
             <p className="message">
-              To access this feature, please log in to your account. Enjoy smarter job tracking, resume tools, and saved job listings.
+              You will need to sign in again to access your saved jobs, applications, and preferences.
             </p>
 
             <div className="linksContainer">
-              <Link to="/login" className="link">
-                Log in
-              </Link>
-              <Link to="/register" className="link">
-                Register
-              </Link>
+              <LogoutButton/>
+              <button className='cancel-button' onClick={onClose}>Cancel</button>
             </div>
           </div>
         </div>
@@ -92,4 +84,4 @@ const Popup = ({
   );
 };
 
-export default Popup;
+export default LogoutPopup;

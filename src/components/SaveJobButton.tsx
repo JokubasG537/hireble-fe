@@ -42,16 +42,23 @@ const SaveJobButton: React.FC<SaveJobButtonProps> = ({
         <Button
           variant="outline"
           size="sm"
-          leftSection={<Bookmark size={16} />}
-          className={classes.saveButtonOutline}
+           leftSection={isSaved ? <BookmarkCheck size={24} /> : <Bookmark size={16} />}
+          className={classes.saveButton }
           onClick={handlePopupShow}
         >
           Save
         </Button>
       )}
 
-      {showPopup && (
-        <Popup onClose={handlePopupClose} />
+  {showPopup && (
+        <Popup
+          isOpen={showPopup}
+          onClose={handlePopupClose}
+          title="Notice"
+          message="You need to be logged in to apply for this job."
+          confirmText="OK"
+          onConfirm={handlePopupClose}
+        />
       )}
     </>
   );

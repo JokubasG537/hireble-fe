@@ -7,17 +7,37 @@
   font-family: "Poppins", sans-serif;
   // padding: 20px;
 
-  .filter-container {
-    background-image: url(https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8YnVzaW5lc3MlMjBjaXR5fGVufDB8fDB8fHww);
-    min-height: 55vh;
+.filter-container {
+  position: relative;
+  min-height: 55vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    background-image: url(/src/assets/046009City_skyline_001_generated.jpg);
+    // background-image: url(https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
+    filter: blur(3px);
+    z-index: 1;
   }
+
+
+  > * {
+    position: relative;
+    z-index: 2;
+  }
+}
+
 
   h1 {
     text-align: center;
@@ -26,13 +46,13 @@
   }
 
   .filter-section {
-    background-color: rgba(0, 0, 0, 0.5);
-    border: 1px solid c.$color-border-reverse;
+    background-color: c.$color-transparent;
+    // border: 1px solid c.$color-border-reverse;
     border-radius: 8px;
     padding: 20px;
     margin-bottom: 20px;
     position: relative;
-    max-width: 50%;
+    // width: 50%;
     margin: 0 auto;
     margin-bottom: 10px;
 
@@ -47,11 +67,13 @@
     }
 
     .filter-controls {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 15px;
-      position: relative;
-      bottom: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    position: relative;
+    bottom: 0;
+    max-width: 1000px;
+    margin: 0 auto;
 
       input,
       select {
@@ -60,7 +82,9 @@
         border: 1px solid c.$color-border;
         border-radius: 4px;
         background-color: c.$color-bg;
+        // background-color: green;
         color: c.$color-text;
+        width: 100%;
 
         &:focus {
           outline: none;
@@ -73,15 +97,16 @@
       }
 
       .clear-btn {
-        background-color: c.$color-accent;
+        background-color: c.$color-brand-primary;
         color: c.$color-text-reverse;
         border: none;
         padding: 10px 20px;
         border-radius: 4px;
         cursor: pointer;
+        transition: background-color 0.18s, color 0.18s;
 
         &:hover {
-          background-color: c.$color-text;
+          background-color: c.$color-brand-hover;
           color: c.$color-bg;
         }
       }
@@ -89,10 +114,12 @@
 
     .active-filters {
       margin-top: 15px;
+      max-width: 1000px;
+      margin: 0 auto;
 
       .filter-tag {
         display: inline-block;
-        background-color: c.$color-accent;
+        background-color: c.$color-brand-primary;
         color: c.$color-text-reverse;
         padding: 5px 10px;
         border-radius: 4px;
@@ -129,6 +156,10 @@
   gap: 2rem;
   max-width: 1200px;
   margin: 0 auto;
+
+  @media (max-width: 660px) {
+    grid-template-columns: 1fr;
+}
 }
 
 
@@ -163,20 +194,23 @@
 
     .page-btn,
     .page-number {
-      background-color: c.$color-surface;
+      background-color: c.$color-light-btn;
       color: c.$color-text;
       border: 1px solid c.$color-border;
-      padding: 8px 12px;
-      border-radius: 4px;
+      padding: 0.4rem 0.6rem;
+      border-radius: 10px;
+
       cursor: pointer;
+      transition: background-color 0.18s, color 0.18s;
 
       &.active {
-        background-color: c.$color-accent;
-        color: c.$color-text-reverse;
+        background-color: c.$color-light-btn-hover;
+        // color: c.$color-brand-light;
+         color: c.$color-text;
       }
 
       &:hover {
-        background-color: c.$color-accent;
+        background-color: c.$color-brand-primary;
         color: c.$color-text-reverse;
       }
 
@@ -196,4 +230,43 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+}
+
+.filter-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100% !important;
+}
+.filters{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.search-bar {
+width: 100% !important;
+
+.search-input {
+  width: 100% !important;
+  height: 3.75rem;
+    min-height: 3.75rem;
+    padding-top: 0.5rem;
+    padding-right: 0.5rem;
+    padding-bottom: 0.5rem;
+    padding-left: 0.25rem;
+    text-overflow: ellipsis;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    border: 1px solid black !important;
+
+
+
+
+}
+}
+
+.filters {
+  width: 100% ;
+
 }

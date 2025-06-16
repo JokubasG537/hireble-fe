@@ -8,11 +8,13 @@ const LogoutButton: React.FC = () => {
 
   const handleLogout = () => {
     dispatch({ type: "LOGOUT" });
-    navigate("/");
+    window.location.href = "/login";
   };
 
   return (
-    <button onClick={handleLogout}>
+    <button
+     onClick={handleLogout}
+     className="logout-button-danger">
       Logout
     </button>
   );

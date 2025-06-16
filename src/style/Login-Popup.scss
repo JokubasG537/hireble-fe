@@ -1,0 +1,165 @@
+@use 'colors' as c;
+@use './res' as res;
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+   overflow: hidden;
+}
+
+// .no-scroll {
+//   overflow: hidden;
+// }
+
+
+.image {
+  max-width: 100%;
+
+}
+
+.modal {
+  background: #fff;
+  padding: 1.5rem 2rem;
+  border-radius: 10px;
+  max-width: 750px;
+  width: 90%;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+  outline: none;
+  position: relative;
+
+}
+
+.closeButton {
+  position: absolute;
+  position: absolute;
+    top: 0.1rem;
+    right: 0.5rem;
+    cursor: pointer;
+    border: none;
+    background-color: transparent;
+    padding: 0.5rem;
+
+  img {
+    width: 1.2rem;
+
+  }
+
+  &:hover {
+      color: c.$color-accent;
+      background-color: c.$color-brand-light;
+      border-radius: 100px;
+
+    }
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 5rem;
+
+  @include res.tablet {
+    gap: 0.2rem;
+
+  }
+
+  @include res.mobile {
+   flex-direction: column;
+}
+
+}
+
+
+.imageContainer {
+  min-width: 300px;
+  height: 200px;
+  background-image: url('https://img.freepik.com/free-vector/marketing-professional-presenting-financial-chart-boss_74855-10928.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  @include res.small-tablet {
+    min-width: 200px;
+    background-size: contain;
+
+}
+
+ @include res.mobile {
+   min-width: 300px;
+}
+}
+
+.title {
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 22px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.message {
+  margin-bottom: 20px;
+  font-size: 16px;
+  line-height: 1.4;
+  text-decoration: none;
+  display: flex;
+  text-align: center;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.confirmButton {
+  background-color: #007bff;
+  border: none;
+  border-radius: 6px;
+  color: #fff;
+  padding: 10px 20px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.cancelButton {
+  background-color: #ddd;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.linksContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  justify-content: center;
+  align-items: center;
+
+  a {
+      background-color: c.$color-brand-primary;
+      color: c.$color-text-reverse;
+      border: none;
+      padding: 0.4rem 0.6rem;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.18s, color 0.18s;
+      display: flex;
+      align-items: center;
+      width: fit-content;
+
+      &:hover {
+       background-color: c.$color-brand-hover;
+      }
+  }
+}
