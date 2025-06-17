@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 import { useApiMutation } from "../hooks/useApiQuery";
 import { UserContext } from "../contexts/UserContext";
 import { useNavigate } from "react-router-dom";
+// import { Toaster } from "sonner";
 
 interface LoginForm {
   email: string;
@@ -40,11 +41,11 @@ export default function LoginForm() {
 
 
   return (
-  <div style={{ maxWidth: 400, margin: "2rem auto" }}>
-    <h2>Login</h2>
+  <div >
+
     <form onSubmit={handleSubmit} autoComplete="off">
       <div>
-        <div>
+        <div className="form-group">
           <label htmlFor="email">Email</label>
           <input
             id="email"
@@ -57,7 +58,7 @@ export default function LoginForm() {
           />
         </div>
 
-        <div>
+        <div className="form-group">
           <label htmlFor="password">Password</label>
           <input
             id="password"
@@ -70,14 +71,14 @@ export default function LoginForm() {
         </div>
       </div>
 
-      <div>
+      <div className="form-group">
         <button type="submit" disabled={loginMutation.isLoading}>
           {loginMutation.isLoading ? (
             <div>
               <div></div>
             </div>
           ) : (
-            "Login"
+            "Sign In"
           )}
         </button>
       </div>

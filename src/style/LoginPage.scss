@@ -1,0 +1,154 @@
+@use 'colors' as c;
+@use './res' as res;
+
+.login-page {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+
+h1 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  font-size: 2.5rem;
+}
+
+.right-side-wrapper {
+  display: block;
+
+  height: 100vh;
+  flex-direction: column;
+  width: 70%;
+  background-size: contain;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  background-color: c.$color-bg-reverse;
+  
+}
+
+.left-side-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  height: 100vh;
+  // width: 30%;
+  max-width: 400px;
+  background-color: c.$color-bg;
+
+  .wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem;
+    height: 100%;
+    padding: 2rem;
+  }
+
+  .create-account {
+
+    color: c.$color-muted-text;
+    a {
+      color: c.$color-bg-reverse;
+      text-decoration: underline;
+      font-weight: 500;
+    }
+  }
+
+  .divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+
+
+  &::before,
+  &::after {
+    content: "";
+    flex: 1;
+    border-bottom: 1px solid #ccc;
+  }
+
+  &::before {
+    margin-right: 0.75rem;
+  }
+
+  &::after {
+    margin-left: 0.75rem;
+  }
+
+  span {
+    color: #666;
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+}
+
+.login-options {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  .login-opt {
+     padding: 8px 10px;
+    background-color: c.$color-bg;
+      color: c.$color-muted-text;
+      border: 1px solid c.$color-border;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: background-color 0.18s, color 0.18s;
+      display: flex;
+      align-items: center;
+      gap: 10%;
+      text-wrap: nowrap;
+  }
+}
+
+}
+}
+
+  .l-reversed {
+    color: c.$color-bg-reverse !important;
+  }
+
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3em;
+
+    input {
+      padding: 0.3rem;
+      border-radius: 12px;
+      border: 1px solid c.$color-border;
+      background-color: c.$color-bg;
+
+
+      &:focus {
+        outline: none;
+        border-color: c.$color-bg-reverse;
+        box-shadow: 0 0 0 2px rgba(37, 87, 167, 0.2);
+      }
+
+    }
+
+    label {
+      font-size: 0.9rem;
+      color: c.$color-muted-text;
+    }
+
+    &:last-child {
+      margin-bottom: 1rem;
+    }
+
+    button {
+      padding: 8px 10px;
+      background-color: c.$color-brand-primary;
+      color: c.$color-text-reverse;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background-color 0.18s, color 0.18s;
+
+      &:hover {
+        background-color: c.$color-brand-hover;
+      }
+    }
+  }
