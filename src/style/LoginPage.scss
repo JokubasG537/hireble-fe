@@ -13,17 +13,94 @@ h1 {
 }
 
 .right-side-wrapper {
-  display: block;
-
   height: 100vh;
-  flex-direction: column;
   width: 70%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   background-size: contain;
-  background-position: 50% 50%;
+  background-position: center;
   background-repeat: no-repeat;
   background-color: c.$color-bg-reverse;
-  
+  padding: 2rem;
+
+
+
+  .card {
+    z-index: 11;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: c.$color-bg;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    width: 100%;
+    max-width: 600px;
+
+
+
+    h2 {
+      margin-bottom: 1rem;
+    }
+
+    .companies-carousel-description-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+      width: 100%;
+
+      p {
+        text-align: center;
+        font-size: 1rem;
+        width: 80%;
+        color: c.$color-muted-text;
+        line-height: 1.5;
+        margin: 0;
+      }
+
+      .swiper {
+        width: 100%;
+
+        .swiper-slide {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          background-color: c.$color-bg;
+          padding: 1rem;
+          border-radius: 8px;
+          transition: transform 0.3s ease;
+          // box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+          text-align: center;
+
+          img {
+            width: 80px;
+            object-fit: cover;
+            // border-radius: 50%;
+            margin-bottom: 1rem;
+          }
+
+          h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+          }
+
+          p {
+            font-size: 0.9rem;
+            color: c.$color-muted-text;
+          }
+        }
+      }
+    }
+  }
 }
+
 
 .left-side-wrapper {
   display: flex;
@@ -54,6 +131,7 @@ h1 {
   }
 
   .divider {
+    margin-bottom: 1rem;
   display: flex;
   align-items: center;
   text-align: center;

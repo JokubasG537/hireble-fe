@@ -68,7 +68,7 @@ const Nav = () => {
         <Button
           color="inherit"
           component={Link}
-          to="/company-dashboard"
+          to="/dashboard"
           className="nav-button"
         >
           Company Dashboard
@@ -80,7 +80,7 @@ const Nav = () => {
           <Button
             color="inherit"
             component={Link}
-            to="/dashboard"
+            to="/user-dashboard"
             className="nav-button"
           >
             User Dashboard

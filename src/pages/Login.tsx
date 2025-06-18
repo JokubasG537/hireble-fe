@@ -50,11 +50,11 @@ export default function Login() {
       <div className="wrapper">
         <div className="card">
           <h2>
-            Land your dream job faster
+            Trusted by industry leaders
           </h2>
           <div className="companies-carousel-description-wrapper">
             <p>
-            Join 10,000+ professionals who found their perfect match through our AI-powered job matching system
+            From Fortune 500 to cutting-edge startups - connect with employers actively seeking your talent.
           </p>
           <SwiperDecoration />
           </div>

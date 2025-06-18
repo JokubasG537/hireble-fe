@@ -1,8 +1,8 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useApiMutation } from "../hooks/useApiQuery";
 import { UserContext } from "../contexts/UserContext";
 import { useNavigate } from "react-router-dom";
-// import { Toaster } from "sonner";
+import { toast, Toaster } from "sonner";
 
 interface LoginForm {
   email: string;
@@ -24,15 +24,24 @@ export default function LoginForm() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
     loginMutation.mutate(form, {
       onSuccess: (data) => {
         dispatch({ type: "LOGIN", payload: { user: data.user, token: data.token } });
-        navigate("/");
+
+
+        toast.success("Login successful!");
+
+        setTimeout(() => {
+          navigate("/");
+        }, 2000);
+
       },
-      onError: (err: any) => {
+      onError: (err: Error) => {
         setError(err.message || "Login failed");
       },
     });
