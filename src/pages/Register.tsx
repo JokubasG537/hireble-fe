@@ -7,7 +7,12 @@ import Loader from "../components/Loader";
 import RegisterStep1UserForm from "../components/RegisterStep1UserForm";
 import RegisterStep2CompanyForm from "../components/RegisterStep2CompanyForm";
 import "../style/Register.scss";
+import SwiperDecoration from "../components/SwiperDecoration";
+import { AnimatePresence } from "framer-motion";
 
+import { Link } from "react-router-dom";
+import googleIcon from "../assets/auth/Rectangle.svg";
+import fbIcon from "../assets/auth/Rectangle-1.svg";
 export interface RegisterForm {
   username: string;
   email: string;
@@ -82,7 +87,7 @@ export default function Register() {
 
   if (registerMutation.isLoading) return <Loader />;
 
-  // Animation variants
+
   const pageVariants = {
     initial: (direction: string) => ({
       x: direction === "forward" ? 300 : -300,
@@ -104,43 +109,93 @@ export default function Register() {
     duration: 0.5
   };
 
-  return (
-    <div className="register-container">
-      <h1>Register {currentStep > 1 ? `- Step ${currentStep}` : ""}</h1>
-
-      <motion.div
-        key={currentStep}
-        custom={direction}
-        initial="initial"
-        animate="animate"
-        exit="exit"
-        variants={pageVariants}
-        transition={pageTransition}
-        className="form-container"
-      >
+return (
+  <div className="register-page">
+    <div className="left-side-wrapper">
+      <AnimatePresence mode="wait" initial={false}>
         {currentStep === 1 && (
-          <div className="step-container">
-            {step1Error && <div className="error-message">{step1Error}</div>}
-            <RegisterStep1UserForm
-              form={form}
-              setForm={setForm}
-              onSubmit={handleUserSubmit}
-              isLoading={registerMutation.isLoading}
-              error={step1Error}
-            />
-          </div>
+          <motion.div
+            key="step1"
+            custom={direction}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            variants={pageVariants}
+            transition={pageTransition}
+            className="form-container"
+          >
+            <div className="step-container">
+              {step1Error && <div className="error-message">{step1Error}</div>}
+              <div className="wrapper">
+                <Link to="/" className="logo l-reversed">Hireble</Link>
+                <h1 className="login-title">Register</h1>
+                <span className="create-account">
+                  Already have an account? <Link to="/login">Log in</Link>
+                </span>
+
+                <RegisterStep1UserForm
+                  form={form}
+                  setForm={setForm}
+                  onSubmit={handleUserSubmit}
+                  isLoading={registerMutation.isLoading}
+                  error={step1Error}
+                />
+
+                <div className="other-login-options">
+                  <span className="divider">or</span>
+                  <div className="login-options">
+                    <button className="login-opt">
+                      <img src={googleIcon} alt="google icon" />
+                      Sign in with Google
+                    </button>
+                    <button className="login-opt">
+                      <img src={fbIcon} alt="fb icon" />
+                      Sign in with Facebook
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
         )}
 
         {currentStep === 2 && (
-          <div className="step-container">
-            {step2Error && <div className="error-message">{step2Error}</div>}
-            <RegisterStep2CompanyForm />
-            <button onClick={goBackToStep1} className="back-btn">
-              Back to Step 1
-            </button>
-          </div>
+          <motion.div
+            key="step2"
+            custom={direction}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            variants={pageVariants}
+            transition={pageTransition}
+            className="form-container"
+          >
+            <div className="step-container">
+              {step2Error && <div className="error-message">{step2Error}</div>}
+              <RegisterStep2CompanyForm />
+              {/* <button onClick={goBackToStep1} className="back-btn">
+                Back to Step 1
+              </button> */}
+            </div>
+          </motion.div>
         )}
-      </motion.div>
+      </AnimatePresence>
     </div>
-  );
+
+    <div className="right-side-wrapper">
+      <div className="wrapper">
+        <div className="card">
+          <h2>Trusted by industry leaders</h2>
+          <div className="companies-carousel-description-wrapper">
+            <p>
+              From Fortune 500 to cutting-edge startups – connect with employers actively seeking your talent.
+            </p>
+            <SwiperDecoration />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
 }

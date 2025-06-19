@@ -53,51 +53,50 @@ export default function CompanySearchAutocomplete() {
     );
   };
 
-  return (
-    <div className="company-search-container">
-      <input
-        type="text"
-        className="company-search-input"
-        placeholder="Search for companies..."
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        autoComplete="off"
-      />
+ return (
+  <div>
 
-      {isLoading && <div className="search-loading">Searching...</div>}
-      {error && <div className="search-error">Error: {error.message}</div>}
+    <div className="form-group">
+    <input
+      type="text"
+      placeholder="Search for companies..."
+      value={searchTerm}
+      onChange={(e) => setSearchTerm(e.target.value)}
+      autoComplete="off"
+    />
 
-      {data?.companies && data.companies.length > 0 && (
-        <div className="search-results">
-          {data.companies.map((company) => (
-            <div key={company._id} className="company-item">
-              <div className="company-details">
-                <div className="company-name">{company.name}</div>
-                {company.industry && (
-                  <div className="company-meta">{company.industry}</div>
-                )}
-                {company.location && (
-                  <div className="company-meta">{company.location}</div>
-                )}
-              </div>
-              <button
-                onClick={() => handleJoinRequest(company._id)}
-                disabled={joinRequestMutation.isLoading}
-                className="request-button"
-              >
-                {joinRequestMutation.isLoading ? "Sending..." : "Request to Join"}
-              </button>
-            </div>
-          ))}
-        </div>
-      )}
-
-      {joinRequestMutation.isSuccess && (
-        <div className="success-message">
-          ✓ Join request sent successfully!
-        </div>
-      )}
     </div>
-  );
+
+    {isLoading && <div>Searching...</div>}
+    {error && <div>Error: {error.message}</div>}
+
+    {data?.companies && data.companies.length > 0 && (
+      <div className="results-container">
+        {data.companies.map((company) => (
+          <div key={company._id}
+          className="result-wrapper">
+            <div className="result-item">
+
+              <div>{company.name}</div>
+              {company.industry && <div className="company-industry">{company.industry}</div>}
+
+            </div>
+            <button
+              onClick={() => handleJoinRequest(company._id)}
+              disabled={joinRequestMutation.isLoading}
+            >
+              {joinRequestMutation.isLoading ? "Sending..." : "Request to Join"}
+            </button>
+          </div>
+        ))}
+      </div>
+    )}
+
+    {joinRequestMutation.isSuccess && (
+      <div>✓ Join request sent successfully!</div>
+    )}
+  </div>
+);
+
 
 }

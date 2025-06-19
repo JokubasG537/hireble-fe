@@ -46,7 +46,7 @@ export default function Login() {
       </div>
     </div>
     <div className="right-side-wrapper">
-      <div className="decoration-ball"></div>
+
       <div className="wrapper">
         <div className="card">
           <h2>

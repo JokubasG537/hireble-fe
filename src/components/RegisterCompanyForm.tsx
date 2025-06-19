@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 import { useApiMutation } from "../hooks/useApiQuery";
 import { UserContext } from "../contexts/UserContext";
 import { useNavigate } from "react-router-dom";
+import styled from 'styled-components';
 
 interface CompanyForm {
   name: string;
@@ -61,113 +62,109 @@ export default function RegisterCompanyForm() {
     });
   };
 
-  return (
-    <form onSubmit={handleSubmit} className="register-form side-form">
-      <div className="register-form__field-group">
-        <div className="register-form__input-field">
-          <label htmlFor="name" className="register-form__label">Company Name</label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            value={form.name}
-            onChange={handleChange}
-            className="register-form__input"
-            required
-          />
-        </div>
+  
 
-        <div className="register-form__input-field">
-          <label htmlFor="description" className="register-form__label">Description</label>
-          <textarea
-            id="description"
-            name="description"
-            value={form.description}
-            onChange={handleChange}
-            className="register-form__input"
-            required
-          />
-        </div>
-
-        <div className="register-form__input-field">
-          <label htmlFor="location" className="register-form__label">Location</label>
-          <input
-            type="text"
-            id="location"
-            name="location"
-            value={form.location}
-            onChange={handleChange}
-            className="register-form__input"
-            required
-          />
-        </div>
-
-        <div className="register-form__input-field">
-          <label htmlFor="website" className="register-form__label">Website</label>
-          <input
-            type="url"
-            id="website"
-            name="website"
-            value={form.website}
-            onChange={handleChange}
-            className="register-form__input"
-            required
-          />
-        </div>
-
-        <div className="register-form__input-field">
-          <label htmlFor="industry" className="register-form__label">Industry</label>
-          <input
-            type="text"
-            id="industry"
-            name="industry"
-            value={form.industry}
-            onChange={handleChange}
-            className="register-form__input"
-            required
-          />
-        </div>
-
-        <div className="register-form__input-field">
-          <label htmlFor="logoUrl" className="register-form__label">Logo URL (optional)</label>
-          <input
-            type="url"
-            id="logoUrl"
-            name="logoUrl"
-            value={form.logoUrl}
-            onChange={handleChange}
-            className="register-form__input"
-          />
-        </div>
+ return (
+  <form onSubmit={handleSubmit}>
+    <div className="">
+      <div className="form-group">
+        <label htmlFor="name">Company Name</label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          value={form.name}
+          onChange={handleChange}
+          required
+        />
       </div>
 
-      <div className="register-form__actions">
-        <button
-          type="submit"
-          className="register-form__submit-button"
-          disabled={createCompanyMutation.isLoading}
-        >
-          {createCompanyMutation.isLoading ? (
-            <div className="register-form__loading-spinner">
-              <div className="register-form__spinner-inner"></div>
-            </div>
-          ) : (
-            "Create Company"
-          )}
-        </button>
+      <div  className="form-group">
+        <label htmlFor="description">Description</label>
+        <textarea
+          id="description"
+          name="description"
+          value={form.description}
+          onChange={handleChange}
+          required
+        />
       </div>
 
-      {error && (
-        <div className="register-form__error">
-          {error}
-        </div>
-      )}
+      <div  className="form-group">
+        <label htmlFor="location">Location</label>
+        <input
+          type="text"
+          id="location"
+          name="location"
+          value={form.location}
+          onChange={handleChange}
+          required
+        />
+      </div>
 
-      {createCompanyMutation.isSuccess && (
-        <div className="register-form__success">
-          Company created successfully!
-        </div>
-      )}
-    </form>
-  );
+      <div  className="form-group">
+        <label htmlFor="website">Website</label>
+        <input
+          type="url"
+          id="website"
+          name="website"
+          value={form.website}
+          onChange={handleChange}
+          required
+        />
+      </div>
+
+      <div  className="form-group">
+        <label htmlFor="industry">Industry</label>
+        <input
+          type="text"
+          id="industry"
+          name="industry"
+          value={form.industry}
+          onChange={handleChange}
+          required
+        />
+      </div>
+
+      <div  className="form-group">
+        <label htmlFor="logoUrl">Logo URL (optional)</label>
+        <input
+          type="url"
+          id="logoUrl"
+          name="logoUrl"
+          value={form.logoUrl}
+          onChange={handleChange}
+        />
+      </div>
+    </div>
+
+    <div  className="form-group">
+      <button
+        type="submit"
+        disabled={createCompanyMutation.isLoading}
+      >
+        {createCompanyMutation.isLoading ? (
+          <div>
+            <div></div>
+          </div>
+        ) : (
+          "Create Company"
+        )}
+      </button>
+    </div>
+
+    {error && (
+      <div>
+        {error}
+      </div>
+    )}
+
+    {createCompanyMutation.isSuccess && (
+      <div>
+        Company created successfully!
+      </div>
+    )}
+  </form>
+);
+
 }

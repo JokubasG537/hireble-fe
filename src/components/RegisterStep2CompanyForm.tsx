@@ -14,39 +14,57 @@ export default function RegisterStep2CompanyForm() {
   };
 
   return (
-    <div>
-      {/* <h2 className="form-title">Company Selection</h2> */}
+  <div className="wrapper">
+    <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+      <Tabs
+        value={tabIndex}
+        onChange={handleTabChange}
+        aria-label="Company selection tabs"
+        TabIndicatorProps={{ style: { backgroundColor: '#2557a7' } }}
+      >
+        <Tab
+          label="Existing Company"
+          sx={{
+            color: '#000000',
+            '&.Mui-selected': {
+              color: '#2557a7',
+            },
+            '&:hover': {
+              color: '#2557a7',
+            },
+          }}
+        />
+        <Tab
+          label="New Company"
+          sx={{
+            color: '#000000',
+            '&.Mui-selected': {
+              color: '#2557a7',
+            },
+            '&:hover': {
+              color: '#2557a7',
+            },
+          }}
+        />
+      </Tabs>
+    </Box>
 
-      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-  <Tabs
-  className="tabs"
-    value={tabIndex}
-    onChange={handleTabChange}
-    aria-label="Company selection tabs"
-    textColor="inherit"
-    TabIndicatorProps={{ style: { backgroundColor: '#000000' } }}
-    sx={{ color: '#ffffff' }}
-  >
-    <Tab label="Search for Existing Company" sx={{ color: '#000000' }} />
-    <Tab label="Register a New Company" sx={{ color: '#000000' }} />
-  </Tabs>
-</Box>
+    {tabIndex === 0 && (
+      <div>
+        {isLoading ? (
+          <CircularProgress />
+        ) : (
+          <CompanySearchAutocomplete setIsLoading={setIsLoading} />
+        )}
+      </div>
+    )}
 
-      {tabIndex === 0 && (
-        <div>
-          {isLoading ? (
-            <CircularProgress />
-          ) : (
-            <CompanySearchAutocomplete setIsLoading={setIsLoading} />
-          )}
-        </div>
-      )}
+    {tabIndex === 1 && (
+      <div>
+        <RegisterCompanyForm />
+      </div>
+    )}
+  </div>
+);
 
-      {tabIndex === 1 && (
-        <div>
-          <RegisterCompanyForm />
-        </div>
-      )}
-    </div>
-  );
 }

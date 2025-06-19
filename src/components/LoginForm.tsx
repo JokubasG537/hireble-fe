@@ -34,7 +34,7 @@ export default function LoginForm() {
         dispatch({ type: "LOGIN", payload: { user: data.user, token: data.token } });
 
 
-        toast.success("Login successful!");
+        toast.success("Welcome back!");
 
         setTimeout(() => {
           navigate("/");

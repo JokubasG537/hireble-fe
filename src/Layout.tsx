@@ -5,8 +5,8 @@ import Footer from "./components/Footer";
 export default function Layout() {
   const {pathname} = useLocation()
 
-  const hideOn = ['/login', 'register']
-  const hideLayout = hideOn.includes(pathname);
+  const hideOn = ['/login', '/register']
+  const hideLayout = hideOn.some(path => pathname.startsWith(path));
 
   return (
   <>
