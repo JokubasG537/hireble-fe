@@ -209,6 +209,20 @@ h1 {
 
     }
 
+    textarea {
+      padding: 0.3rem;
+      border-radius: 12px;
+      border: 1px solid c.$color-border;
+      background-color: c.$color-bg;
+      resize: vertical;
+
+      &:focus {
+        outline: none;
+        border-color: c.$color-bg-reverse;
+        box-shadow: 0 0 0 2px rgba(37, 87, 167, 0.2);
+      }
+    }
+
     label {
       font-size: 0.9rem;
       color: c.$color-muted-text;
