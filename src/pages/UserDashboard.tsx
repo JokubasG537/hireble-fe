@@ -73,6 +73,11 @@ const UserDashboard: React.FC = () => {
         </div>
       </section>
 
+      <section className="user-saved-jobs-section">
+        <h3>Saved Jobs</h3>
+        <UserSavedJobsDashboard />
+      </section>
+
       <section className="user-resume-section">
         <ResumeList />
       </section>
