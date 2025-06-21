@@ -17,21 +17,32 @@ export default function SwiperDecoration() {
   const images = [compImg1, compImg2, compImg3, compImg4, compImg5];
 
  return (
-    <Swiper
-      className="mySwiper"
-      modules={[Autoplay]}
-      spaceBetween={20}
-      slidesPerView={3}
-      loop={true}
-      autoplay={{
-        delay: 0,
-        disableOnInteraction: false,
-        pauseOnMouseEnter: false,
-      }}
-      speed={7000}
-      allowTouchMove={false}
-      grabCursor={false}
-    >
+<Swiper
+  className="mySwiper"
+  modules={[Autoplay]}
+  spaceBetween={20}
+  loop={true}
+  autoplay={{
+    delay: 0,
+    disableOnInteraction: false,
+    pauseOnMouseEnter: false,
+  }}
+  speed={7000}
+  allowTouchMove={false}
+  grabCursor={false}
+  breakpoints={{
+    0: {
+      slidesPerView: 1,
+    },
+    640: {
+      slidesPerView: 2,
+    },
+    950: {
+      slidesPerView: 3,
+    }
+  }}
+>
+
       {images.map((imgSrc, index) => (
         <SwiperSlide key={index}>
           <img

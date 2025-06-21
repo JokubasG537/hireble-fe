@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, use } from "react";
 import { useApiQuery, useApiMutation } from "../hooks/useApiQuery";
 import { UserContext } from "../contexts/UserContext";
+import { useNavigate } from "react-router-dom";
 
 interface Company {
   _id: string;
@@ -14,12 +15,13 @@ export default function CompanySearchAutocomplete() {
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedTerm, setDebouncedTerm] = useState("");
   const [selectedCompany, setSelectedCompany] = useState<Company | null>(null);
-
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const handler = setTimeout(() => setDebouncedTerm(searchTerm), 300);
+    const handler = setTimeout(() => setDebouncedTerm(searchTerm), 1000);
     return () => clearTimeout(handler);
   }, [searchTerm]);
+
 
 
   const { data, isLoading, error } = useApiQuery<{ companies: Company[] }>(
@@ -45,7 +47,11 @@ export default function CompanySearchAutocomplete() {
           setSearchTerm("");
           setSelectedCompany(null);
           dispatch({ type: "UPDATE_USER", payload: { joinRequestSent: true } });
+          setTimeout(() => {
+            navigate("/user-dashboard");
+          }, 2000);
         },
+
         onError: (error) => {
           console.error("Join request failed:", error);
         },
@@ -94,6 +100,7 @@ export default function CompanySearchAutocomplete() {
 
     {joinRequestMutation.isSuccess && (
       <div>✓ Join request sent successfully!</div>
+
     )}
   </div>
 );

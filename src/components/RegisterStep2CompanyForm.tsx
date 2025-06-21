@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Tab, Tabs, Box, CircularProgress } from "@mui/material";
 import CompanySearchAutocomplete from "./CompanySearch";
 import RegisterCompanyForm from "./RegisterCompanyForm";
+import { Link } from "react-router-dom";
 
 export default function RegisterStep2CompanyForm() {
   const navigate = useNavigate();
@@ -15,6 +16,8 @@ export default function RegisterStep2CompanyForm() {
 
   return (
   <div className="wrapper">
+    <Link to="/" className="logo l-reversed">Hireble</Link>
+    <span className="create-account">Choose your company setup to get started.</span>
     <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
       <Tabs
         value={tabIndex}

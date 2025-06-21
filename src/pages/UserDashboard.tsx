@@ -5,6 +5,7 @@ import { useApiQuery } from "../hooks/useApiQuery";
 import ResumeList from "../components/resume/ResumeList";
 import ImageUpload from "../components/ImageUpload";
 import "../style/UserDashboard.scss";
+import UserSavedJobsDashboard from "../components/UserSavedJobsDashboard";
 const UserDashboard: React.FC = () => {
   const { user: contextUser, token } = useContext(UserContext);
   const navigate = useNavigate();
