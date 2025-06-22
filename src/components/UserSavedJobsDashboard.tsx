@@ -1,64 +1,92 @@
-import {useState, useEffect, useContext, use} from 'react';
+import { useContext } from 'react';
 import {useApiQuery, useApiMutation} from '../hooks/useApiQuery';
 import { UserContext } from '../contexts/UserContext';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import Loader from './Loader';
+import delImg from '../assets/icons8-delete-60.png';
 
+interface SavedJob {
+  _id: string;
+  jobPost: {
+    _id: string;
+    title: string;
+  };
+}
 export default function UserSavedJobsDashboard() {
-  // const [savedJobs, setSavedJobs] = useState([]);
   const { token } = useContext(UserContext);
   const { userId } = useParams<{ userId: string }>();
 
-  const isLoggedIn = !!token
+  const isLoggedIn = Boolean(token);
+
+
   const queryKey = isLoggedIn
-    ? ['currentUserSavedJobs' ]
-    : ['userSavedJobs', userId]
+    ? ['currentUserSavedJobs']
+    : ['userSavedJobs', userId];
 
-  const url = isLoggedIn
-    ? '/users/current'
-    : `/users/${userId}`;
+  const url = isLoggedIn ? '/savedJobs' : `/users/${userId}`;
+  const enabled = isLoggedIn ? Boolean(token) : Boolean(userId);
 
-    const enabled = isLoggedIn ? !!token : !!userId
-    const { data, isLoading, error} = useApiQuery(queryKey, url, enabled)
+  const { data, isLoading, error } = useApiQuery(queryKey, url, enabled);
 
-    if (isLoading) return <div className="loading"><Loader /></div>;
-    if (error) return <div className="error">Error loading saved jobs: {(error as Error).message}</div>;
 
-    const deleteSavedJob = useApiMutation('/savedJobs/:jobId', 'DELETE', ['savedJobs'],  !!token);
+  const deleteSavedJob = useApiMutation(
+    '/savedJobs/:id',
+    'DELETE',
+    queryKey,
 
-    console.log('Saved Jobs Data:', data);
+  );
 
-const handleDeleteSavedJob = (jobId: string) => {
-  deleteSavedJob.mutate({
-    __params: { id: jobId },
-  });
-};
+  console.log('Saved Jobs Data:', data);
 
+  if (isLoading) {
     return (
-      <div className="saved-jobs-container">
-        {data.savedJobs && data.savedJobs.length > 0 ? (
-          <ul className="saved-jobs-list">
-            {data.savedJobs.map((job: any) => (
-              <li key={job._id} className="saved-job-item">
-                <div className="job-details">
-                  <h3>{job.title}</h3>
-                  <p>{job.company.name}</p>
-                  <p>{job.location}</p>
-                </div>
-                <button
-                  className="delete-saved-job-button"
-                  onClick={() => handleDeleteSavedJob(job._id)}
-                >
-                  Delete
-                </button>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <div className="no-saved-jobs">
-            <p>No saved jobs found.</p>
-          </div>
-        )}
+      <div className="loading">
+        <Loader />
       </div>
-    )
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="error">
+        Error loading saved jobs: {(error as Error).message}
+      </div>
+    );
+  }
+
+  const handleDeleteSavedJob = (jobId: string) => {
+    deleteSavedJob.mutate({ __params: { id: jobId } });
+    console.log(`Deleted saved job with ID: ${jobId}`);
+  };
+
+  return (
+  <div className="saved-jobs-container">
+    {data?.length > 0 ? (
+      data.map((job: SavedJob) => (
+        <div className="saved-job-card" key={job.jobPost._id}>
+          <Link to={`/job-posts/${job.jobPost._id}`} className="job-title">
+            {job.jobPost.title}
+          </Link>
+          { token ? (
+             <button>
+            <img
+              src={delImg}
+              alt="Delete Saved Job"
+              className="delete-saved-job-icon"
+              onClick={() => handleDeleteSavedJob(job._id)}
+            />
+          </button>
+          ) : (``)
+          }
+
+        </div>
+      ))
+    ) : (
+      <div className="no-saved-jobs">
+        No saved jobs found.
+      </div>
+    )}
+  </div>
+);
+
 }

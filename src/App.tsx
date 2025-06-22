@@ -7,14 +7,14 @@ import CompanyDashboard from './pages/CompanyDashboard';
 import UserDashboard from './pages/UserDashboard';
 import CreateJobPost from './pages/CreateJobPost';
 import JobListingPage from './pages/JobListingPage';
-import JobDetailPage from './pages/JobDetailPage';
+import JobDetailPage from '../src/pages/JobDetailPage';
 import ResumeUpload from './components/resume/ResumeUpload';
 import ResumeDetail from './components/resume/ResumeDetail';
 import ResumeEdit from './components/resume/ResumeEdit';
 import ApplicationForm from './pages/ApplicationForm';
 import CompanyPublicPage from './pages/CompanyPublicPage';
 import PublicUserProfile from './pages/PublicUserProfile';
-import Footer from './components/Footer';
+// import Footer from './components/Footer';
 import { Toaster } from 'sonner';
 import Layout from './Layout';
 
@@ -37,7 +37,7 @@ function App() {
           <Route path="/create-job" element={<CreateJobPost />} />
           <Route path="/job-posts" element={<JobListingPage />} />
           {/* Uncomment when needed */}
-          {/* <Route path="/job-posts/:jobId" element={<JobDetailPage />} /> */}
+          <Route path="/job-posts/:jobId" element={<JobDetailPage />} />
           <Route path="/resumes/upload" element={<ResumeUpload />} />
           <Route path="/resumes/:id" element={<ResumeDetail />} />
           <Route path="/resumes/edit/:id" element={<ResumeEdit />} />

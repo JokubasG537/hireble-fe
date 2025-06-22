@@ -8,7 +8,7 @@ const ImageUpload: React.FC = () => {
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const [coverImage, setCoverImage] = useState<string | null>(null);
 
-  console.log(`Token: ${token}`);
+
 
   useEffect(() => {
     const fetchUserImages = async () => {
@@ -24,7 +24,7 @@ const ImageUpload: React.FC = () => {
 
         if (!userRes.ok) throw new Error('Failed to fetch user data');
         const userData = await userRes.json();
-        console.log('User Data:', userData);
+
 
 
         if (userData.profileImage) {

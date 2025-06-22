@@ -177,7 +177,7 @@ const JobDetail = ( { jobId }: JobDetailProps) => {
 </div>
 
 
-{/* 
+{/*
       {showPopup && (
         <Popup
           isOpen={showPopup}
