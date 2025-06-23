@@ -87,49 +87,83 @@ const ImageUpload: React.FC = () => {
 
 
 
-  return (
-    <div className="image-upload-container"
-      style={{ backgroundImage: `url(${coverImage || 'https://eiti.org/sites/default/files/styles/open_graph_image/public/2024-03/EITI_Standard_background.png?itok=Z0AUKTak'})`}}  >
-
-      <div className="profile-pic"
-      style={{ backgroundImage: `url(${profileImage || 'https://st3.depositphotos.com/9998432/13335/v/450/depositphotos_133352156-stock-illustration-default-placeholder-profile-icon.jpg'})` }}>
-
-
-
-
-        <input
-          type="file"
-          accept="image/*"
-          onChange={(e) => {
-            if (e.target.files?.[0]) {
-              handleUpload(e.target.files[0], 'profile');
-            }
-          }}
-          disabled={uploadMutation.isPending || setProfileMutation.isPending}
-        />
-      </div>
-
-
-      <div className="upload-section">
-        <h3>Cover Image</h3>
-
-          <img
-            src={coverImage ? coverImage : 'https://eiti.org/sites/default/files/styles/open_graph_image/public/2024-03/EITI_Standard_background.png?itok=Z0AUKTak'}
-            alt="Cover"
-            className="preview-image"
+ return (
+    <div className="linkedin-profile-container">
+      {/* Cover Image Section with Upload */}
+      <div
+        className="cover-image-section"
+        style={{
+          backgroundImage: `url(${coverImage || 'https://eiti.org/sites/default/files/styles/open_graph_image/public/2024-03/EITI_Standard_background.png?itok=Z0AUKTak'})`
+        }}
+      >
+        <div className="cover-upload-overlay">
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => {
+              if (e.target.files?.[0]) {
+                handleUpload(e.target.files[0], 'cover');
+              }
+            }}
+            disabled={uploadMutation.isPending || setCoverMutation.isPending}
+            id="cover-upload"
+            className="hidden-input"
           />
-
-        <input
-          type="file"
-          accept="image/*"
-          onChange={(e) => {
-            if (e.target.files?.[0]) {
-              handleUpload(e.target.files[0], 'cover');
-            }
-          }}
-          disabled={uploadMutation.isPending || setCoverMutation.isPending}
-        />
+          <label htmlFor="cover-upload" className="upload-button cover-btn">
+            {uploadMutation.isPending || setCoverMutation.isPending ? (
+              <span>📤 Uploading...</span>
+            ) : (
+              <span>📷 {coverImage ? 'Change cover' : 'Add cover photo'}</span>
+            )}
+          </label>
+        </div>
       </div>
+
+      {/* Profile Picture Section with Upload */}
+      <div className="profile-section">
+        <div
+          className="profile-picture"
+          style={{
+            backgroundImage: `url(${profileImage || 'https://st3.depositphotos.com/9998432/13335/v/450/depositphotos_133352156-stock-illustration-default-placeholder-profile-icon.jpg'})`
+          }}
+        >
+          <div className="profile-upload-overlay">
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => {
+                if (e.target.files?.[0]) {
+                  handleUpload(e.target.files[0], 'profile');
+                }
+              }}
+              disabled={uploadMutation.isPending || setProfileMutation.isPending}
+              id="profile-upload"
+              className="hidden-input"
+            />
+            <label htmlFor="profile-upload" className="upload-button profile-btn">
+              {uploadMutation.isPending || setProfileMutation.isPending ? (
+                <span>⏳</span>
+              ) : (
+                <span>📷</span>
+              )}
+            </label>
+          </div>
+        </div>
+
+        {/* User Info Section */}
+        <div className="user-info">
+          <h1>Your Name</h1>
+          <p className="headline">Add your professional headline</p>
+          <p className="location">📍 Your Location</p>
+        </div>
+      </div>
+
+     
+      {(uploadMutation.isPending || setProfileMutation.isPending || setCoverMutation.isPending) && (
+        <div className="upload-status">
+          <p>Uploading your image...</p>
+        </div>
+      )}
     </div>
   );
 };
