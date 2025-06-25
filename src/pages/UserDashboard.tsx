@@ -42,6 +42,7 @@ const UserDashboard: React.FC = () => {
       </section>
 
       <section className="user-info-section">
+        <h2>About</h2>
         <div className="user-info-list">
           <div className="user-info-item">
             <span className="label">Email:</span>
@@ -72,7 +73,7 @@ const UserDashboard: React.FC = () => {
       </section>
 
       <section className="user-saved-jobs-section">
-        <h3>Saved Jobs</h3>
+       
         <UserSavedJobsDashboard />
       </section>
 

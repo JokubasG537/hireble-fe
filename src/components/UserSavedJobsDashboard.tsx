@@ -4,6 +4,7 @@ import { UserContext } from '../contexts/UserContext';
 import { useParams, Link } from 'react-router-dom';
 import Loader from './Loader';
 import delImg from '../assets/icons8-delete-60.png';
+import { Trash2 } from 'lucide-react';
 
 interface SavedJob {
   _id: string;
@@ -54,39 +55,41 @@ export default function UserSavedJobsDashboard() {
     );
   }
 
+
   const handleDeleteSavedJob = (jobId: string) => {
     deleteSavedJob.mutate({ __params: { id: jobId } });
     console.log(`Deleted saved job with ID: ${jobId}`);
   };
 
-  return (
-  <div className="saved-jobs-container">
-    {data?.length > 0 ? (
-      data.map((job: SavedJob) => (
-        <div className="saved-job-card" key={job.jobPost._id}>
-          <Link to={`/job-posts/${job.jobPost._id}`} className="job-title">
-            {job.jobPost.title}
-          </Link>
-          { token ? (
-             <button>
-            <img
-              src={delImg}
-              alt="Delete Saved Job"
-              className="delete-saved-job-icon"
-              onClick={() => handleDeleteSavedJob(job._id)}
-            />
-          </button>
-          ) : (``)
-          }
 
-        </div>
-      ))
-    ) : (
-      <div className="no-saved-jobs">
-        No saved jobs found.
+  return (
+    <div className="saved-jobs-section">
+      <h2>Saved Jobs</h2>
+      <div className="saved-jobs-container">
+        {data?.length > 0 ? (
+          data.map((job: SavedJob) => (
+            <div className="saved-job-item" key={job.jobPost._id}>
+              <Link to={`/job-posts/${job.jobPost._id}`} className="job-title">
+                {job.jobPost.title}
+              </Link>
+              {token && (
+                <button
+                  className="delete-job-btn"
+                  onClick={() => handleDeleteSavedJob(job._id)}
+                  title="Remove from saved jobs"
+                >
+                  <Trash2 size={16} />
+                </button>
+              )}
+            </div>
+          ))
+        ) : (
+          <div className="no-saved-jobs">
+            No saved jobs found.
+          </div>
+        )}
       </div>
-    )}
-  </div>
-);
+    </div>
+  );
 
 }
