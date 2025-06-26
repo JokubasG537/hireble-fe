@@ -203,6 +203,9 @@ h1 {
   }
 
 
+
+
+  form {
   .form-group {
     display: flex;
     flex-direction: column;
@@ -260,3 +263,15 @@ h1 {
       }
     }
   }
+
+  .btn-container {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  padding-top: 1rem;
+  }
+
+  .description {
+    width: 50%;
+  }
+}

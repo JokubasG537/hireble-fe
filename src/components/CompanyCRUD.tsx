@@ -144,7 +144,7 @@ const CompanyManager: React.FC = () => {
             refetch();
             setTimeout(() => setSuccessMessage(""), 3000);
           },
-          onError: (err: any) => {
+          onError: (err: Error) => {
             setErrorMessage(`Failed to create: ${err.message}`);
           }
         }
@@ -169,7 +169,7 @@ const CompanyManager: React.FC = () => {
             navigate("/dashboard");
           }, 3000);
         },
-        onError: (err: any) => {
+        onError: (err: Error) => {
           setErrorMessage(`Failed to delete: ${err.message}`);
           setShowDeleteConfirm(false);
         }
