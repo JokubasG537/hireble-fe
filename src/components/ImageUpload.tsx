@@ -1,31 +1,28 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { useApiMutation } from '../hooks/useApiQuery';
 import { UserContext } from '../contexts/UserContext';
-const baseUrl = import.meta.env.VITE_API_URL
+import defaultCover from '../assets/hirebleCoverDefault.png';
+import { Pencil } from 'lucide-react';
+import { UserInfoDash } from './UserInfoDash';
+
+
+const baseUrl = import.meta.env.VITE_API_URL;
 
 const ImageUpload: React.FC = () => {
   const { token } = useContext(UserContext);
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const [coverImage, setCoverImage] = useState<string | null>(null);
 
-  console.log(`Token: ${token}`);
 
   useEffect(() => {
     const fetchUserImages = async () => {
       try {
-
-       const userRes = await fetch(`${baseUrl}/users/current`, {
-  headers: {
-    Authorization: `Bearer ${token}`
-  }
-});
-
-
+        const userRes = await fetch(`${baseUrl}/users/current`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
 
         if (!userRes.ok) throw new Error('Failed to fetch user data');
         const userData = await userRes.json();
-        console.log('User Data:', userData);
-
 
         if (userData.profileImage) {
           const profileRes = await fetch(`${baseUrl}/images/${userData.profileImage}`, {
@@ -33,9 +30,7 @@ const ImageUpload: React.FC = () => {
           });
           const profileData = await profileRes.json();
           setProfileImage(profileData.fileUrl);
-          console.log('Profile Image:', profileData.fileUrl);
         }
-
 
         if (userData.coverImage) {
           const coverRes = await fetch(`${baseUrl}/${userData.coverImage}`, {
@@ -54,7 +49,6 @@ const ImageUpload: React.FC = () => {
     }
   }, [token]);
 
-
   const uploadMutation = useApiMutation('/images', 'POST');
   const setProfileMutation = useApiMutation('/images/:id/profile', 'PUT');
   const setCoverMutation = useApiMutation('/images/:id/cover', 'PUT');
@@ -70,11 +64,9 @@ const ImageUpload: React.FC = () => {
       const imageId = uploadResult.image._id;
       const imageUrl = uploadResult.image.fileUrl;
 
-
       if (type === 'profile') {
         await setProfileMutation.mutateAsync({ __params: { id: imageId } });
         setProfileImage(imageUrl);
-          console.log('Profile Image:', profileImage);
       } else {
         await setCoverMutation.mutateAsync({ __params: { id: imageId } });
         setCoverImage(imageUrl);
@@ -85,40 +77,15 @@ const ImageUpload: React.FC = () => {
     }
   };
 
+  const isUploading = uploadMutation.isPending || setProfileMutation.isPending || setCoverMutation.isPending;
 
+    return (
+    <div className="image-upload-container">
 
-  return (
-    <div className="image-upload-container"
-      style={{ backgroundImage: `url(${coverImage || 'https://eiti.org/sites/default/files/styles/open_graph_image/public/2024-03/EITI_Standard_background.png?itok=Z0AUKTak'})`}}  >
-
-      <div className="profile-pic"
-      style={{ backgroundImage: `url(${profileImage || 'https://st3.depositphotos.com/9998432/13335/v/450/depositphotos_133352156-stock-illustration-default-placeholder-profile-icon.jpg'})` }}>
-
-
-
-
-        <input
-          type="file"
-          accept="image/*"
-          onChange={(e) => {
-            if (e.target.files?.[0]) {
-              handleUpload(e.target.files[0], 'profile');
-            }
-          }}
-          disabled={uploadMutation.isPending || setProfileMutation.isPending}
-        />
-      </div>
-
-
-      <div className="upload-section">
-        <h3>Cover Image</h3>
-
-          <img
-            src={coverImage ? coverImage : 'https://eiti.org/sites/default/files/styles/open_graph_image/public/2024-03/EITI_Standard_background.png?itok=Z0AUKTak'}
-            alt="Cover"
-            className="preview-image"
-          />
-
+      <div
+        className="cover-section"
+        style={{ backgroundImage: `url(${coverImage || defaultCover})` }}
+      >
         <input
           type="file"
           accept="image/*"
@@ -127,8 +94,38 @@ const ImageUpload: React.FC = () => {
               handleUpload(e.target.files[0], 'cover');
             }
           }}
-          disabled={uploadMutation.isPending || setCoverMutation.isPending}
+          disabled={isUploading}
+          className="file-input cover-input"
+          id="cover-upload"
         />
+       <label htmlFor="cover-upload" className="upload-button cover-button">
+          <Pencil size={16} />
+        </label>
+      </div>
+
+
+      <div className="profile-section">
+        <div className="profile-image-wrapper" style={{ backgroundImage: `url(${profileImage || `url(')`})` }}>
+
+
+            <input
+          type="file"
+          accept="image/*"
+          onChange={(e) => {
+            if (e.target.files?.[0]) {
+              handleUpload(e.target.files[0], 'profile');
+            }
+          }}
+          disabled={isUploading}
+          className="file-input profile-input"
+          id="profile-upload"
+        />
+       <label htmlFor="profile-upload" className="upload-button profile-button">
+          <Pencil size={14} />
+        </label>
+        </div>
+
+          <UserInfoDash />
       </div>
     </div>
   );

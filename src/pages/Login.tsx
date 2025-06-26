@@ -2,7 +2,13 @@ import React, { useState, useContext } from "react";
 import { useApiMutation } from "../hooks/useApiQuery";
 import { UserContext } from "../contexts/UserContext";
 import { useNavigate } from "react-router-dom";
-
+import { Link } from "react-router-dom";
+import LoginForm from "../components/LoginForm";
+import "../style/LoginPage.scss";
+import img from '../assets/freepik__enhance__11709.png';
+import googleIcon from '../assets/auth/Rectangle.svg';
+import fbIcon from '../assets/auth/Rectangle-1.svg';
+import SwiperDecoration from "../components/SwiperDecoration";
 interface LoginForm {
   email: string;
   password: string;
@@ -14,79 +20,48 @@ export default function Login() {
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  const loginMutation = useApiMutation<{ user: any; token: string }, LoginForm>(
-    "/users/login",
-    "POST"
-  );
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setError(null);
-    loginMutation.mutate(form, {
-      onSuccess: (data) => {
-        dispatch({ type: "LOGIN", payload: { user: data.user, token: data.token } });
-        navigate("/");
-      },
-      onError: (err: any) => {
-        setError(err.message || "Login failed");
-      },
-    });
-  };
-
-
 
   return (
-  <div style={{ maxWidth: 400, margin: "2rem auto" }}>
-    <h2>Login</h2>
-    <form onSubmit={handleSubmit} autoComplete="off">
-      <div>
-        <div>
-          <label htmlFor="email">Email</label>
-          <input
-            id="email"
-            name="email"
-            type="email"
-            value={form.email}
-            onChange={handleChange}
-            required
-            autoFocus
-          />
+  <div className="login-page">
+    <div className="left-side-wrapper">
+      <div className="wrapper">
+      <Link to="/" className="logo l-reversed">Hireble</Link>
+      <h1 className="login-title">Sign in</h1>
+      <span className="create-account">Don’t have an account?  {<Link to="/register">Create now</Link>}</span>
+      <LoginForm />
+      <div className="other-login-options">
+        <span className="divider">or</span>
+        <div className="login-options">
+          <button className="login-opt">
+            <img src={googleIcon} alt="google icon" />
+            Sign in with Google
+          </button>
+          <button className="login-opt">
+            <img src={fbIcon} alt="fb icon" />
+            Sign in with Facebook
+            </button>
         </div>
 
-        <div>
-          <label htmlFor="password">Password</label>
-          <input
-            id="password"
-            name="password"
-            type="password"
-            value={form.password}
-            onChange={handleChange}
-            required
-          />
+      </div>
+      </div>
+    </div>
+    <div className="right-side-wrapper">
+
+      <div className="wrapper">
+        <div className="card">
+          <h2>
+            Trusted by industry leaders
+          </h2>
+          <div className="companies-carousel-description-wrapper">
+            <p>
+            From Fortune 500 to cutting-edge startups - connect with employers actively seeking your talent.
+          </p>
+          <SwiperDecoration />
+          </div>
+
         </div>
       </div>
-
-      <div>
-        <button type="submit" disabled={loginMutation.isLoading}>
-          {loginMutation.isLoading ? (
-            <div>
-              <div></div>
-            </div>
-          ) : (
-            "Login"
-          )}
-        </button>
-      </div>
-
-      {error && <div>{error}</div>}
-      {loginMutation.isSuccess && (
-        <div style={{ color: "green" }}>Login successful!</div>
-      )}
-    </form>
+    </div>
   </div>
 );
 

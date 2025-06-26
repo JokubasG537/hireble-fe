@@ -5,6 +5,8 @@ import { useApiQuery } from "../hooks/useApiQuery";
 import ResumeList from "../components/resume/ResumeList";
 import ImageUpload from "../components/ImageUpload";
 import "../style/UserDashboard.scss";
+import UserSavedJobsDashboard from "../components/UserSavedJobsDashboard";
+import Loader from "../components/Loader";
 const UserDashboard: React.FC = () => {
   const { user: contextUser, token } = useContext(UserContext);
   const navigate = useNavigate();
@@ -21,7 +23,7 @@ const UserDashboard: React.FC = () => {
     }
   }, [token, navigate]);
 
-  if (isLoading) return <div>Loading user dashboard...</div>;
+  if (isLoading) return <div className="loading"><Loader /></div>;
   if (error) return <div>Error loading user data: {(error as Error).message}</div>;
   if (!user) return <div>User information not available.</div>;
 
@@ -33,16 +35,14 @@ const UserDashboard: React.FC = () => {
 
   return (
     <div className="user-dashboard">
-      <header className="user-dashboard-header">
-        <h2>User Profile</h2>
-        <span className="user-role">{user.role}</span>
-      </header>
+    <div className="wrapper">
 
       <section className="user-image-section">
         <ImageUpload />
       </section>
 
       <section className="user-info-section">
+        <h2>About</h2>
         <div className="user-info-list">
           <div className="user-info-item">
             <span className="label">Email:</span>
@@ -72,9 +72,15 @@ const UserDashboard: React.FC = () => {
         </div>
       </section>
 
+      <section className="user-saved-jobs-section">
+       
+        <UserSavedJobsDashboard />
+      </section>
+
       <section className="user-resume-section">
         <ResumeList />
       </section>
+      </div>
     </div>
   );
 };

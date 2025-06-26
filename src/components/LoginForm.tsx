@@ -1,7 +1,8 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useApiMutation } from "../hooks/useApiQuery";
 import { UserContext } from "../contexts/UserContext";
 import { useNavigate } from "react-router-dom";
+import { toast, Toaster } from "sonner";
 
 interface LoginForm {
   email: string;
@@ -23,15 +24,24 @@ export default function LoginForm() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
     loginMutation.mutate(form, {
       onSuccess: (data) => {
         dispatch({ type: "LOGIN", payload: { user: data.user, token: data.token } });
-        navigate("/");
+
+
+        toast.success("Welcome back!");
+
+        setTimeout(() => {
+          navigate("/");
+        }, 2000);
+
       },
-      onError: (err: any) => {
+      onError: (err: Error) => {
         setError(err.message || "Login failed");
       },
     });
@@ -40,11 +50,11 @@ export default function LoginForm() {
 
 
   return (
-  <div style={{ maxWidth: 400, margin: "2rem auto" }}>
-    <h2>Login</h2>
+  <div >
+
     <form onSubmit={handleSubmit} autoComplete="off">
       <div>
-        <div>
+        <div className="form-group">
           <label htmlFor="email">Email</label>
           <input
             id="email"
@@ -57,7 +67,7 @@ export default function LoginForm() {
           />
         </div>
 
-        <div>
+        <div className="form-group">
           <label htmlFor="password">Password</label>
           <input
             id="password"
@@ -70,14 +80,14 @@ export default function LoginForm() {
         </div>
       </div>
 
-      <div>
+      <div className="form-group">
         <button type="submit" disabled={loginMutation.isLoading}>
           {loginMutation.isLoading ? (
             <div>
               <div></div>
             </div>
           ) : (
-            "Login"
+            "Sign In"
           )}
         </button>
       </div>

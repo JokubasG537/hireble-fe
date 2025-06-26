@@ -176,7 +176,7 @@
   &-container {
     position: relative;
     max-width: 600px;
- 
+
     padding: 20px;
     background-color: $color-bg-reverse;
     border-radius: 8px;
@@ -318,5 +318,61 @@
       cursor: not-allowed;
       border-color: $color-border-reverse;
     }
+
+}
+
+
+.results-container {
+
+    border-radius: 12px;
+    border: 1px solid $color-border;
+    margin-top: 0.3rem;
+
+  .result-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0.3rem;
+    transition: background-color 0.25s, color 0.18s;
+
+
+      &:hover {
+        background-color: $color-brand-light;
+        border-radius: 12px;
+      }
+
+      button {
+    background-color: $color-brand-primary;
+    color: $color-text-reverse;
+    border: none;
+    padding: 0.4rem 0.6rem;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.18s, color 0.18s;
+    display: flex
+;
+    align-items: center;
+
+    &:hover {
+      background-color: $color-brand-hover;
+      color: $color-text-reverse;
+    }
+      }
+
+
+
+
+
+    .result-item {
+      padding: 0.3rem;
+
+
+
+      .company-industry {
+        color:$color-muted-text;
+        font-size: 0.9rem;
+      }
+    }
+}
 
 }
