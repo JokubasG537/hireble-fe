@@ -273,5 +273,9 @@ h1 {
 
   .description {
     width: 50%;
+
+    @include res.mobile {
+      width: 80%;
+    }
   }
 }

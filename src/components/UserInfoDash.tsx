@@ -102,13 +102,14 @@ const handleCancel = () => {
 
       {(isLoggedIn && !isEditing) ? (
         <div className="p-btn-wrapper">
+            <p>{data.description}</p>
            <button
             className="edit-profile-btn"
            onClick={handleEditProfile}
             title="Edit Profile"
           >
-          <Edit3 size={16} /></button>
-          <p>{data.description}</p>
+          <Edit3 size={14} /></button>
+
         </div>
       ) : (
         null
