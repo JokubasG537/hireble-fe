@@ -1,0 +1,17 @@
+@use './colors' as c;
+@use "./res" as res;
+
+.application-form-page {
+   width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: c.$shadow-medium;
+  margin-top: 40px;
+  section {
+
+    padding: 12px;
+  }
+}

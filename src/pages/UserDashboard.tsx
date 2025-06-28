@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useParams } from "react-router-dom";
 import { UserContext } from "../contexts/UserContext";
 import { useApiQuery } from "../hooks/useApiQuery";
 import ResumeList from "../components/resume/ResumeList";
@@ -8,20 +8,33 @@ import "../style/UserDashboard.scss";
 import UserSavedJobsDashboard from "../components/UserSavedJobsDashboard";
 import Loader from "../components/Loader";
 const UserDashboard: React.FC = () => {
-  const { user: contextUser, token } = useContext(UserContext);
-  const navigate = useNavigate();
+  const {  token } = useContext(UserContext);
+  const navigate = useNavigate()
+  const isLoggedIn = Boolean(token);
+  const userId = useParams<{ userId: string }>().userId;
+
+  const queryKey = isLoggedIn ? ['currentUser'] : ['publicUser', userId];
+  const url = isLoggedIn ? '/users/current' : `/users/${userId}`
+  const enabled = isLoggedIn ? Boolean(token) : Boolean(userId);
+
+
 
   const { data: user, isLoading, error } = useApiQuery(
-    ["current-user"],
-    "/users/current",
-    !!token
+    queryKey,
+    url,
+    enabled
   );
 
-  useEffect(() => {
-    if (!token) {
-      navigate("/login");
-    }
-  }, [token, navigate]);
+  console.log('User Data:', user);
+
+  // useEffect(() => {
+  //   if (!token) {
+  //     navigate("/login");
+  //   }
+  // }, [token, navigate]);
+
+
+
 
   if (isLoading) return <div className="loading"><Loader /></div>;
   if (error) return <div>Error loading user data: {(error as Error).message}</div>;
@@ -73,7 +86,7 @@ const UserDashboard: React.FC = () => {
       </section>
 
       <section className="user-saved-jobs-section">
-       
+
         <UserSavedJobsDashboard />
       </section>
 

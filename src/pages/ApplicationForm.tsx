@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useApiQuery, useApiMutation } from '../hooks/useApiQuery';
 import { UserContext } from '../contexts/UserContext';
 import { useContext } from 'react';
 import { useJobApplicationState, useJobApplicationDispatch } from '../contexts/JobApplicationContext';
 import ResumeUpload from '../components/resume/ResumeUpload';
-
+import Loader from '../components/Loader';
+import '../style/ApplicationForm.scss';
 
 type ApplicationStatus = 'applied' | 'interview' | 'offer' | 'rejected';
 
@@ -58,10 +59,10 @@ const ApplicationForm = () => {
       notes: notes || coverLetter,
     };
 
-    // Submit application
+
     submitApplication(applicationData, {
       onSuccess: (newApplication) => {
-        // Update application context
+
         dispatch({ type: 'ADD_APPLICATION', payload: newApplication });
         alert('Application submitted successfully!');
         navigate(`/jobs/${jobId}`);
@@ -72,19 +73,20 @@ const ApplicationForm = () => {
     });
   };
 
-  
+
   const handleResumeUploaded = () => {
     refetchResumes();
     setShowResumeUpload(false);
   };
 
-  if (jobLoading || resumesLoading) return <p>Loading...</p>;
+  if (jobLoading || resumesLoading) return <div className="loading"><Loader /></div>
 
-  // Check if user already applied for this job
+
   const hasApplied = applications.some(app => app.jobPost === jobId);
 
   return (
-    <div>
+    <div className="application-form-page">
+      <section>
       <h2>Apply for: {jobDetails?.title}</h2>
       <h3>{jobDetails?.company?.name}</h3>
 
@@ -98,18 +100,21 @@ const ApplicationForm = () => {
       ) : (
         <>
           {showResumeUpload ? (
-            <div>
+            <div className='from-group'>
               <h3>Upload a Resume First</h3>
               <ResumeUpload onSuccess={handleResumeUploaded} />
+              <div className='form-group'>
               <button type="button" onClick={() => setShowResumeUpload(false)}>
                 Cancel Upload
               </button>
+              </div>
             </div>
           ) : (
             <form onSubmit={handleSubmit}>
-              <div>
+              <div >
                 <label htmlFor="resume">Select Resume</label>
                 {resumes && resumes.length > 0 ? (
+                  <div className="form-group">
                   <select
                     id="resume"
                     value={selectedResume}
@@ -123,8 +128,9 @@ const ApplicationForm = () => {
                       </option>
                     ))}
                   </select>
+                  </div>
                 ) : (
-                  <div>
+                  <div className='from-group'>
                     <p>No resumes found. Please upload a resume first.</p>
                     <button
                       type="button"
@@ -136,16 +142,18 @@ const ApplicationForm = () => {
                 )}
 
                 {resumes && resumes.length > 0 && (
+                  <div className="form-group">
                   <button
                     type="button"
                     onClick={() => setShowResumeUpload(true)}
                   >
                     Upload New Resume
                   </button>
+                  </div>
                 )}
               </div>
 
-              <div>
+              <div className="form-group">
                 <label htmlFor="coverLetter">Cover Letter (Optional)</label>
                 <textarea
                   id="coverLetter"
@@ -156,7 +164,7 @@ const ApplicationForm = () => {
                 ></textarea>
               </div>
 
-              <div>
+              <div className="form-group">
                 <label htmlFor="notes">Additional Notes (Optional)</label>
                 <textarea
                   id="notes"
@@ -167,21 +175,25 @@ const ApplicationForm = () => {
                 ></textarea>
               </div>
 
-              <div>
-                <button type="button" onClick={() => navigate(`/jobs/${jobId}`)}>
+              <div className="form-group">
+                <button type="button" onClick={() => navigate(-1)}>
                   Cancel
                 </button>
+                 </div>
+                 <div className="form-group">
                 <button
                   type="submit"
                   disabled={submitting || !selectedResume}
                 >
                   {submitting ? 'Submitting...' : 'Submit Application'}
                 </button>
-              </div>
+                </div>
+
             </form>
           )}
         </>
       )}
+      </section>
     </div>
   );
 };

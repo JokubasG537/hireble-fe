@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApiMutation } from '../../hooks/useApiQuery';
+import Loader from '../Loader';
+import '../../style/ResumeUpload.scss';
 
 const ResumeUpload = () => {
   const navigate = useNavigate();
@@ -40,10 +42,11 @@ const ResumeUpload = () => {
   };
 
   return (
-    <div>
+    <div className="resume-upload-container">
+      <section>
       <h2>Upload Resume</h2>
       <form onSubmit={handleSubmit}>
-        <div>
+        <div className='form-group'>
           <label htmlFor="title">Resume Title</label>
           <input
             type="text"
@@ -54,7 +57,7 @@ const ResumeUpload = () => {
           />
         </div>
 
-        <div>
+        <div className='form-group'>
           <label htmlFor="file">Resume File (PDF, DOC, DOCX)</label>
           <input
             type="file"
@@ -64,14 +67,18 @@ const ResumeUpload = () => {
             required
           />
         </div>
-
+        <div className="form-group">
         <button type="submit" disabled={isLoading}>
           {isLoading ? 'Uploading...' : 'Upload Resume'}
         </button>
-        <button type="button" onClick={() => navigate('/resumes')}>
+        </div>
+        <div className="form-group">
+        <button type="button" onClick={() => navigate(-1)}>
           Cancel
         </button>
+        </div>
       </form>
+      </section>
     </div>
   );
 };

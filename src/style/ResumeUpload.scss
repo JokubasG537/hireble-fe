@@ -1,0 +1,20 @@
+@use './colors' as c;
+@use './res' as res;
+
+.resume-upload-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    max-width: 800px;
+
+  }
+}
