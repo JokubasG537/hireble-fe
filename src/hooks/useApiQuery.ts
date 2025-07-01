@@ -1,7 +1,8 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { UserContext } from '../contexts/UserContext';
 import { apiFetcher } from '../api/fetcher';
+
 
 export function useApiMutation(
   url: string,
@@ -43,4 +44,55 @@ export function useApiQuery(key: any[], url: string, enabled: boolean = true) {
     queryFn: () => apiFetcher(url, token),
     enabled,
   });
+}
+
+// In your useApiQuery.ts file, update the useUserImages hook:
+export function useUserImages(targetUserId?: string) {
+  const { token } = useContext(UserContext);
+  const [enabled, setEnabled] = useState(false);
+
+  // Determine if we're fetching current user or specific user
+  const isCurrentUser = !targetUserId;
+  const userUrl = isCurrentUser ? '/users/current' : `/users/${targetUserId}`;
+  const userKey = isCurrentUser ? ['currentUser'] : ['user', targetUserId];
+
+  const { data: userData, isLoading: userLoading, error: userError } = useApiQuery(
+    userKey,
+    userUrl,
+    enabled && Boolean(token || targetUserId) 
+  );
+
+  const { data: profileImageData, isLoading: profileLoading } = useApiQuery(
+    ['profileImage', userData?.profileImage],
+    `/images/${userData?.profileImage}`,
+    Boolean(enabled && userData?.profileImage)
+  );
+
+  const { data: coverImageData, isLoading: coverLoading } = useApiQuery(
+    ['coverImage', userData?.coverImage],
+    userData?.coverImage || '',
+    Boolean(enabled && userData?.coverImage)
+  );
+
+  const fetchImages = () => setEnabled(true);
+  const resetImages = () => setEnabled(false);
+
+  const queryClient = useQueryClient();
+  const refetchImages = () => {
+    queryClient.invalidateQueries({ queryKey: userKey });
+    queryClient.invalidateQueries({ queryKey: ['profileImage'] });
+    queryClient.invalidateQueries({ queryKey: ['coverImage'] });
+  };
+
+  return {
+    fetchImages,
+    resetImages,
+    refetchImages,
+    userData,
+    profileImageUrl: profileImageData?.fileUrl || null,
+    coverImageUrl: coverImageData?.fileUrl || null,
+    isLoading: userLoading || profileLoading || coverLoading,
+    error: userError,
+    isEnabled: enabled,
+  };
 }

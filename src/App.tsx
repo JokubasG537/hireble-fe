@@ -33,7 +33,7 @@ function App() {
           <Route path="/dashboard" element={<CompanyDashboard />} />
           <Route path="/companies/:id" element={<CompanyPublicPage />} />
           <Route path="/user-dashboard" element={<UserDashboard />} />
-          <Route path="/users/:id" element={<UserDashboard />} />
+          <Route path="/users/:userId" element={<UserDashboard />} />
           <Route path="/create-job" element={<CreateJobPost />} />
           <Route path="/job-posts" element={<JobListingPage />} />
           {/* Uncomment when needed */}

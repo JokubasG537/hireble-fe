@@ -11,12 +11,14 @@ const UserDashboard: React.FC = () => {
   const {  token } = useContext(UserContext);
   const navigate = useNavigate()
   const isLoggedIn = Boolean(token);
-  const userId = useParams<{ userId: string }>().userId;
+  const {userId} = useParams<{userId: string}>();
 
-  const queryKey = isLoggedIn ? ['currentUser'] : ['publicUser', userId];
-  const url = isLoggedIn ? '/users/current' : `/users/${userId}`
-  const enabled = isLoggedIn ? Boolean(token) : Boolean(userId);
+  const isOwnDashboard =  !userId && isLoggedIn
+  // const isOtherUserDashboard = userId
 
+  const queryKey = isOwnDashboard ? ['currentUser'] : ['publicUser', userId];
+  const url = isOwnDashboard ? '/users/current' : `/users/${userId}`
+  const enabled = isOwnDashboard ? Boolean(token) : Boolean(userId);
 
 
   const { data: user, isLoading, error } = useApiQuery(
@@ -27,11 +29,11 @@ const UserDashboard: React.FC = () => {
 
   console.log('User Data:', user);
 
-  // useEffect(() => {
-  //   if (!token) {
-  //     navigate("/login");
-  //   }
-  // }, [token, navigate]);
+  useEffect(() => {
+    if (!isLoggedIn && !userId) {
+      navigate("/login");
+    }
+  }, [isLoggedIn, userId, navigate]);
 
 
 
