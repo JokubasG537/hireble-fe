@@ -22,11 +22,12 @@ export const UserInfoDash: React.FC = () => {
     description: ''
   })
 
+   const isOwnDashboard =  !userId && isLoggedIn
 
-  const queryKey = isLoggedIn ? ['currentUserInfo'] : ['userInfo', userId];
+  const queryKey = isOwnDashboard ? ['currentUserInfo'] : ['userInfo', userId];
 
-  const url = isLoggedIn ? '/users/current' : `/users/${userId}`;
-  const enabled = isLoggedIn ? Boolean(token) : Boolean(userId)
+  const url = isOwnDashboard ? '/users/current' : `/users/${userId}`;
+  const enabled = isOwnDashboard ? Boolean(token) : Boolean(userId)
 
   const {data, isLoading } = useApiQuery(queryKey, url, enabled)
 
@@ -100,7 +101,7 @@ const handleCancel = () => {
         {data.username}
       </h2>
 
-      {(isLoggedIn && !isEditing) ? (
+      {(isOwnDashboard && !isEditing) ? (
         <div className="p-btn-wrapper">
             <p>{data.description}</p>
            <button
@@ -116,7 +117,7 @@ const handleCancel = () => {
       )}
 
 
-      {(isLoggedIn && isEditing) ? (
+      {(isOwnDashboard && isEditing) ? (
 
         <form onSubmit={handleSubmit}>
           <div className="form-group description">
@@ -134,7 +135,7 @@ const handleCancel = () => {
         null
       )}
 
-      {!isLoggedIn && (
+      {!isOwnDashboard && (
         <div className="p-btn-wrapper">
           <p className="">{data.description}</p>
         </div>

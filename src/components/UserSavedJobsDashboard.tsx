@@ -19,13 +19,15 @@ export default function UserSavedJobsDashboard() {
 
   const isLoggedIn = Boolean(token);
 
+   const isOwnDashboard =  !userId && isLoggedIn
 
-  const queryKey = isLoggedIn
+
+  const queryKey = isOwnDashboard
     ? ['currentUserSavedJobs']
     : ['userSavedJobs', userId];
 
-  const url = isLoggedIn ? '/savedJobs' : `/users/${userId}`;
-  const enabled = isLoggedIn ? Boolean(token) : Boolean(userId);
+  const url = isOwnDashboard ? '/savedJobs' : `/users/${userId}`;
+  const enabled = isOwnDashboard ? Boolean(token) : Boolean(userId);
 
   const { data, isLoading, error } = useApiQuery(queryKey, url, enabled);
 

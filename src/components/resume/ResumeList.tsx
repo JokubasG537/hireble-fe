@@ -1,32 +1,45 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import {React, useContext} from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useApiQuery } from '../../hooks/useApiQuery';
 import { Upload, FileText, Eye, Info, Plus } from 'lucide-react';
-import '../../style/ResumeList.scss';
+import "../../contexts/UserContext";
+import {UserContext} from "../../contexts/UserContext";
 
 const ResumeList = () => {
   const navigate = useNavigate();
+  const {userId} = useParams<{userId: string}>()
+  const {token} = useContext(UserContext)
+  const isLoggedIn = Boolean(token)
+
+  const isOwnDashboard = isLoggedIn && !userId
+
   const { data: resumes, isLoading, error } = useApiQuery(['resumes'], '/resumes', true);
 
   if (isLoading) return <div className="loading">Loading resumes...</div>;
   if (error) return <div className="error">Error loading resumes</div>;
 
-  return (
-    <section className="resume-list-section">
-      <div className="resume-list-header">
-        <h2>
-          <FileText size={24} />
-          My Resumes
-        </h2>
-        <button className="resume-upload-btn" onClick={() => navigate('/resumes/upload')}>
+ return (
+  <section className="resume-list-section">
+    <div className="resume-list-header">
+      <h2>
+        <FileText size={24} />
+        Resumes
+      </h2>
+      {isOwnDashboard && (
+        <button
+          className="resume-upload-btn"
+          onClick={() => navigate('/resumes/upload')}
+        >
           <Plus size={16} />
           Upload New Resume
         </button>
-      </div>
+      )}
+    </div>
 
-      {resumes && resumes.length > 0 ? (
-        <div className="resume-list-container">
-          {resumes.map(resume => (
+    {resumes && resumes.length > 0 ? (
+      <div className="resume-list-container">
+        {isOwnDashboard ? (
+          resumes.map((resume) => (
             <div key={resume._id} className="resume-list-item">
               <div className="resume-info">
                 <div className="resume-title-row">
@@ -60,16 +73,20 @@ const ResumeList = () => {
                 </button>
               </div>
             </div>
-          ))}
-        </div>
-      ) : (
-        <div className="resume-empty">
-          <Upload size={48} />
-          <p>No resumes found. Upload your first resume!</p>
-        </div>
-      )}
-    </section>
-  );
+          ))
+        ) : (
+          <p c>User's resumes are private</p>
+        )}
+      </div>
+    ) : (
+      <div className="resume-empty">
+        <Upload size={48} />
+        <p>No resumes found. Upload your first resume!</p>
+      </div>
+    )}
+  </section>
+);
+
 };
 
 export default ResumeList;
