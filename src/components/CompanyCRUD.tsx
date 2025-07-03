@@ -315,11 +315,14 @@ const CompanyManager: React.FC = () => {
       ) : (
         <div className="company-details">
           <div className="company-header">
-            <h2 className="company-title">{company.name}</h2>
+
             {company.logoUrl && (
               <div className="company-logo">
                 <img src={company.logoUrl} alt={`${company.name} logo`} />
+                <h2 className="company-title">{company.name}</h2>
               </div>
+
+
             )}
           </div>
 

@@ -8,6 +8,7 @@ import CompanyJobPostsManager from "../components/CompanyJobPostsManager";
 import CompanyDetails from "../components/CompanyDetails";
 import { useCompanyData } from "../hooks/useCompanyData";
 import RecruitersList from "../components/RecruitersList";
+import "../style/CompanyDashboard.scss";
 
 interface Company {
   _id: string;
@@ -46,9 +47,8 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = ({ companyId }) => {
   if (error) return <div>Error: {(error as Error).message}</div>;
 
   return (
-    <div>
-      <h1>Company Dashboard</h1>
-
+    <div className="company-dashboard">
+      <div className="wrapper">
       {company ? (
         <>
            <CompanyCRUD />
@@ -72,13 +72,7 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = ({ companyId }) => {
 
       {canAccessCompanyFeatures && <CompanyJobPostsManager />}
       <CompanyApplications />
-
-
-
-
-
-
-
+      </div>
     </div>
   );
 };
