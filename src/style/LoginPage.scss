@@ -213,7 +213,7 @@ form {
     input,
     textarea,
     select {
-      padding: 0.75rem 1rem;
+      padding: 0.5rem 1rem;
       border-radius: 8px;
       border: 1px solid c.$color-border;
       background-color: c.$color-bg;
@@ -308,7 +308,7 @@ form {
       font-size: 0.875rem;
       font-weight: 500;
       color: c.$color-text;
-      margin-bottom: 0.25rem;
+      // margin-bottom: 0.25rem;
       order: -1;
 
 
@@ -512,5 +512,3 @@ form {
 
 
 }
-
-

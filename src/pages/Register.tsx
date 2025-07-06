@@ -141,7 +141,7 @@ return (
                   error={step1Error}
                 />
 
-                <div className="other-login-options">
+                {/* <div className="other-login-options">
                   <span className="divider">or</span>
                   <div className="login-options">
                     <button className="login-opt">
@@ -153,7 +153,7 @@ return (
                       Sign in with Facebook
                     </button>
                   </div>
-                </div>
+                </div> */}
               </div>
             </div>
           </motion.div>

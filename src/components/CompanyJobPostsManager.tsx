@@ -93,9 +93,9 @@ export default function CompanyJobPostsManager() {
               <h3>{post.title}</h3>
               <p><em>{post.location}</em></p>
               <div
-                dangerouslySetInnerHTML={{
-                  __html: DOMPurify.sanitize(post.description),
-                }}
+                // dangerouslySetInnerHTML={{
+                //   __html: DOMPurify.sanitize(post.description),
+                // }}
               />
               <button onClick={() => setEditing(post)}>Edit</button>
               <button onClick={() => handleDelete(post._id)}>Delete</button>
